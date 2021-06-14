@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="rvfleetModelStoreContainer" CdmEntityContainer="rvfleetEntities">
+    <EntitySetMapping Name="conductorhistorico">
+      <EntityTypeMapping TypeName="rvfleetModel.conductorhistorico">
+        <MappingFragment StoreEntitySet="conductorhistorico">
+          <ScalarProperty Name="ConPlaca" ColumnName="ConPlaca" />
+          <ScalarProperty Name="ConCodigoCarro" ColumnName="ConCodigoCarro" />
+          <ScalarProperty Name="ConFechaAsignado" ColumnName="ConFechaAsignado" />
+          <ScalarProperty Name="ConKilometrajeAsignacion" ColumnName="ConKilometrajeAsignacion" />
+          <ScalarProperty Name="ConCodigoConductor" ColumnName="ConCodigoConductor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="detallefactura">
+      <EntityTypeMapping TypeName="rvfleetModel.detallefactura">
+        <MappingFragment StoreEntitySet="detallefactura">
+          <ScalarProperty Name="DetCodigoDetalle" ColumnName="DetCodigoDetalle" />
+          <ScalarProperty Name="DetCodigoOrden" ColumnName="DetCodigoOrden" />
+          <ScalarProperty Name="DetDescripcion" ColumnName="DetDescripcion" />
+          <ScalarProperty Name="DetValor" ColumnName="DetValor" />
+          <ScalarProperty Name="DetCantidad" ColumnName="DetCantidad" />
+          <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
+          <ScalarProperty Name="DetCodigoRubro" ColumnName="DetCodigoRubro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="facturas">
+      <EntityTypeMapping TypeName="rvfleetModel.facturas">
+        <MappingFragment StoreEntitySet="facturas">
+          <ScalarProperty Name="FacCodigoOrden" ColumnName="FacCodigoOrden" />
+          <ScalarProperty Name="FacFechaFactura" ColumnName="FacFechaFactura" />
+          <ScalarProperty Name="FacCodigoProveedor" ColumnName="FacCodigoProveedor" />
+          <ScalarProperty Name="FacNumeroFactura" ColumnName="FacNumeroFactura" />
+          <ScalarProperty Name="FacCodigoDetalleFactura" ColumnName="FacCodigoDetalleFactura" />
+          <ScalarProperty Name="FacValorFactura" ColumnName="FacValorFactura" />
+          <ScalarProperty Name="FacComentario" ColumnName="FacComentario" />
+          <ScalarProperty Name="FacFechaEntregaAdmin" ColumnName="FacFechaEntregaAdmin" />
+          <ScalarProperty Name="FacUrlFoto" ColumnName="FacUrlFoto" />
+          <ScalarProperty Name="FacPagado" ColumnName="FacPagado" />
+          <ScalarProperty Name="FacCodigoUsuarioIngreso" ColumnName="FacCodigoUsuarioIngreso" />
+          <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
+          <ScalarProperty Name="FacKilometraje" ColumnName="FacKilometraje" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="kilometrajehistorico">
+      <EntityTypeMapping TypeName="rvfleetModel.kilometrajehistorico">
+        <MappingFragment StoreEntitySet="kilometrajehistorico">
+          <ScalarProperty Name="KilCodigoVehiculo" ColumnName="KilCodigoVehiculo" />
+          <ScalarProperty Name="KilFechaIngreso" ColumnName="KilFechaIngreso" />
+          <ScalarProperty Name="KilKilometraje" ColumnName="KilKilometraje" />
+          <ScalarProperty Name="KilComentario" ColumnName="KilComentario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="proveedor">
+      <EntityTypeMapping TypeName="rvfleetModel.proveedor">
+        <MappingFragment StoreEntitySet="proveedor">
+          <ScalarProperty Name="ProCodigoProveedor" ColumnName="ProCodigoProveedor" />
+          <ScalarProperty Name="ProNombre" ColumnName="ProNombre" />
+          <ScalarProperty Name="ProNumeroContacto" ColumnName="ProNumeroContacto" />
+          <ScalarProperty Name="ProNombreContacto" ColumnName="ProNombreContacto" />
+          <ScalarProperty Name="ProRTN" ColumnName="ProRTN" />
+          <ScalarProperty Name="ProUbicacion" ColumnName="ProUbicacion" />
+          <ScalarProperty Name="ProCuentaBancaria" ColumnName="ProCuentaBancaria" />
+          <ScalarProperty Name="ProNombreBanco" ColumnName="ProNombreBanco" />
+          <ScalarProperty Name="ProTipo" ColumnName="ProTipo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rubrodetalle">
+      <EntityTypeMapping TypeName="rvfleetModel.rubrodetalle">
+        <MappingFragment StoreEntitySet="rubrodetalle">
+          <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
+          <ScalarProperty Name="CodigoDetalle" ColumnName="CodigoDetalle" />
+          <ScalarProperty Name="NombreDetalle" ColumnName="NombreDetalle" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rubros">
+      <EntityTypeMapping TypeName="rvfleetModel.rubros">
+        <MappingFragment StoreEntitySet="rubros">
+          <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
+          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sucursales">
+      <EntityTypeMapping TypeName="rvfleetModel.sucursales">
+        <MappingFragment StoreEntitySet="sucursales">
+          <ScalarProperty Name="SucCodigoSucursal" ColumnName="SucCodigoSucursal" />
+          <ScalarProperty Name="SucNombreSucursal" ColumnName="SucNombreSucursal" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ubicacionhistorica">
+      <EntityTypeMapping TypeName="rvfleetModel.ubicacionhistorica">
+        <MappingFragment StoreEntitySet="ubicacionhistorica">
+          <ScalarProperty Name="UbiCodigoAuto" ColumnName="UbiCodigoAuto" />
+          <ScalarProperty Name="UbiPlaca" ColumnName="UbiPlaca" />
+          <ScalarProperty Name="UbiCodigoSucursal" ColumnName="UbiCodigoSucursal" />
+          <ScalarProperty Name="UbiFechaCambio" ColumnName="UbiFechaCambio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vehiculos">
+      <EntityTypeMapping TypeName="rvfleetModel.vehiculos">
+        <MappingFragment StoreEntitySet="vehiculos">
+          <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
+          <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
+          <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
+          <ScalarProperty Name="VehMotor" ColumnName="VehMotor" />
+          <ScalarProperty Name="VehCilindraje" ColumnName="VehCilindraje" />
+          <ScalarProperty Name="VehAno" ColumnName="VehAno" />
+          <ScalarProperty Name="VehColor" ColumnName="VehColor" />
+          <ScalarProperty Name="VehMarca" ColumnName="VehMarca" />
+          <ScalarProperty Name="VehModelo" ColumnName="VehModelo" />
+          <ScalarProperty Name="VehCodigoAresSun" ColumnName="VehCodigoAresSun" />
+          <ScalarProperty Name="VehCodigoProveedor" ColumnName="VehCodigoProveedor" />
+          <ScalarProperty Name="VehCodigoEmpresa" ColumnName="VehCodigoEmpresa" />
+          <ScalarProperty Name="VehFechaMatricula" ColumnName="VehFechaMatricula" />
+          <ScalarProperty Name="VehNumeroPoliza" ColumnName="VehNumeroPoliza" />
+          <ScalarProperty Name="VehUrlFotoRevision" ColumnName="VehUrlFotoRevision" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

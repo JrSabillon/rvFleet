@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/fontawesome")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+
+    @Html.Action("SideBar", "Nav")
+    <div class="my-container active-cont" id="div-content">
+        @Html.Partial("_NavBar")
+        <div class="body-content pt-4" id="div-content">
+            @RenderBody()
+            <footer>
+                @*<hr />
+                    <p>&copy; @DateTime.Now.Year - Recarga Veloz</p>*@
+            </footer>
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            var menu_btn = document.querySelector("#menu-btn");
+            var sidebar = document.querySelector("#sidebar");
+            var container = document.querySelector(".my-container");
+            menu_btn.addEventListener("click", () => {
+                sidebar.classList.toggle("active-nav");
+                container.classList.toggle("active-cont");
+            });
+
+            ViewLayout();
+
+            $(window).on('resize', function () {
+                ViewLayout();
+            });
+        });
+
+        function ViewLayout() {
+            if (window.innerWidth < 799) {
+                $('#sidebar').removeClass('active-nav');
+                $('#div-content').removeClass('active-cont');
+            } else {
+                $('#sidebar').addClass('active-nav');
+                $('#div-content').addClass('active-cont');
+            }
+        }
+    </script>
+</body>
+</html>

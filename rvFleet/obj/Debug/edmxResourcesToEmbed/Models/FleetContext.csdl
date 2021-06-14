@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="rvfleetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="conductorhistorico">
+    <Key>
+      <PropertyRef Name="ConPlaca" />
+      <PropertyRef Name="ConCodigoCarro" />
+      <PropertyRef Name="ConFechaAsignado" />
+    </Key>
+    <Property Name="ConPlaca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ConCodigoCarro" Type="Int32" Nullable="false" />
+    <Property Name="ConFechaAsignado" Type="DateTime" Nullable="false" />
+    <Property Name="ConKilometrajeAsignacion" Type="Int32" Nullable="false" />
+    <Property Name="ConCodigoConductor" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="detallefactura">
+    <Key>
+      <PropertyRef Name="DetCodigoDetalle" />
+      <PropertyRef Name="DetCodigoOrden" />
+    </Key>
+    <Property Name="DetCodigoDetalle" Type="Int32" Nullable="false" />
+    <Property Name="DetCodigoOrden" Type="Int32" Nullable="false" />
+    <Property Name="DetDescripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="DetValor" Type="Double" Nullable="false" />
+    <Property Name="DetCantidad" Type="Int32" Nullable="false" />
+    <Property Name="DetPlacaVehiculo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DetCodigoRubro" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="facturas" Relationship="Self.FK_detallefactura_facturas" FromRole="detallefactura" ToRole="facturas" />
+  </EntityType>
+  <EntityType Name="facturas">
+    <Key>
+      <PropertyRef Name="FacCodigoOrden" />
+    </Key>
+    <Property Name="FacCodigoOrden" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FacFechaFactura" Type="DateTime" />
+    <Property Name="FacCodigoProveedor" Type="Int32" Nullable="false" />
+    <Property Name="FacNumeroFactura" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="FacCodigoDetalleFactura" Type="Int32" Nullable="false" />
+    <Property Name="FacValorFactura" Type="Double" Nullable="false" />
+    <Property Name="FacComentario" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="FacFechaEntregaAdmin" Type="DateTime" />
+    <Property Name="FacUrlFoto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="FacPagado" Type="Boolean" Nullable="false" />
+    <Property Name="FacCodigoUsuarioIngreso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FacFechaOrden" Type="DateTime" />
+    <Property Name="FacKilometraje" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="detallefactura" Relationship="Self.FK_detallefactura_facturas" FromRole="facturas" ToRole="detallefactura" />
+    <NavigationProperty Name="proveedor" Relationship="Self.FK_facturas_proveedor" FromRole="facturas" ToRole="proveedor" />
+  </EntityType>
+  <EntityType Name="kilometrajehistorico">
+    <Key>
+      <PropertyRef Name="KilCodigoVehiculo" />
+      <PropertyRef Name="KilFechaIngreso" />
+    </Key>
+    <Property Name="KilCodigoVehiculo" Type="Int32" Nullable="false" />
+    <Property Name="KilFechaIngreso" Type="DateTime" Nullable="false" />
+    <Property Name="KilKilometraje" Type="Int32" Nullable="false" />
+    <Property Name="KilComentario" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="proveedor">
+    <Key>
+      <PropertyRef Name="ProCodigoProveedor" />
+    </Key>
+    <Property Name="ProCodigoProveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProNombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProNumeroContacto" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProNombreContacto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProRTN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ProUbicacion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ProCuentaBancaria" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProNombreBanco" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ProTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="facturas" Relationship="Self.FK_facturas_proveedor" FromRole="proveedor" ToRole="facturas" />
+  </EntityType>
+  <EntityType Name="rubrodetalle">
+    <Key>
+      <PropertyRef Name="CodigoDetalle" />
+    </Key>
+    <Property Name="CodigoRubro" Type="Int32" Nullable="false" />
+    <Property Name="CodigoDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreDetalle" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="rubros" Relationship="Self.FK__rubros" FromRole="rubrodetalle" ToRole="rubros" />
+  </EntityType>
+  <EntityType Name="rubros">
+    <Key>
+      <PropertyRef Name="CodigoRubro" />
+    </Key>
+    <Property Name="CodigoRubro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreRubro" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="rubrodetalle" Relationship="Self.FK__rubros" FromRole="rubros" ToRole="rubrodetalle" />
+  </EntityType>
+  <EntityType Name="sucursales">
+    <Key>
+      <PropertyRef Name="SucCodigoSucursal" />
+    </Key>
+    <Property Name="SucCodigoSucursal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SucNombreSucursal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ubicacionhistorica">
+    <Key>
+      <PropertyRef Name="UbiCodigoAuto" />
+      <PropertyRef Name="UbiPlaca" />
+    </Key>
+    <Property Name="UbiCodigoAuto" Type="Int32" Nullable="false" />
+    <Property Name="UbiPlaca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UbiCodigoSucursal" Type="Int32" Nullable="false" />
+    <Property Name="UbiFechaCambio" Type="DateTime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vehiculos">
+    <Key>
+      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="VehPlaca" />
+      <PropertyRef Name="VehCodigoAresSun" />
+    </Key>
+    <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VehPlaca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehVIN" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehMotor" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehCilindraje" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehAno" Type="Int32" Nullable="false" />
+    <Property Name="VehColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehMarca" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehModelo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehCodigoAresSun" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehCodigoProveedor" Type="Int32" />
+    <Property Name="VehCodigoEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehFechaMatricula" Type="DateTime" Nullable="false" />
+    <Property Name="VehNumeroPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VehUrlFotoRevision" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_detallefactura_facturas">
+    <End Role="facturas" Type="Self.facturas" Multiplicity="1" />
+    <End Role="detallefactura" Type="Self.detallefactura" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="facturas">
+        <PropertyRef Name="FacCodigoOrden" />
+      </Principal>
+      <Dependent Role="detallefactura">
+        <PropertyRef Name="DetCodigoOrden" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_facturas_proveedor">
+    <End Role="proveedor" Type="Self.proveedor" Multiplicity="1" />
+    <End Role="facturas" Type="Self.facturas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="proveedor">
+        <PropertyRef Name="ProCodigoProveedor" />
+      </Principal>
+      <Dependent Role="facturas">
+        <PropertyRef Name="FacCodigoProveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__rubros">
+    <End Role="rubros" Type="Self.rubros" Multiplicity="1" />
+    <End Role="rubrodetalle" Type="Self.rubrodetalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rubros">
+        <PropertyRef Name="CodigoRubro" />
+      </Principal>
+      <Dependent Role="rubrodetalle">
+        <PropertyRef Name="CodigoRubro" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="rvfleetEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" />
+    <EntitySet Name="detallefactura" EntityType="Self.detallefactura" />
+    <EntitySet Name="facturas" EntityType="Self.facturas" />
+    <EntitySet Name="kilometrajehistorico" EntityType="Self.kilometrajehistorico" />
+    <EntitySet Name="proveedor" EntityType="Self.proveedor" />
+    <EntitySet Name="rubrodetalle" EntityType="Self.rubrodetalle" />
+    <EntitySet Name="rubros" EntityType="Self.rubros" />
+    <EntitySet Name="sucursales" EntityType="Self.sucursales" />
+    <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" />
+    <EntitySet Name="vehiculos" EntityType="Self.vehiculos" />
+    <AssociationSet Name="FK_detallefactura_facturas" Association="Self.FK_detallefactura_facturas">
+      <End Role="facturas" EntitySet="facturas" />
+      <End Role="detallefactura" EntitySet="detallefactura" />
+    </AssociationSet>
+    <AssociationSet Name="FK_facturas_proveedor" Association="Self.FK_facturas_proveedor">
+      <End Role="proveedor" EntitySet="proveedor" />
+      <End Role="facturas" EntitySet="facturas" />
+    </AssociationSet>
+    <AssociationSet Name="FK__rubros" Association="Self.FK__rubros">
+      <End Role="rubros" EntitySet="rubros" />
+      <End Role="rubrodetalle" EntitySet="rubrodetalle" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
