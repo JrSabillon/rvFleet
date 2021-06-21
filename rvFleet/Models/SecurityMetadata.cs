@@ -15,7 +15,20 @@ namespace rvFleet.Models
         [Required]
         [Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
-        [StringLength(15)]
         public string Contrasena;
+        [Display(Name = "Empresa")]
+        public string IdEmpresa;
+        [Display(Name = "Código de empleado")]
+        public string CodigoRRHH;
+        [Required]
+        [Display(Name = "Nombre completo")]
+        public string NombreUsuario;
+        [Required]
+        [Display(Name = "# identidad")]
+        public string IdentidadUsuario;
+        [Required]
+        [Display(Name = "Correo")]
+        [DataType(DataType.EmailAddress)]
+        public string Correo;
     }
 }

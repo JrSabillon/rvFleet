@@ -12,4 +12,29 @@ namespace rvFleet.Models
         public string Detalles { get; set; }
         public string NombreProveedor { get; set; }
     }
+
+    public partial class detallefactura
+    {
+        public detallefactura()
+        {
+            //facturas = new facturas();
+        }
+
+        public string NombreRubro { get; set; }
+    }
+
+    [MetadataType(typeof(vehiclesMetadata))]
+    public partial class vehiculos
+    {
+        public string NombreEmpresa { get; set; }
+        public string NombreEncargado { get; set; }
+        public HttpPostedFileBase ImgRevision { get; set; }
+        public HttpPostedFileBase ImgDelantera { get; set; }
+        public HttpPostedFileBase ImgIzquierda { get; set; }
+        public HttpPostedFileBase ImgDerecha { get; set; }
+        public HttpPostedFileBase ImgTrasera { get; set; }
+    }
+
+    [MetadataType(typeof(vehiclesMetadata))]
+    public partial class vehiclefulldata { }
 }

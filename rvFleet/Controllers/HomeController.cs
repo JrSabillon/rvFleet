@@ -13,13 +13,16 @@ namespace rvFleet.Controllers
         public ActionResult CreateHash(string data)
         {
             ViewBag.Hash = BaseViewModel.CreateHash(data);
-
             return View("Index");
         }
         
         public ActionResult Index()
         {
-            return View();
+            var userData = BaseViewModel.GetUserData();
+            var model = new NavViewModel().GetPrivilegios(userData.IdUsuario);
+            ViewBag.UserName = userData.NombreUsuario;
+
+            return View(model);
         }
 
         public ActionResult About()

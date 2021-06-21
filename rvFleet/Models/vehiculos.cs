@@ -29,5 +29,12 @@ namespace rvFleet.Models
         public System.DateTime VehFechaMatricula { get; set; }
         public string VehNumeroPoliza { get; set; }
         public string VehUrlFotoRevision { get; set; }
+        public string VehCodigoUsuario { get; set; }
+        public string VehFotoFrontal { get; set; }
+        public string VehFotoLateralDerecha { get; set; }
+        public string VehFotoLateralIzquierda { get; set; }
+        public string VehFotoTrasera { get; set; }
+    
+        public virtual proveedor proveedor { get; set; }
     }
 }

@@ -1,6 +1,3 @@
-C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.Labels.resources
-C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.GenerateResource.cache
-C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.CoreCompileInputs.cache
 C:\RV\Projects\rvFleet\rvFleet\bin\rvFleet.dll.config
 C:\RV\Projects\rvFleet\rvFleet\bin\rvFleet.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\rvFleet.pdb
@@ -66,6 +63,8 @@ C:\RV\Projects\rvFleet\rvFleet\bin\Microsoft.Web.Infrastructure.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\MySql.Data.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\MySql.Data.EntityFramework.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\Newtonsoft.Json.dll
+C:\RV\Projects\rvFleet\rvFleet\bin\PagedList.dll
+C:\RV\Projects\rvFleet\rvFleet\bin\PagedList.Mvc.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\System.Buffers.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\System.Memory.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\System.Numerics.Vectors.dll
@@ -90,6 +89,8 @@ C:\RV\Projects\rvFleet\rvFleet\bin\K4os.Compression.LZ4.Streams.xml
 C:\RV\Projects\rvFleet\rvFleet\bin\K4os.Hash.xxHash.xml
 C:\RV\Projects\rvFleet\rvFleet\bin\MySql.Data.xml
 C:\RV\Projects\rvFleet\rvFleet\bin\MySql.Data.EntityFramework.xml
+C:\RV\Projects\rvFleet\rvFleet\bin\PagedList.xml
+C:\RV\Projects\rvFleet\rvFleet\bin\PagedList.Mvc.xml
 C:\RV\Projects\rvFleet\rvFleet\bin\System.Buffers.xml
 C:\RV\Projects\rvFleet\rvFleet\bin\System.Memory.xml
 C:\RV\Projects\rvFleet\rvFleet\bin\System.Numerics.Vectors.xml
@@ -111,7 +112,10 @@ C:\RV\Projects\rvFleet\rvFleet\bin\es\System.Web.Razor.resources.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.resources.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.Deployment.resources.dll
 C:\RV\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.Razor.resources.dll
+C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.AssemblyReference.cache
+C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.Labels.resources
+C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.GenerateResource.cache
+C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.CoreCompileInputs.cache
 C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.CopyComplete
 C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.dll
 C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.pdb
-C:\RV\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.AssemblyReference.cache

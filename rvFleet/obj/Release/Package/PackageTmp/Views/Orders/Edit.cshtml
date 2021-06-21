@@ -1,0 +1,278 @@
+﻿@using Newtonsoft.Json;
+@model rvFleet.Models.facturas
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    foreach (var item in Model.detallefactura)
+    {
+        item.facturas = null;
+    }
+
+    string DetailData = JsonConvert.SerializeObject(Model.detallefactura);
+}
+
+<style>
+    th {
+        background: white;
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+</style>
+
+<script src="~/Scripts/select2.js"></script>
+<link href="~/Content/css/select2.css" rel="stylesheet" />
+<link href="~/Content/select2_bootstrap4.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <h2>Orden #@Model.FacCodigoOrden</h2>
+    </div>
+    <div class="col-12 col-md-6 form-group">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent shadow">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "Home")">Inicio</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "Orders")">Facturas</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Editar</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div data-toggle="collapse" data-target="#collapse-factura" aria-expanded="true" id="heading-factura" class="card-header bg-dark text-white">
+        Datos de la factura
+        <i class="fa fa-chevron-down pull-right mt-1"></i>
+    </div>
+    <div class="collapse show" id="collapse-factura">
+        <div class="card-body">
+            @Html.HiddenFor(x => x.FacCodigoOrden)
+            @if (ViewBag.Updated == "Updated")
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    <label>@ViewBag.Message</label>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            <ul class="nav nav-tabs" role="tablist" id="nav-tab">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#div-tab-factura" role="tab" aria-selected="true">
+                        Datos generales
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#div-tab-files" role="tab" aria-selected="true">
+                        Archivos
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content mt-4">
+                <div id="div-tab-factura" class="tab-pane fade show active">
+                    <div class="alert alert-danger d-none" id="div-alert-message-factura">
+                        <label id="label-alert-message-factura"></label>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-3 form-group">
+                            @Html.LabelFor(x => x.FacCodigoProveedor)
+                            @Html.DropDownList("FacCodigoProveedor", null, new { @class = "form-control" })
+                        </div>
+                        <div class="col form-group">
+                            @Html.LabelFor(x => x.FacUsuarioPago)
+                            @Html.TextBoxFor(x => x.FacUsuarioPago, new { @class = "form-control col-12", placeholder = "Nombre" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-lg-3 form-group">
+                            @Html.LabelFor(x => x.FacFechaOrden)
+                            <input type="date" class="form-control col-12" value="@Model.FacFechaOrden.Value.ToString("yyyy-MM-dd")" name="FacFechaOrden" id="FacFechaOrden" />
+                        </div>
+                        <div class="col-md-4 col-lg-3 form-group">
+                            @Html.LabelFor(x => x.FacFechaFactura)
+                            <input type="date" class="form-control col-12" value="@(Model.FacFechaFactura.HasValue ? Model.FacFechaFactura.Value.ToString("yyyy-MM-dd") : string.Empty)" name="FacFechaFactura" id="FacFechaFactura" />
+                        </div>
+                        <div class="col-md-4 col-lg-3 form-group">
+                            @Html.LabelFor(x => x.FacNumeroFactura)
+                            @Html.TextBoxFor(x => x.FacNumeroFactura, new { @class = "form-control col-12", placeholder = "xxx-xxx-xx-xxxxxxxx" })
+                        </div>
+                        <div class="col-md-4 col-lg-3 form-group">
+                            @Html.LabelFor(x => x.FacKilometraje)
+                            @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", placeholder = "0" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.FacComentario)
+                        @Html.TextAreaFor(x => x.FacComentario, new { rows = "3", @class = "form-control col-12", placeholder = "Ingrese una observación (opcional)..." })
+                    </div>
+                </div>
+                <div id="div-tab-files" class="tab-pane fade">
+                    <label class="h4">Archivos adjuntos</label>
+                    <hr />
+                    @using (Html.BeginForm("UploadFile", "Orders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(x => x.FacCodigoOrden)
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <label>Adjuntar archivo a la orden</label>
+                                <input type="file" class="form-control-file col-12" name="image" id="input-file-factura" />
+                            </div>
+                        </div>
+                        <div class="form-group row align-items-end">
+                            <div class="col-12 col-md-6">
+                                <label>Comentarios adicionales</label>
+                                <textarea rows="3" class="form-control col-12" placeholder="Agregar un comentario adicional al archivo adjunto (opcional)..."></textarea>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <br />
+                                <button class="btn btn-outline-success" 
+                                        onclick="if ($('#input-file-factura').get(0).files.length === 0) { alert('Debe adjuntar un archivo'); return false; } else { return true; }">
+                                    <i class="fa fa-upload"></i> Subir
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-sm">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Archivo</th>
+                                    <th style="white-space: nowrap;">Fecha de subida</th>
+                                    <th>Usuario</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (rvFleet.Models.archivofactura item in ViewBag.ArchivosFactura)
+                                {
+                                    <tr>
+                                        <td>@item.FacArchivoNombre</td>
+                                        <td>@item.FacArchivoFechaSubida</td>
+                                        <td>@item.FacArchivoUsuario</td>
+                                        <td class="text-center text-nowrap">
+                                            <a href="@Url.Content("~" + item.FacArchivoUrl)" target="_blank" class="btn btn-info btn-sm">
+                                                <i class="fa fa-download"></i>
+                                            </a>
+                                            <a href="@Url.Action("RemoveFile", "Orders", new { item.FacCodigoOrden, item.FacArchivoCodigo })" class="btn btn-sm btn-danger"
+                                               onclick="return confirm('¿Desea eliminar este archivo?')">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="card shadow">
+    <div data-toggle="collapse" data-target="#collapse-factura-detalle" aria-expanded="true" id="heading-factura" class="card-header bg-dark text-white">
+        Detalles de facturación
+        <i class="fa fa-chevron-down pull-right mt-1"></i>
+    </div>
+    <div class="collapse show" id="collapse-factura-detalle">
+        <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                <label>Vehículo</label>
+                @Html.DropDownList("DetPlacaVehiculo", null, new { @class = "form-control col-12" })
+            </div>
+            <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                <label>Rubro</label>
+                @Html.DropDownList("DetCodigoRubro", null, new { @class = "form-control col-12", id = "select-rubro", onchange = $"LoadRubroDetalles('{Url.Action("GetRubroDetalles", "Orders")}');" })
+            </div>
+            <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                <label>Detalle</label>
+                @Html.DropDownList("DetCodigoDescripcion", null, new { @class = "form-control col-12", id = "select-rubroDetalle", onchange="ValidateRubroDetalle();" })
+            </div>
+            <div class="col-12 form-group d-none" id="div-descriptionDetail">
+                <div class="alert alert-info">
+                    <label>Parece que no tenemos registrado el elemento que ingresaras en la factura, favor detalla un poco lo que deseas registrar.</label>
+                </div>
+                <label>Decripción</label>
+                <textarea rows="3" class="form-control col-12" id="textarea-description" placeholder="Ingresar descripción para el detalle de la factura..."></textarea>
+            </div>
+            <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                <label>Cantidad</label>
+                <input type="number" min="0" max="999" class="form-control col-12" value="1" name="DetCantidad" id="DetCantidad" placeholder="0" />
+            </div>
+            <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                <label>Precio</label>
+                <input type="text" class="form-control col-12 decimal" name="DetValor" id="DetValor" placeholder="0.00" />
+            </div>
+            <div class="col-12">
+                <button class="btn btn-outline-success" type="button" onclick="AddDetail();">Agregar detalle</button>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="alert alert-danger d-none" id="div-alert-message">
+            <label id="label-alert-message"></label>
+        </div>
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Vehículo</th>
+                        <th>Rubro</th>
+                        <th>Detalle</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-details">
+                    @foreach (var item in Model.detallefactura)
+                    {
+                        <tr>
+                            <td>@item.DetPlacaVehiculo</td>
+                            <td>@item.NombreRubro</td>
+                            <td>@item.DetDescripcion</td>
+                            <td>@item.DetCantidad</td>
+                            <td>@item.DetValor.ToString("N")</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-danger btn-sm delete-button">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12 text-left text-md-center mt-2">
+            <label class="text-muted">Total: <span id="span-caption-total">@Model.FacValorFactura.ToString("N")</span></label>
+        </div>
+    </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-12">
+        <button type="button" class="btn btn-block btn-success col-12 offset-sm-4 col-sm-4" onclick="createRequest('Edit', null, '@Url.Action("Edit", "Orders")');">Actualizar Orden/Factura</button>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/dist/facturas.js"></script>
+<script type="text/javascript">
+    function PreloadJSON(data) {
+        detail_json_array = JSON.parse(JSON.parse(data));
+        console.log(detail_json_array);
+    }
+
+    PreloadJSON(JSON.stringify('@Html.Raw(DetailData)'))
+</script>

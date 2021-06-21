@@ -1,0 +1,90 @@
+﻿@model List<rvFleet.Models.privilegio>
+@using rvFleet.ViewModels
+@{ 
+    bool HasChilds(string PrivilegeId)
+    {
+        if(Model.Where(x => x.PadrePrivilegio.Equals(PrivilegeId)).Count() > 0)
+        {
+            //Encontro nodos hijos entonces es padre;
+            return true;
+        }
+
+        return false;
+    }
+}
+
+<div class="side-navbar justify-content-between bg-dark active-nav" id="sidebar">
+    <ul class="nav flex-column text-white w-100">
+        @foreach (var item in Model)
+        {
+            string action = string.Empty, controller = string.Empty;
+            if (item.EstadoPrivilegio)
+            {
+                //Mostraremos el elemento solo si se encuentra activo
+                if (!HasChilds(item.IdPrivilegio) && item.NivelPrivilegio.Equals(1))
+                {
+                    //Obtener accion y controlador guardados en la base
+                    controller = item.URL.Split('/')[0];
+                    action = item.URL.Split('/')[1];
+                    //Si no tiene hijos entonces desplegamos un elemento de lista normal
+                    <li class="nav-item">
+                        <a class="bg-dark list-group-item list-group-item-action flex-column align-items-start text-white" href="@Url.Action(action, controller)">
+                            @if (!string.IsNullOrEmpty(item.Icono))
+                            {
+                                <i class="@item.Icono"></i>
+                            }
+                            <span class="ml-2">@item.NombrePrivilegio</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        @*Tiene hijos, pero hay que verificar si es una categoria o subcategoria*@
+                        @if (string.IsNullOrEmpty(item.PadrePrivilegio))
+                        {
+                            var childItems = Model.Where(x => x.PadrePrivilegio.Equals(item.IdPrivilegio)).ToList();
+                            //Si no tiene un padre entonces es una categoria
+                            <a data-toggle="collapse" data-target="#submenu_@item.IdPrivilegio" role="button" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start text-white">
+                                <span class="menu-collapsed">
+                                    @if (!string.IsNullOrEmpty(item.Icono))
+                                    {
+                                        <i class="@item.Icono"></i>
+                                    }
+                                    <span class="ml-2">@item.NombrePrivilegio</span>
+                                </span>
+                                <span class="submenu-icon ml-auto" style="font-size: 10px;"></span>
+                            </a>
+                            <div id='submenu_@item.IdPrivilegio' class="collapse">
+                                @foreach (var child in childItems)
+                                {
+                                    controller = child.URL.Split('/')[0];
+                                    action = child.URL.Split('/')[1];
+                                    <a href="@Url.Action(action, controller)" class="list-group-item list-group-item-action bg-dark text-white" style="background-color: #434b54 !important">
+                                        <span class="menu-collapsed">&nbsp; @child.NombrePrivilegio</span>
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </li>
+                }
+            }
+        }
+        <li class="nav-item d-block d-sm-none">
+            <a data-toggle="collapse" data-target="#submenu_profile" role="button" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start text-white">
+                <i class="fa fa-user"></i>
+                <span class="menu-collapsed">
+                    <span class="ml-2">@BaseViewModel.GetUserData().IdUsuario</span>
+                </span>
+                <span class="submenu-icon ml-auto" style="font-size: 10px;"></span>
+            </a>
+            <div class="collapse" id="submenu_profile">
+                <a class="list-group-item list-group-item-action bg-dark text-white" href="#" style="background-color: #434b54 !important ">Mi vehículo</a>
+                <a class="list-group-item list-group-item-action bg-dark text-white" href="@Url.Action("Logout", "Nav")" style="background-color: #434b54 !important ">
+                    Salir
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -32,5 +32,28 @@ namespace rvFleet.ViewModels
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
         }
+
+        public List<empresa> GetEmpresas()
+        {
+            try
+            {
+                List<empresa> empresas = new List<empresa>();
+
+                using (var context = new rvseguridadEntities1())
+                {
+                    empresas = context.empresa.ToList();
+                }
+
+                return empresas;
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
     }
 }

@@ -18,10 +18,10 @@ namespace rvFleet.ViewModels
             
             try
             {
-                string query = "SELECT IdPrivilegio, NombrePrivilegio, DescripcionPrivilegio, EstadoPrivilegio, NivelPrivilegio, IFNULL(PadrePrivilegio, ''), IFNULL(URL, ''), IFNULL(Parametros, ''), IFNULL(Icono, '') FROM privilegio WHERE IdPrivilegio IN( " +
-                    "SELECT DISTINCT IdPrivilegio FROM rolusuario a INNER JOIN rolprivilegio b " +
-                    "ON a.IdRol = b.IdRol " +
-                    "WHERE IdUsuario = 'w.sabillon')";
+                string query = $"SELECT IdPrivilegio, NombrePrivilegio, DescripcionPrivilegio, EstadoPrivilegio, NivelPrivilegio, IFNULL(PadrePrivilegio, ''), IFNULL(URL, ''), IFNULL(Parametros, ''), IFNULL(Icono, '') FROM privilegio WHERE IdPrivilegio IN( " +
+                    $"SELECT DISTINCT IdPrivilegio FROM rolusuario a INNER JOIN rolprivilegio b " +
+                    $"ON a.IdRol = b.IdRol " +
+                    $"WHERE IdUsuario = '{UserId}')";
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 conn.Open();
 

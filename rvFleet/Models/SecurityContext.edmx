@@ -315,20 +315,20 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="rvseguridadModelStoreContainer">
-          <EntitySet Name="departamento" EntityType="Self.departamento" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="departamentoposicion" EntityType="Self.departamentoposicion" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="empresa" EntityType="Self.empresa" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="gruporecurso" EntityType="Self.gruporecurso" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="opcionrecurso" EntityType="Self.opcionrecurso" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="posicion" EntityType="Self.posicion" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="privilegio" EntityType="Self.privilegio" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="privilegiopermiso" EntityType="Self.privilegiopermiso" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="rol" EntityType="Self.rol" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="rolprivilegio" EntityType="Self.rolprivilegio" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="rolusuario" EntityType="Self.rolusuario" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="ubicacion" EntityType="Self.ubicacion" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="rvseguridad" store:Type="Tables" />
-          <EntitySet Name="usuariodepartamentoposicion" EntityType="Self.usuariodepartamentoposicion" Schema="rvseguridad" store:Type="Tables" />
+          <EntitySet Name="departamento" EntityType="Self.departamento" Schema="" store:Type="Tables" />
+          <EntitySet Name="departamentoposicion" EntityType="Self.departamentoposicion" Schema="" store:Type="Tables" />
+          <EntitySet Name="empresa" EntityType="Self.empresa" Schema="" store:Type="Tables" />
+          <EntitySet Name="gruporecurso" EntityType="Self.gruporecurso" Schema="" store:Type="Tables" />
+          <EntitySet Name="opcionrecurso" EntityType="Self.opcionrecurso" Schema="" store:Type="Tables" />
+          <EntitySet Name="posicion" EntityType="Self.posicion" Schema="" store:Type="Tables" />
+          <EntitySet Name="privilegio" EntityType="Self.privilegio" Schema="" store:Type="Tables" />
+          <EntitySet Name="privilegiopermiso" EntityType="Self.privilegiopermiso" Schema="" store:Type="Tables" />
+          <EntitySet Name="rol" EntityType="Self.rol" Schema="" store:Type="Tables" />
+          <EntitySet Name="rolprivilegio" EntityType="Self.rolprivilegio" Schema="" store:Type="Tables" />
+          <EntitySet Name="rolusuario" EntityType="Self.rolusuario" Schema="" store:Type="Tables" />
+          <EntitySet Name="ubicacion" EntityType="Self.ubicacion" Schema="" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="" store:Type="Tables" />
+          <EntitySet Name="usuariodepartamentoposicion" EntityType="Self.usuariodepartamentoposicion" Schema="" store:Type="Tables" />
           <AssociationSet Name="FK__empresa" Association="Self.FK__empresa">
             <End Role="empresa" EntitySet="empresa" />
             <End Role="rol" EntitySet="rol" />

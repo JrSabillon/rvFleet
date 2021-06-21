@@ -1,5 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="rvfleetModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="archivofactura">
+    <Key>
+      <PropertyRef Name="FacArchivoCodigo" />
+      <PropertyRef Name="FacCodigoOrden" />
+    </Key>
+    <Property Name="FacArchivoCodigo" Type="int" Nullable="false" />
+    <Property Name="FacCodigoOrden" Type="int" Nullable="false" />
+    <Property Name="FacArchivoFechaSubida" Type="datetime" Precision="0" />
+    <Property Name="FacArchivoUsuario" Type="varchar" MaxLength="50" />
+    <Property Name="FacArchivoUrl" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="FacArchivoNombre" Type="varchar" MaxLength="250" />
+  </EntityType>
   <EntityType Name="conductorhistorico">
     <Key>
       <PropertyRef Name="ConPlaca" />
@@ -42,6 +54,7 @@
     <Property Name="FacCodigoUsuarioIngreso" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="FacFechaOrden" Type="datetime" Precision="0" />
     <Property Name="FacKilometraje" Type="varchar" MaxLength="50" />
+    <Property Name="FacUsuarioPago" Type="varchar" MaxLength="150" />
   </EntityType>
   <EntityType Name="kilometrajehistorico">
     <Key>
@@ -102,7 +115,6 @@
   <EntityType Name="vehiculos">
     <Key>
       <PropertyRef Name="VehCodigoVehiculo" />
-      <PropertyRef Name="VehPlaca" />
       <PropertyRef Name="VehCodigoAresSun" />
     </Key>
     <Property Name="VehCodigoVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -111,16 +123,97 @@
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="VehAno" Type="int" Nullable="false" />
-    <Property Name="VehColor" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="VehColor" Type="varchar" MaxLength="50" />
     <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
     <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+    <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
+    <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
+    <Property Name="VehFotoFrontal" Type="varchar" MaxLength="500" />
+    <Property Name="VehFotoLateralDerecha" Type="varchar" MaxLength="500" />
+    <Property Name="VehFotoLateralIzquierda" Type="varchar" MaxLength="500" />
+    <Property Name="VehFotoTrasera" Type="varchar" MaxLength="500" />
   </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'def.rvfleet.usuarios' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="CodigoRRHH" />
+      <PropertyRef Name="IdUsuario" />
+      <PropertyRef Name="Contrasena" />
+      <PropertyRef Name="Estado" />
+      <PropertyRef Name="FechaCreacion" />
+      <PropertyRef Name="NombreUsuario" />
+      <PropertyRef Name="IdUbicacion" />
+      <PropertyRef Name="IdentidadUsuario" />
+      <PropertyRef Name="FechaIngreso" />
+      <PropertyRef Name="IdEmpresa" />
+    </Key>
+    <Property Name="CodigoRRHH" Type="int" Nullable="false" />
+    <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Contrasena" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Estado" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="FechaCreacion" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="IdUbicacion" Type="int" Nullable="false" />
+    <Property Name="Jefe" Type="varchar" MaxLength="50" />
+    <Property Name="Correo" Type="varchar" MaxLength="100" />
+    <Property Name="IdentidadUsuario" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="FechaIngreso" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="vehiclefulldata">
+    <Key>
+      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="VehPlaca" />
+      <PropertyRef Name="VehVIN" />
+      <PropertyRef Name="VehMotor" />
+      <PropertyRef Name="VehCilindraje" />
+      <PropertyRef Name="VehAno" />
+      <PropertyRef Name="VehMarca" />
+      <PropertyRef Name="VehModelo" />
+      <PropertyRef Name="VehCodigoAresSun" />
+      <PropertyRef Name="VehFechaMatricula" />
+      <PropertyRef Name="NombreUsuario" />
+      <PropertyRef Name="NombreEmpresa" />
+    </Key>
+    <Property Name="VehCodigoVehiculo" Type="int" Nullable="false" />
+    <Property Name="VehPlaca" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VehVIN" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VehAno" Type="int" Nullable="false" />
+    <Property Name="VehColor" Type="varchar" MaxLength="50" />
+    <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="VehCodigoProveedor" Type="int" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+    <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
+    <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
+    <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="NombreEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__facturas">
+    <End Role="facturas" Type="Self.facturas" Multiplicity="1" />
+    <End Role="archivofactura" Type="Self.archivofactura" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="facturas">
+        <PropertyRef Name="FacCodigoOrden" />
+      </Principal>
+      <Dependent Role="archivofactura">
+        <PropertyRef Name="FacCodigoOrden" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__rubros">
     <End Role="rubros" Type="Self.rubros" Multiplicity="1" />
     <End Role="rubrodetalle" Type="Self.rubrodetalle" Multiplicity="*" />
@@ -157,7 +250,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_vehiculos_proveedor">
+    <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
+    <End Role="vehiculos" Type="Self.vehiculos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="proveedor">
+        <PropertyRef Name="ProCodigoProveedor" />
+      </Principal>
+      <Dependent Role="vehiculos">
+        <PropertyRef Name="VehCodigoProveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="rvfleetModelStoreContainer">
+    <EntitySet Name="archivofactura" EntityType="Self.archivofactura" Schema="" store:Type="Tables" />
     <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" Schema="" store:Type="Tables" />
     <EntitySet Name="detallefactura" EntityType="Self.detallefactura" Schema="" store:Type="Tables" />
     <EntitySet Name="facturas" EntityType="Self.facturas" Schema="" store:Type="Tables" />
@@ -168,6 +274,48 @@
     <EntitySet Name="sucursales" EntityType="Self.sucursales" Schema="" store:Type="Tables" />
     <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" Schema="" store:Type="Tables" />
     <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="" store:Type="Tables" />
+    <EntitySet Name="usuarios" EntityType="Self.usuarios" store:Type="Views" store:Schema="">
+      <DefiningQuery>SELECT
+`usuarios`.`CodigoRRHH`, 
+`usuarios`.`IdUsuario`, 
+`usuarios`.`Contrasena`, 
+`usuarios`.`Estado`, 
+`usuarios`.`FechaCreacion`, 
+`usuarios`.`NombreUsuario`, 
+`usuarios`.`IdUbicacion`, 
+`usuarios`.`Jefe`, 
+`usuarios`.`Correo`, 
+`usuarios`.`IdentidadUsuario`, 
+`usuarios`.`FechaIngreso`, 
+`usuarios`.`IdEmpresa`
+FROM `rvfleet.usuarios` AS `usuarios`</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
+      <DefiningQuery>SELECT
+`vehiclefulldata`.`VehCodigoVehiculo`, 
+`vehiclefulldata`.`VehPlaca`, 
+`vehiclefulldata`.`VehVIN`, 
+`vehiclefulldata`.`VehMotor`, 
+`vehiclefulldata`.`VehCilindraje`, 
+`vehiclefulldata`.`VehAno`, 
+`vehiclefulldata`.`VehColor`, 
+`vehiclefulldata`.`VehMarca`, 
+`vehiclefulldata`.`VehModelo`, 
+`vehiclefulldata`.`VehCodigoAresSun`, 
+`vehiclefulldata`.`VehCodigoProveedor`, 
+`vehiclefulldata`.`VehCodigoEmpresa`, 
+`vehiclefulldata`.`VehFechaMatricula`, 
+`vehiclefulldata`.`VehNumeroPoliza`, 
+`vehiclefulldata`.`VehUrlFotoRevision`, 
+`vehiclefulldata`.`VehCodigoUsuario`, 
+`vehiclefulldata`.`NombreUsuario`, 
+`vehiclefulldata`.`NombreEmpresa`
+FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__facturas" Association="Self.FK__facturas">
+      <End Role="facturas" EntitySet="facturas" />
+      <End Role="archivofactura" EntitySet="archivofactura" />
+    </AssociationSet>
     <AssociationSet Name="FK__rubros" Association="Self.FK__rubros">
       <End Role="rubros" EntitySet="rubros" />
       <End Role="rubrodetalle" EntitySet="rubrodetalle" />
@@ -179,6 +327,10 @@
     <AssociationSet Name="FK_facturas_proveedor" Association="Self.FK_facturas_proveedor">
       <End Role="proveedor" EntitySet="proveedor" />
       <End Role="facturas" EntitySet="facturas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_vehiculos_proveedor" Association="Self.FK_vehiculos_proveedor">
+      <End Role="proveedor" EntitySet="proveedor" />
+      <End Role="vehiculos" EntitySet="vehiculos" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

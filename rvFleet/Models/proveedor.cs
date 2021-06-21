@@ -18,6 +18,7 @@ namespace rvFleet.Models
         public proveedor()
         {
             this.facturas = new HashSet<facturas>();
+            this.vehiculos = new HashSet<vehiculos>();
         }
     
         public int ProCodigoProveedor { get; set; }
@@ -32,5 +33,7 @@ namespace rvFleet.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<facturas> facturas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<vehiculos> vehiculos { get; set; }
     }
 }

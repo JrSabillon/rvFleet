@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d5365d9c20054df894089d0bd496c8ba" Name="Diagram1">
+        <EntityTypeShape EntityType="rvseguridadModel.empresa" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rvseguridadModel.posicion" Width="1.5" PointX="6" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="rvseguridadModel.privilegio" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rvseguridadModel.rol" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="rvseguridadModel.usuario" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
+        <AssociationConnector Association="rvseguridadModel.FK__empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="rvseguridadModel.FK_usuario_empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="rvseguridadModel.rolprivilegio" ManuallyRouted="false" />
+        <AssociationConnector Association="rvseguridadModel.rolusuario" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="rvseguridadModel.departamento" Width="1.5" PointX="3" PointY="6.875" />
+        <EntityTypeShape EntityType="rvseguridadModel.gruporecurso" Width="1.5" PointX="8.375" PointY="9" />
+        <EntityTypeShape EntityType="rvseguridadModel.opcionrecurso" Width="1.5" PointX="10.625" PointY="8.875" />
+        <EntityTypeShape EntityType="rvseguridadModel.ubicacion" Width="1.5" PointX="6" PointY="8.125" />
+        <AssociationConnector Association="rvseguridadModel.FK_departamento_empresa" />
+        <AssociationConnector Association="rvseguridadModel.FK_opcionrecurso_gruporecurso" />
+        <AssociationConnector Association="rvseguridadModel.FK_usuario_ubicacion" />
+        <AssociationConnector Association="rvseguridadModel.departamentoposicion" />
+        <EntityTypeShape EntityType="rvseguridadModel.privilegiopermiso" Width="1.5" PointX="7.5" PointY="12.5" />
+        <EntityTypeShape EntityType="rvseguridadModel.usuariodepartamentoposicion" Width="1.5" PointX="10.5" PointY="4" />
+        <AssociationConnector Association="rvseguridadModel.FK_usuariodepartamentoposicion_departamento" />
+        <AssociationConnector Association="rvseguridadModel.FK_usuariodepartamentoposicion_posicion" />
+        <AssociationConnector Association="rvseguridadModel.FK__privilegio" />
+        <AssociationConnector Association="rvseguridadModel.FK_usuariodepartamentoposicion_usuario" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

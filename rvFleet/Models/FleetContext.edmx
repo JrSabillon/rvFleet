@@ -4,7 +4,19 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="rvfleetModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="rvfleetModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="archivofactura">
+          <Key>
+            <PropertyRef Name="FacArchivoCodigo" />
+            <PropertyRef Name="FacCodigoOrden" />
+          </Key>
+          <Property Name="FacArchivoCodigo" Type="int" Nullable="false" />
+          <Property Name="FacCodigoOrden" Type="int" Nullable="false" />
+          <Property Name="FacArchivoFechaSubida" Type="datetime" Precision="0" />
+          <Property Name="FacArchivoUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="FacArchivoUrl" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="FacArchivoNombre" Type="varchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="conductorhistorico">
           <Key>
             <PropertyRef Name="ConPlaca" />
@@ -47,6 +59,7 @@
           <Property Name="FacCodigoUsuarioIngreso" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="FacFechaOrden" Type="datetime" Precision="0" />
           <Property Name="FacKilometraje" Type="varchar" MaxLength="50" />
+          <Property Name="FacUsuarioPago" Type="varchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="kilometrajehistorico">
           <Key>
@@ -107,7 +120,6 @@
         <EntityType Name="vehiculos">
           <Key>
             <PropertyRef Name="VehCodigoVehiculo" />
-            <PropertyRef Name="VehPlaca" />
             <PropertyRef Name="VehCodigoAresSun" />
           </Key>
           <Property Name="VehCodigoVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -116,16 +128,97 @@
           <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="VehAno" Type="int" Nullable="false" />
-          <Property Name="VehColor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VehColor" Type="varchar" MaxLength="50" />
           <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="VehCodigoProveedor" Type="int" />
-          <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
           <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-          <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+          <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
+          <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="VehFotoFrontal" Type="varchar" MaxLength="500" />
+          <Property Name="VehFotoLateralDerecha" Type="varchar" MaxLength="500" />
+          <Property Name="VehFotoLateralIzquierda" Type="varchar" MaxLength="500" />
+          <Property Name="VehFotoTrasera" Type="varchar" MaxLength="500" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'def.rvfleet.usuarios' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="CodigoRRHH" />
+            <PropertyRef Name="IdUsuario" />
+            <PropertyRef Name="Contrasena" />
+            <PropertyRef Name="Estado" />
+            <PropertyRef Name="FechaCreacion" />
+            <PropertyRef Name="NombreUsuario" />
+            <PropertyRef Name="IdUbicacion" />
+            <PropertyRef Name="IdentidadUsuario" />
+            <PropertyRef Name="FechaIngreso" />
+            <PropertyRef Name="IdEmpresa" />
+          </Key>
+          <Property Name="CodigoRRHH" Type="int" Nullable="false" />
+          <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="FechaCreacion" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="IdUbicacion" Type="int" Nullable="false" />
+          <Property Name="Jefe" Type="varchar" MaxLength="50" />
+          <Property Name="Correo" Type="varchar" MaxLength="100" />
+          <Property Name="IdentidadUsuario" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaIngreso" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="vehiclefulldata">
+          <Key>
+            <PropertyRef Name="VehCodigoVehiculo" />
+            <PropertyRef Name="VehPlaca" />
+            <PropertyRef Name="VehVIN" />
+            <PropertyRef Name="VehMotor" />
+            <PropertyRef Name="VehCilindraje" />
+            <PropertyRef Name="VehAno" />
+            <PropertyRef Name="VehMarca" />
+            <PropertyRef Name="VehModelo" />
+            <PropertyRef Name="VehCodigoAresSun" />
+            <PropertyRef Name="VehFechaMatricula" />
+            <PropertyRef Name="NombreUsuario" />
+            <PropertyRef Name="NombreEmpresa" />
+          </Key>
+          <Property Name="VehCodigoVehiculo" Type="int" Nullable="false" />
+          <Property Name="VehPlaca" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="VehVIN" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="VehAno" Type="int" Nullable="false" />
+          <Property Name="VehColor" Type="varchar" MaxLength="50" />
+          <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VehCodigoProveedor" Type="int" />
+          <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+          <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
+          <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+          <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
+          <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="NombreEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__facturas">
+          <End Role="facturas" Type="Self.facturas" Multiplicity="1" />
+          <End Role="archivofactura" Type="Self.archivofactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facturas">
+              <PropertyRef Name="FacCodigoOrden" />
+            </Principal>
+            <Dependent Role="archivofactura">
+              <PropertyRef Name="FacCodigoOrden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__rubros">
           <End Role="rubros" Type="Self.rubros" Multiplicity="1" />
           <End Role="rubrodetalle" Type="Self.rubrodetalle" Multiplicity="*" />
@@ -162,7 +255,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_vehiculos_proveedor">
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
+          <End Role="vehiculos" Type="Self.vehiculos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proveedor">
+              <PropertyRef Name="ProCodigoProveedor" />
+            </Principal>
+            <Dependent Role="vehiculos">
+              <PropertyRef Name="VehCodigoProveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="rvfleetModelStoreContainer">
+          <EntitySet Name="archivofactura" EntityType="Self.archivofactura" Schema="" store:Type="Tables" />
           <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" Schema="" store:Type="Tables" />
           <EntitySet Name="detallefactura" EntityType="Self.detallefactura" Schema="" store:Type="Tables" />
           <EntitySet Name="facturas" EntityType="Self.facturas" Schema="" store:Type="Tables" />
@@ -173,6 +279,48 @@
           <EntitySet Name="sucursales" EntityType="Self.sucursales" Schema="" store:Type="Tables" />
           <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" Schema="" store:Type="Tables" />
           <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="" store:Type="Tables" />
+          <EntitySet Name="usuarios" EntityType="Self.usuarios" store:Type="Views" store:Schema="">
+            <DefiningQuery>SELECT
+`usuarios`.`CodigoRRHH`, 
+`usuarios`.`IdUsuario`, 
+`usuarios`.`Contrasena`, 
+`usuarios`.`Estado`, 
+`usuarios`.`FechaCreacion`, 
+`usuarios`.`NombreUsuario`, 
+`usuarios`.`IdUbicacion`, 
+`usuarios`.`Jefe`, 
+`usuarios`.`Correo`, 
+`usuarios`.`IdentidadUsuario`, 
+`usuarios`.`FechaIngreso`, 
+`usuarios`.`IdEmpresa`
+FROM `rvfleet.usuarios` AS `usuarios`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
+            <DefiningQuery>SELECT
+`vehiclefulldata`.`VehCodigoVehiculo`, 
+`vehiclefulldata`.`VehPlaca`, 
+`vehiclefulldata`.`VehVIN`, 
+`vehiclefulldata`.`VehMotor`, 
+`vehiclefulldata`.`VehCilindraje`, 
+`vehiclefulldata`.`VehAno`, 
+`vehiclefulldata`.`VehColor`, 
+`vehiclefulldata`.`VehMarca`, 
+`vehiclefulldata`.`VehModelo`, 
+`vehiclefulldata`.`VehCodigoAresSun`, 
+`vehiclefulldata`.`VehCodigoProveedor`, 
+`vehiclefulldata`.`VehCodigoEmpresa`, 
+`vehiclefulldata`.`VehFechaMatricula`, 
+`vehiclefulldata`.`VehNumeroPoliza`, 
+`vehiclefulldata`.`VehUrlFotoRevision`, 
+`vehiclefulldata`.`VehCodigoUsuario`, 
+`vehiclefulldata`.`NombreUsuario`, 
+`vehiclefulldata`.`NombreEmpresa`
+FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__facturas" Association="Self.FK__facturas">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="archivofactura" EntitySet="archivofactura" />
+          </AssociationSet>
           <AssociationSet Name="FK__rubros" Association="Self.FK__rubros">
             <End Role="rubros" EntitySet="rubros" />
             <End Role="rubrodetalle" EntitySet="rubrodetalle" />
@@ -185,19 +333,70 @@
             <End Role="proveedor" EntitySet="proveedor" />
             <End Role="facturas" EntitySet="facturas" />
           </AssociationSet>
+          <AssociationSet Name="FK_vehiculos_proveedor" Association="Self.FK_vehiculos_proveedor">
+            <End Role="proveedor" EntitySet="proveedor" />
+            <End Role="vehiculos" EntitySet="vehiculos" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="rvfleetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="rvfleetEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="archivofactura" EntityType="rvfleetModel.archivofactura" />
+          <EntitySet Name="conductorhistorico" EntityType="rvfleetModel.conductorhistorico" />
+          <EntitySet Name="detallefactura" EntityType="rvfleetModel.detallefactura" />
+          <EntitySet Name="facturas" EntityType="rvfleetModel.facturas" />
+          <EntitySet Name="kilometrajehistorico" EntityType="rvfleetModel.kilometrajehistorico" />
+          <EntitySet Name="proveedor" EntityType="rvfleetModel.proveedor" />
+          <EntitySet Name="rubrodetalle" EntityType="rvfleetModel.rubrodetalle" />
+          <EntitySet Name="rubros" EntityType="rvfleetModel.rubros" />
+          <EntitySet Name="sucursales" EntityType="rvfleetModel.sucursales" />
+          <EntitySet Name="ubicacionhistorica" EntityType="rvfleetModel.ubicacionhistorica" />
+          <EntitySet Name="vehiculos" EntityType="rvfleetModel.vehiculos" />
+          <EntitySet Name="usuarios" EntityType="rvfleetModel.usuarios" />
+          <EntitySet Name="vehiclefulldata" EntityType="rvfleetModel.vehiclefulldata" />
+          <AssociationSet Name="FK__facturas" Association="rvfleetModel.FK__facturas">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="archivofactura" EntitySet="archivofactura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detallefactura_facturas" Association="rvfleetModel.FK_detallefactura_facturas">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="detallefactura" EntitySet="detallefactura" />
+          </AssociationSet>
+          <AssociationSet Name="FK_facturas_proveedor" Association="rvfleetModel.FK_facturas_proveedor">
+            <End Role="proveedor" EntitySet="proveedor" />
+            <End Role="facturas" EntitySet="facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vehiculos_proveedor" Association="rvfleetModel.FK_vehiculos_proveedor">
+            <End Role="proveedor" EntitySet="proveedor" />
+            <End Role="vehiculos" EntitySet="vehiculos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__rubros" Association="rvfleetModel.FK__rubros">
+            <End Role="rubros" EntitySet="rubros" />
+            <End Role="rubrodetalle" EntitySet="rubrodetalle" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="archivofactura">
+          <Key>
+            <PropertyRef Name="FacArchivoCodigo" />
+            <PropertyRef Name="FacCodigoOrden" />
+          </Key>
+          <Property Name="FacArchivoCodigo" Type="Int32" Nullable="false" />
+          <Property Name="FacCodigoOrden" Type="Int32" Nullable="false" />
+          <Property Name="FacArchivoFechaSubida" Type="DateTime" />
+          <Property Name="FacArchivoUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FacArchivoUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FacArchivoNombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK__facturas" FromRole="archivofactura" ToRole="facturas" />
+        </EntityType>
         <EntityType Name="conductorhistorico">
           <Key>
             <PropertyRef Name="ConPlaca" />
             <PropertyRef Name="ConCodigoCarro" />
             <PropertyRef Name="ConFechaAsignado" />
           </Key>
-          <Property Name="ConPlaca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="ConCodigoCarro" Type="Int32" Nullable="false" />
           <Property Name="ConFechaAsignado" Type="DateTime" Nullable="false" />
           <Property Name="ConKilometrajeAsignacion" Type="Int32" Nullable="false" />
@@ -213,9 +412,9 @@
           <Property Name="DetDescripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DetValor" Type="Double" Nullable="false" />
           <Property Name="DetCantidad" Type="Int32" Nullable="false" />
-          <Property Name="DetPlacaVehiculo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="DetCodigoRubro" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="facturas" Relationship="Self.FK_detallefactura_facturas" FromRole="detallefactura" ToRole="facturas" />
+          <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK_detallefactura_facturas" FromRole="detallefactura" ToRole="facturas" />
         </EntityType>
         <EntityType Name="facturas">
           <Key>
@@ -231,11 +430,13 @@
           <Property Name="FacFechaEntregaAdmin" Type="DateTime" />
           <Property Name="FacUrlFoto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="FacPagado" Type="Boolean" Nullable="false" />
-          <Property Name="FacCodigoUsuarioIngreso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FacCodigoUsuarioIngreso" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FacFechaOrden" Type="DateTime" />
           <Property Name="FacKilometraje" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="detallefactura" Relationship="Self.FK_detallefactura_facturas" FromRole="facturas" ToRole="detallefactura" />
-          <NavigationProperty Name="proveedor" Relationship="Self.FK_facturas_proveedor" FromRole="facturas" ToRole="proveedor" />
+          <Property Name="FacUsuarioPago" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="archivofactura" Relationship="rvfleetModel.FK__facturas" FromRole="facturas" ToRole="archivofactura" />
+          <NavigationProperty Name="detallefactura" Relationship="rvfleetModel.FK_detallefactura_facturas" FromRole="facturas" ToRole="detallefactura" />
+          <NavigationProperty Name="proveedor" Relationship="rvfleetModel.FK_facturas_proveedor" FromRole="facturas" ToRole="proveedor" />
         </EntityType>
         <EntityType Name="kilometrajehistorico">
           <Key>
@@ -245,22 +446,23 @@
           <Property Name="KilCodigoVehiculo" Type="Int32" Nullable="false" />
           <Property Name="KilFechaIngreso" Type="DateTime" Nullable="false" />
           <Property Name="KilKilometraje" Type="Int32" Nullable="false" />
-          <Property Name="KilComentario" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="KilComentario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="proveedor">
           <Key>
             <PropertyRef Name="ProCodigoProveedor" />
           </Key>
           <Property Name="ProCodigoProveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProNombre" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProNumeroContacto" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProNombreContacto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProNombre" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ProNumeroContacto" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProNombreContacto" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="ProRTN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="ProUbicacion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="ProCuentaBancaria" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProNombreBanco" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProCuentaBancaria" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ProNombreBanco" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="ProTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="facturas" Relationship="Self.FK_facturas_proveedor" FromRole="proveedor" ToRole="facturas" />
+          <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK_facturas_proveedor" FromRole="proveedor" ToRole="facturas" />
+          <NavigationProperty Name="vehiculos" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="proveedor" ToRole="vehiculos" />
         </EntityType>
         <EntityType Name="rubrodetalle">
           <Key>
@@ -269,7 +471,7 @@
           <Property Name="CodigoRubro" Type="Int32" Nullable="false" />
           <Property Name="CodigoDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NombreDetalle" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="rubros" Relationship="Self.FK__rubros" FromRole="rubrodetalle" ToRole="rubros" />
+          <NavigationProperty Name="rubros" Relationship="rvfleetModel.FK__rubros" FromRole="rubrodetalle" ToRole="rubros" />
         </EntityType>
         <EntityType Name="rubros">
           <Key>
@@ -277,7 +479,7 @@
           </Key>
           <Property Name="CodigoRubro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NombreRubro" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="rubrodetalle" Relationship="Self.FK__rubros" FromRole="rubros" ToRole="rubrodetalle" />
+          <NavigationProperty Name="rubrodetalle" Relationship="rvfleetModel.FK__rubros" FromRole="rubros" ToRole="rubrodetalle" />
         </EntityType>
         <EntityType Name="sucursales">
           <Key>
@@ -292,35 +494,112 @@
             <PropertyRef Name="UbiPlaca" />
           </Key>
           <Property Name="UbiCodigoAuto" Type="Int32" Nullable="false" />
-          <Property Name="UbiPlaca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UbiPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="UbiCodigoSucursal" Type="Int32" Nullable="false" />
           <Property Name="UbiFechaCambio" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="vehiculos">
           <Key>
             <PropertyRef Name="VehCodigoVehiculo" />
-            <PropertyRef Name="VehPlaca" />
             <PropertyRef Name="VehCodigoAresSun" />
           </Key>
           <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="VehPlaca" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehVIN" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehMotor" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehCilindraje" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VehPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="VehVIN" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VehMotor" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VehCilindraje" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="VehAno" Type="Int32" Nullable="false" />
-          <Property Name="VehColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehMarca" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehModelo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehCodigoAresSun" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VehColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehMarca" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="VehModelo" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="VehCodigoAresSun" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="VehCodigoProveedor" Type="Int32" />
-          <Property Name="VehCodigoEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VehCodigoEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="VehFechaMatricula" Type="DateTime" Nullable="false" />
-          <Property Name="VehNumeroPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="VehUrlFotoRevision" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VehNumeroPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehUrlFotoRevision" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehCodigoUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehFotoFrontal" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehFotoLateralDerecha" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehFotoLateralIzquierda" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehFotoTrasera" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="proveedor" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="vehiculos" ToRole="proveedor" />
         </EntityType>
+        <EntityType Name="usuarios">
+          <Key>
+            <PropertyRef Name="CodigoRRHH" />
+            <PropertyRef Name="IdUsuario" />
+            <PropertyRef Name="Contrasena" />
+            <PropertyRef Name="Estado" />
+            <PropertyRef Name="FechaCreacion" />
+            <PropertyRef Name="NombreUsuario" />
+            <PropertyRef Name="IdUbicacion" />
+            <PropertyRef Name="IdentidadUsuario" />
+            <PropertyRef Name="FechaIngreso" />
+            <PropertyRef Name="IdEmpresa" />
+          </Key>
+          <Property Name="CodigoRRHH" Type="Int32" Nullable="false" />
+          <Property Name="IdUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Contrasena" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
+          <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IdUbicacion" Type="Int32" Nullable="false" />
+          <Property Name="Jefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IdentidadUsuario" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
+          <Property Name="IdEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vehiclefulldata">
+          <Key>
+            <PropertyRef Name="VehCodigoVehiculo" />
+            <PropertyRef Name="VehPlaca" />
+            <PropertyRef Name="VehVIN" />
+            <PropertyRef Name="VehMotor" />
+            <PropertyRef Name="VehCilindraje" />
+            <PropertyRef Name="VehAno" />
+            <PropertyRef Name="VehMarca" />
+            <PropertyRef Name="VehModelo" />
+            <PropertyRef Name="VehCodigoAresSun" />
+            <PropertyRef Name="VehFechaMatricula" />
+            <PropertyRef Name="NombreUsuario" />
+            <PropertyRef Name="NombreEmpresa" />
+          </Key>
+          <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" />
+          <Property Name="VehPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="VehVIN" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VehMotor" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VehCilindraje" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="VehAno" Type="Int32" Nullable="false" />
+          <Property Name="VehColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehMarca" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="VehModelo" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="VehCodigoAresSun" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehCodigoProveedor" Type="Int32" />
+          <Property Name="VehCodigoEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="VehFechaMatricula" Type="DateTime" Nullable="false" />
+          <Property Name="VehNumeroPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehUrlFotoRevision" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehCodigoUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="NombreEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__facturas">
+          <End Type="rvfleetModel.facturas" Role="facturas" Multiplicity="1" />
+          <End Type="rvfleetModel.archivofactura" Role="archivofactura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facturas">
+              <PropertyRef Name="FacCodigoOrden" />
+            </Principal>
+            <Dependent Role="archivofactura">
+              <PropertyRef Name="FacCodigoOrden" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_detallefactura_facturas">
-          <End Role="facturas" Type="Self.facturas" Multiplicity="1" />
-          <End Role="detallefactura" Type="Self.detallefactura" Multiplicity="*" />
+          <End Type="rvfleetModel.facturas" Role="facturas" Multiplicity="1" />
+          <End Type="rvfleetModel.detallefactura" Role="detallefactura" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="facturas">
               <PropertyRef Name="FacCodigoOrden" />
@@ -331,8 +610,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_facturas_proveedor">
-          <End Role="proveedor" Type="Self.proveedor" Multiplicity="1" />
-          <End Role="facturas" Type="Self.facturas" Multiplicity="*" />
+          <End Type="rvfleetModel.proveedor" Role="proveedor" Multiplicity="1" />
+          <End Type="rvfleetModel.facturas" Role="facturas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="proveedor">
               <PropertyRef Name="ProCodigoProveedor" />
@@ -342,9 +621,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_vehiculos_proveedor">
+          <End Type="rvfleetModel.proveedor" Role="proveedor" Multiplicity="0..1" />
+          <End Type="rvfleetModel.vehiculos" Role="vehiculos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proveedor">
+              <PropertyRef Name="ProCodigoProveedor" />
+            </Principal>
+            <Dependent Role="vehiculos">
+              <PropertyRef Name="VehCodigoProveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__rubros">
-          <End Role="rubros" Type="Self.rubros" Multiplicity="1" />
-          <End Role="rubrodetalle" Type="Self.rubrodetalle" Multiplicity="*" />
+          <End Type="rvfleetModel.rubros" Role="rubros" Multiplicity="1" />
+          <End Type="rvfleetModel.rubrodetalle" Role="rubrodetalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="rubros">
               <PropertyRef Name="CodigoRubro" />
@@ -354,157 +645,193 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="rvfleetEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" />
-          <EntitySet Name="detallefactura" EntityType="Self.detallefactura" />
-          <EntitySet Name="facturas" EntityType="Self.facturas" />
-          <EntitySet Name="kilometrajehistorico" EntityType="Self.kilometrajehistorico" />
-          <EntitySet Name="proveedor" EntityType="Self.proveedor" />
-          <EntitySet Name="rubrodetalle" EntityType="Self.rubrodetalle" />
-          <EntitySet Name="rubros" EntityType="Self.rubros" />
-          <EntitySet Name="sucursales" EntityType="Self.sucursales" />
-          <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" />
-          <EntitySet Name="vehiculos" EntityType="Self.vehiculos" />
-          <AssociationSet Name="FK_detallefactura_facturas" Association="Self.FK_detallefactura_facturas">
-            <End Role="facturas" EntitySet="facturas" />
-            <End Role="detallefactura" EntitySet="detallefactura" />
-          </AssociationSet>
-          <AssociationSet Name="FK_facturas_proveedor" Association="Self.FK_facturas_proveedor">
-            <End Role="proveedor" EntitySet="proveedor" />
-            <End Role="facturas" EntitySet="facturas" />
-          </AssociationSet>
-          <AssociationSet Name="FK__rubros" Association="Self.FK__rubros">
-            <End Role="rubros" EntitySet="rubros" />
-            <End Role="rubrodetalle" EntitySet="rubrodetalle" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="rvfleetModelStoreContainer" CdmEntityContainer="rvfleetEntities">
+          <EntitySetMapping Name="archivofactura">
+            <EntityTypeMapping TypeName="rvfleetModel.archivofactura">
+              <MappingFragment StoreEntitySet="archivofactura">
+                <ScalarProperty Name="FacArchivoNombre" ColumnName="FacArchivoNombre" />
+                <ScalarProperty Name="FacArchivoUrl" ColumnName="FacArchivoUrl" />
+                <ScalarProperty Name="FacArchivoUsuario" ColumnName="FacArchivoUsuario" />
+                <ScalarProperty Name="FacArchivoFechaSubida" ColumnName="FacArchivoFechaSubida" />
+                <ScalarProperty Name="FacCodigoOrden" ColumnName="FacCodigoOrden" />
+                <ScalarProperty Name="FacArchivoCodigo" ColumnName="FacArchivoCodigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="conductorhistorico">
             <EntityTypeMapping TypeName="rvfleetModel.conductorhistorico">
               <MappingFragment StoreEntitySet="conductorhistorico">
-                <ScalarProperty Name="ConPlaca" ColumnName="ConPlaca" />
-                <ScalarProperty Name="ConCodigoCarro" ColumnName="ConCodigoCarro" />
-                <ScalarProperty Name="ConFechaAsignado" ColumnName="ConFechaAsignado" />
-                <ScalarProperty Name="ConKilometrajeAsignacion" ColumnName="ConKilometrajeAsignacion" />
                 <ScalarProperty Name="ConCodigoConductor" ColumnName="ConCodigoConductor" />
+                <ScalarProperty Name="ConKilometrajeAsignacion" ColumnName="ConKilometrajeAsignacion" />
+                <ScalarProperty Name="ConFechaAsignado" ColumnName="ConFechaAsignado" />
+                <ScalarProperty Name="ConCodigoCarro" ColumnName="ConCodigoCarro" />
+                <ScalarProperty Name="ConPlaca" ColumnName="ConPlaca" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="detallefactura">
             <EntityTypeMapping TypeName="rvfleetModel.detallefactura">
               <MappingFragment StoreEntitySet="detallefactura">
-                <ScalarProperty Name="DetCodigoDetalle" ColumnName="DetCodigoDetalle" />
-                <ScalarProperty Name="DetCodigoOrden" ColumnName="DetCodigoOrden" />
-                <ScalarProperty Name="DetDescripcion" ColumnName="DetDescripcion" />
-                <ScalarProperty Name="DetValor" ColumnName="DetValor" />
-                <ScalarProperty Name="DetCantidad" ColumnName="DetCantidad" />
-                <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
                 <ScalarProperty Name="DetCodigoRubro" ColumnName="DetCodigoRubro" />
+                <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
+                <ScalarProperty Name="DetCantidad" ColumnName="DetCantidad" />
+                <ScalarProperty Name="DetValor" ColumnName="DetValor" />
+                <ScalarProperty Name="DetDescripcion" ColumnName="DetDescripcion" />
+                <ScalarProperty Name="DetCodigoOrden" ColumnName="DetCodigoOrden" />
+                <ScalarProperty Name="DetCodigoDetalle" ColumnName="DetCodigoDetalle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="facturas">
             <EntityTypeMapping TypeName="rvfleetModel.facturas">
               <MappingFragment StoreEntitySet="facturas">
-                <ScalarProperty Name="FacCodigoOrden" ColumnName="FacCodigoOrden" />
-                <ScalarProperty Name="FacFechaFactura" ColumnName="FacFechaFactura" />
-                <ScalarProperty Name="FacCodigoProveedor" ColumnName="FacCodigoProveedor" />
-                <ScalarProperty Name="FacNumeroFactura" ColumnName="FacNumeroFactura" />
-                <ScalarProperty Name="FacCodigoDetalleFactura" ColumnName="FacCodigoDetalleFactura" />
-                <ScalarProperty Name="FacValorFactura" ColumnName="FacValorFactura" />
-                <ScalarProperty Name="FacComentario" ColumnName="FacComentario" />
-                <ScalarProperty Name="FacFechaEntregaAdmin" ColumnName="FacFechaEntregaAdmin" />
-                <ScalarProperty Name="FacUrlFoto" ColumnName="FacUrlFoto" />
-                <ScalarProperty Name="FacPagado" ColumnName="FacPagado" />
-                <ScalarProperty Name="FacCodigoUsuarioIngreso" ColumnName="FacCodigoUsuarioIngreso" />
-                <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
+                <ScalarProperty Name="FacUsuarioPago" ColumnName="FacUsuarioPago" />
                 <ScalarProperty Name="FacKilometraje" ColumnName="FacKilometraje" />
+                <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
+                <ScalarProperty Name="FacCodigoUsuarioIngreso" ColumnName="FacCodigoUsuarioIngreso" />
+                <ScalarProperty Name="FacPagado" ColumnName="FacPagado" />
+                <ScalarProperty Name="FacUrlFoto" ColumnName="FacUrlFoto" />
+                <ScalarProperty Name="FacFechaEntregaAdmin" ColumnName="FacFechaEntregaAdmin" />
+                <ScalarProperty Name="FacComentario" ColumnName="FacComentario" />
+                <ScalarProperty Name="FacValorFactura" ColumnName="FacValorFactura" />
+                <ScalarProperty Name="FacCodigoDetalleFactura" ColumnName="FacCodigoDetalleFactura" />
+                <ScalarProperty Name="FacNumeroFactura" ColumnName="FacNumeroFactura" />
+                <ScalarProperty Name="FacCodigoProveedor" ColumnName="FacCodigoProveedor" />
+                <ScalarProperty Name="FacFechaFactura" ColumnName="FacFechaFactura" />
+                <ScalarProperty Name="FacCodigoOrden" ColumnName="FacCodigoOrden" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="kilometrajehistorico">
             <EntityTypeMapping TypeName="rvfleetModel.kilometrajehistorico">
               <MappingFragment StoreEntitySet="kilometrajehistorico">
-                <ScalarProperty Name="KilCodigoVehiculo" ColumnName="KilCodigoVehiculo" />
-                <ScalarProperty Name="KilFechaIngreso" ColumnName="KilFechaIngreso" />
-                <ScalarProperty Name="KilKilometraje" ColumnName="KilKilometraje" />
                 <ScalarProperty Name="KilComentario" ColumnName="KilComentario" />
+                <ScalarProperty Name="KilKilometraje" ColumnName="KilKilometraje" />
+                <ScalarProperty Name="KilFechaIngreso" ColumnName="KilFechaIngreso" />
+                <ScalarProperty Name="KilCodigoVehiculo" ColumnName="KilCodigoVehiculo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="proveedor">
             <EntityTypeMapping TypeName="rvfleetModel.proveedor">
               <MappingFragment StoreEntitySet="proveedor">
-                <ScalarProperty Name="ProCodigoProveedor" ColumnName="ProCodigoProveedor" />
-                <ScalarProperty Name="ProNombre" ColumnName="ProNombre" />
-                <ScalarProperty Name="ProNumeroContacto" ColumnName="ProNumeroContacto" />
-                <ScalarProperty Name="ProNombreContacto" ColumnName="ProNombreContacto" />
-                <ScalarProperty Name="ProRTN" ColumnName="ProRTN" />
-                <ScalarProperty Name="ProUbicacion" ColumnName="ProUbicacion" />
-                <ScalarProperty Name="ProCuentaBancaria" ColumnName="ProCuentaBancaria" />
-                <ScalarProperty Name="ProNombreBanco" ColumnName="ProNombreBanco" />
                 <ScalarProperty Name="ProTipo" ColumnName="ProTipo" />
+                <ScalarProperty Name="ProNombreBanco" ColumnName="ProNombreBanco" />
+                <ScalarProperty Name="ProCuentaBancaria" ColumnName="ProCuentaBancaria" />
+                <ScalarProperty Name="ProUbicacion" ColumnName="ProUbicacion" />
+                <ScalarProperty Name="ProRTN" ColumnName="ProRTN" />
+                <ScalarProperty Name="ProNombreContacto" ColumnName="ProNombreContacto" />
+                <ScalarProperty Name="ProNumeroContacto" ColumnName="ProNumeroContacto" />
+                <ScalarProperty Name="ProNombre" ColumnName="ProNombre" />
+                <ScalarProperty Name="ProCodigoProveedor" ColumnName="ProCodigoProveedor" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="rubrodetalle">
             <EntityTypeMapping TypeName="rvfleetModel.rubrodetalle">
               <MappingFragment StoreEntitySet="rubrodetalle">
-                <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
-                <ScalarProperty Name="CodigoDetalle" ColumnName="CodigoDetalle" />
                 <ScalarProperty Name="NombreDetalle" ColumnName="NombreDetalle" />
+                <ScalarProperty Name="CodigoDetalle" ColumnName="CodigoDetalle" />
+                <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="rubros">
             <EntityTypeMapping TypeName="rvfleetModel.rubros">
               <MappingFragment StoreEntitySet="rubros">
-                <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
                 <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+                <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sucursales">
             <EntityTypeMapping TypeName="rvfleetModel.sucursales">
               <MappingFragment StoreEntitySet="sucursales">
-                <ScalarProperty Name="SucCodigoSucursal" ColumnName="SucCodigoSucursal" />
                 <ScalarProperty Name="SucNombreSucursal" ColumnName="SucNombreSucursal" />
+                <ScalarProperty Name="SucCodigoSucursal" ColumnName="SucCodigoSucursal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ubicacionhistorica">
             <EntityTypeMapping TypeName="rvfleetModel.ubicacionhistorica">
               <MappingFragment StoreEntitySet="ubicacionhistorica">
-                <ScalarProperty Name="UbiCodigoAuto" ColumnName="UbiCodigoAuto" />
-                <ScalarProperty Name="UbiPlaca" ColumnName="UbiPlaca" />
-                <ScalarProperty Name="UbiCodigoSucursal" ColumnName="UbiCodigoSucursal" />
                 <ScalarProperty Name="UbiFechaCambio" ColumnName="UbiFechaCambio" />
+                <ScalarProperty Name="UbiCodigoSucursal" ColumnName="UbiCodigoSucursal" />
+                <ScalarProperty Name="UbiPlaca" ColumnName="UbiPlaca" />
+                <ScalarProperty Name="UbiCodigoAuto" ColumnName="UbiCodigoAuto" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="vehiculos">
             <EntityTypeMapping TypeName="rvfleetModel.vehiculos">
               <MappingFragment StoreEntitySet="vehiculos">
-                <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
-                <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
-                <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
-                <ScalarProperty Name="VehMotor" ColumnName="VehMotor" />
-                <ScalarProperty Name="VehCilindraje" ColumnName="VehCilindraje" />
-                <ScalarProperty Name="VehAno" ColumnName="VehAno" />
-                <ScalarProperty Name="VehColor" ColumnName="VehColor" />
-                <ScalarProperty Name="VehMarca" ColumnName="VehMarca" />
-                <ScalarProperty Name="VehModelo" ColumnName="VehModelo" />
-                <ScalarProperty Name="VehCodigoAresSun" ColumnName="VehCodigoAresSun" />
-                <ScalarProperty Name="VehCodigoProveedor" ColumnName="VehCodigoProveedor" />
-                <ScalarProperty Name="VehCodigoEmpresa" ColumnName="VehCodigoEmpresa" />
-                <ScalarProperty Name="VehFechaMatricula" ColumnName="VehFechaMatricula" />
-                <ScalarProperty Name="VehNumeroPoliza" ColumnName="VehNumeroPoliza" />
+                <ScalarProperty Name="VehFotoTrasera" ColumnName="VehFotoTrasera" />
+                <ScalarProperty Name="VehFotoLateralIzquierda" ColumnName="VehFotoLateralIzquierda" />
+                <ScalarProperty Name="VehFotoLateralDerecha" ColumnName="VehFotoLateralDerecha" />
+                <ScalarProperty Name="VehFotoFrontal" ColumnName="VehFotoFrontal" />
+                <ScalarProperty Name="VehCodigoUsuario" ColumnName="VehCodigoUsuario" />
                 <ScalarProperty Name="VehUrlFotoRevision" ColumnName="VehUrlFotoRevision" />
+                <ScalarProperty Name="VehNumeroPoliza" ColumnName="VehNumeroPoliza" />
+                <ScalarProperty Name="VehFechaMatricula" ColumnName="VehFechaMatricula" />
+                <ScalarProperty Name="VehCodigoEmpresa" ColumnName="VehCodigoEmpresa" />
+                <ScalarProperty Name="VehCodigoProveedor" ColumnName="VehCodigoProveedor" />
+                <ScalarProperty Name="VehCodigoAresSun" ColumnName="VehCodigoAresSun" />
+                <ScalarProperty Name="VehModelo" ColumnName="VehModelo" />
+                <ScalarProperty Name="VehMarca" ColumnName="VehMarca" />
+                <ScalarProperty Name="VehColor" ColumnName="VehColor" />
+                <ScalarProperty Name="VehAno" ColumnName="VehAno" />
+                <ScalarProperty Name="VehCilindraje" ColumnName="VehCilindraje" />
+                <ScalarProperty Name="VehMotor" ColumnName="VehMotor" />
+                <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
+                <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
+                <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuarios">
+            <EntityTypeMapping TypeName="rvfleetModel.usuarios">
+              <MappingFragment StoreEntitySet="usuarios">
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
+                <ScalarProperty Name="Correo" ColumnName="Correo" />
+                <ScalarProperty Name="Jefe" ColumnName="Jefe" />
+                <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vehiclefulldata">
+            <EntityTypeMapping TypeName="rvfleetModel.vehiclefulldata">
+              <MappingFragment StoreEntitySet="vehiclefulldata">
+                <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="VehCodigoUsuario" ColumnName="VehCodigoUsuario" />
+                <ScalarProperty Name="VehUrlFotoRevision" ColumnName="VehUrlFotoRevision" />
+                <ScalarProperty Name="VehNumeroPoliza" ColumnName="VehNumeroPoliza" />
+                <ScalarProperty Name="VehFechaMatricula" ColumnName="VehFechaMatricula" />
+                <ScalarProperty Name="VehCodigoEmpresa" ColumnName="VehCodigoEmpresa" />
+                <ScalarProperty Name="VehCodigoProveedor" ColumnName="VehCodigoProveedor" />
+                <ScalarProperty Name="VehCodigoAresSun" ColumnName="VehCodigoAresSun" />
+                <ScalarProperty Name="VehModelo" ColumnName="VehModelo" />
+                <ScalarProperty Name="VehMarca" ColumnName="VehMarca" />
+                <ScalarProperty Name="VehColor" ColumnName="VehColor" />
+                <ScalarProperty Name="VehAno" ColumnName="VehAno" />
+                <ScalarProperty Name="VehCilindraje" ColumnName="VehCilindraje" />
+                <ScalarProperty Name="VehMotor" ColumnName="VehMotor" />
+                <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
+                <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
+                <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

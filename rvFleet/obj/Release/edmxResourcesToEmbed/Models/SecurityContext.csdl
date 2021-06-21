@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="rvseguridadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="empresa">
+    <Key>
+      <PropertyRef Name="IdEmpresa" />
+    </Key>
+    <Property Name="IdEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NombreEmpresa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ImagenEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="rol" Relationship="Self.FK__empresa" FromRole="empresa" ToRole="rol" />
+    <NavigationProperty Name="usuario" Relationship="Self.FK_usuario_empresa" FromRole="empresa" ToRole="usuario" />
+    <NavigationProperty Name="departamento" Relationship="rvseguridadModel.FK_departamento_empresa" FromRole="empresa" ToRole="departamento" />
+  </EntityType>
+  <EntityType Name="posicion">
+    <Key>
+      <PropertyRef Name="IdPosicion" />
+    </Key>
+    <Property Name="IdPosicion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombrePosicion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="departamento" Relationship="rvseguridadModel.departamentoposicion" FromRole="posicion" ToRole="departamento" />
+    <NavigationProperty Name="usuariodepartamentoposicion" Relationship="rvseguridadModel.FK_usuariodepartamentoposicion_posicion" FromRole="posicion" ToRole="usuariodepartamentoposicion" />
+  </EntityType>
+  <EntityType Name="privilegio">
+    <Key>
+      <PropertyRef Name="IdPrivilegio" />
+    </Key>
+    <Property Name="IdPrivilegio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NombrePrivilegio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EstadoPrivilegio" Type="Boolean" Nullable="false" />
+    <Property Name="NivelPrivilegio" Type="Int32" />
+    <Property Name="PadrePrivilegio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="rol" Relationship="Self.rolprivilegio" FromRole="privilegio" ToRole="rol" />
+    <Property Name="DescripcionPrivilegio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="URL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Parametros" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Icono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="privilegiopermiso" Relationship="rvseguridadModel.FK__privilegio" FromRole="privilegio" ToRole="privilegiopermiso" />
+  </EntityType>
+  <EntityType Name="rol">
+    <Key>
+      <PropertyRef Name="IdRol" />
+    </Key>
+    <Property Name="IdRol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NombreRol" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IdEmpresa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="empresa" Relationship="Self.FK__empresa" FromRole="rol" ToRole="empresa" />
+    <NavigationProperty Name="privilegio" Relationship="Self.rolprivilegio" FromRole="rol" ToRole="privilegio" />
+    <NavigationProperty Name="usuario" Relationship="Self.rolusuario" FromRole="rol" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="IdUsuario" />
+    </Key>
+    <Property Name="CodigoRRHH" Type="Int32" Nullable="false" />
+    <Property Name="IdUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Contrasena" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Estado" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
+    <Property Name="NombreUsuario" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IdUbicacion" Type="Int32" Nullable="false" />
+    <Property Name="Jefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IdentidadUsuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
+    <Property Name="IdEmpresa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="empresa" Relationship="Self.FK_usuario_empresa" FromRole="usuario" ToRole="empresa" />
+    <NavigationProperty Name="rol" Relationship="Self.rolusuario" FromRole="usuario" ToRole="rol" />
+    <NavigationProperty Name="ubicacion" Relationship="rvseguridadModel.FK_usuario_ubicacion" FromRole="usuario" ToRole="ubicacion" />
+    <NavigationProperty Name="usuariodepartamentoposicion" Relationship="rvseguridadModel.FK_usuariodepartamentoposicion_usuario" FromRole="usuario" ToRole="usuariodepartamentoposicion" />
+  </EntityType>
+  <Association Name="FK__empresa">
+    <End Role="empresa" Type="Self.empresa" Multiplicity="1" />
+    <End Role="rol" Type="Self.rol" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="empresa">
+        <PropertyRef Name="IdEmpresa" />
+      </Principal>
+      <Dependent Role="rol">
+        <PropertyRef Name="IdEmpresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuario_empresa">
+    <End Role="empresa" Type="Self.empresa" Multiplicity="1" />
+    <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="empresa">
+        <PropertyRef Name="IdEmpresa" />
+      </Principal>
+      <Dependent Role="usuario">
+        <PropertyRef Name="IdEmpresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rolprivilegio">
+    <End Role="rol" Type="Self.rol" Multiplicity="*" />
+    <End Role="privilegio" Type="Self.privilegio" Multiplicity="*" />
+  </Association>
+  <Association Name="rolusuario">
+    <End Role="rol" Type="Self.rol" Multiplicity="*" />
+    <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="rvseguridadEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="empresa" EntityType="Self.empresa" />
+    <EntitySet Name="posicion" EntityType="Self.posicion" />
+    <EntitySet Name="privilegio" EntityType="Self.privilegio" />
+    <EntitySet Name="rol" EntityType="Self.rol" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" />
+    <AssociationSet Name="FK__empresa" Association="Self.FK__empresa">
+      <End Role="empresa" EntitySet="empresa" />
+      <End Role="rol" EntitySet="rol" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuario_empresa" Association="Self.FK_usuario_empresa">
+      <End Role="empresa" EntitySet="empresa" />
+      <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+    <AssociationSet Name="rolprivilegio" Association="Self.rolprivilegio">
+      <End Role="rol" EntitySet="rol" />
+      <End Role="privilegio" EntitySet="privilegio" />
+    </AssociationSet>
+    <AssociationSet Name="rolusuario" Association="Self.rolusuario">
+      <End Role="rol" EntitySet="rol" />
+      <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+    <EntitySet Name="departamento" EntityType="rvseguridadModel.departamento" />
+    <EntitySet Name="gruporecurso" EntityType="rvseguridadModel.gruporecurso" />
+    <EntitySet Name="opcionrecurso" EntityType="rvseguridadModel.opcionrecurso" />
+    <EntitySet Name="ubicacion" EntityType="rvseguridadModel.ubicacion" />
+    <AssociationSet Name="FK_departamento_empresa" Association="rvseguridadModel.FK_departamento_empresa">
+      <End Role="empresa" EntitySet="empresa" />
+      <End Role="departamento" EntitySet="departamento" />
+    </AssociationSet>
+    <AssociationSet Name="FK_opcionrecurso_gruporecurso" Association="rvseguridadModel.FK_opcionrecurso_gruporecurso">
+      <End Role="gruporecurso" EntitySet="gruporecurso" />
+      <End Role="opcionrecurso" EntitySet="opcionrecurso" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuario_ubicacion" Association="rvseguridadModel.FK_usuario_ubicacion">
+      <End Role="ubicacion" EntitySet="ubicacion" />
+      <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+    <AssociationSet Name="departamentoposicion" Association="rvseguridadModel.departamentoposicion">
+      <End Role="departamento" EntitySet="departamento" />
+      <End Role="posicion" EntitySet="posicion" />
+    </AssociationSet>
+    <EntitySet Name="privilegiopermiso" EntityType="rvseguridadModel.privilegiopermiso" />
+    <EntitySet Name="usuariodepartamentoposicion" EntityType="rvseguridadModel.usuariodepartamentoposicion" />
+    <AssociationSet Name="FK_usuariodepartamentoposicion_departamento" Association="rvseguridadModel.FK_usuariodepartamentoposicion_departamento">
+      <End Role="departamento" EntitySet="departamento" />
+      <End Role="usuariodepartamentoposicion" EntitySet="usuariodepartamentoposicion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuariodepartamentoposicion_posicion" Association="rvseguridadModel.FK_usuariodepartamentoposicion_posicion">
+      <End Role="posicion" EntitySet="posicion" />
+      <End Role="usuariodepartamentoposicion" EntitySet="usuariodepartamentoposicion" />
+    </AssociationSet>
+    <AssociationSet Name="FK__privilegio" Association="rvseguridadModel.FK__privilegio">
+      <End Role="privilegio" EntitySet="privilegio" />
+      <End Role="privilegiopermiso" EntitySet="privilegiopermiso" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuariodepartamentoposicion_usuario" Association="rvseguridadModel.FK_usuariodepartamentoposicion_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="usuariodepartamentoposicion" EntitySet="usuariodepartamentoposicion" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="departamento">
+    <Key>
+      <PropertyRef Name="IdDepartamento" />
+    </Key>
+    <Property Name="IdDepartamento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreDepartamento" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IdEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="empresa" Relationship="rvseguridadModel.FK_departamento_empresa" FromRole="departamento" ToRole="empresa" />
+    <NavigationProperty Name="posicion" Relationship="rvseguridadModel.departamentoposicion" FromRole="departamento" ToRole="posicion" />
+    <NavigationProperty Name="usuariodepartamentoposicion" Relationship="rvseguridadModel.FK_usuariodepartamentoposicion_departamento" FromRole="departamento" ToRole="usuariodepartamentoposicion" />
+  </EntityType>
+  <EntityType Name="gruporecurso">
+    <Key>
+      <PropertyRef Name="IdGrupoRecurso" />
+    </Key>
+    <Property Name="IdGrupoRecurso" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="NombreGrupoRecurso" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DescripcionGrupoRecurso" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Estatus" Type="Boolean" />
+    <NavigationProperty Name="opcionrecurso" Relationship="rvseguridadModel.FK_opcionrecurso_gruporecurso" FromRole="gruporecurso" ToRole="opcionrecurso" />
+  </EntityType>
+  <EntityType Name="opcionrecurso">
+    <Key>
+      <PropertyRef Name="IdOpcionRecurso" />
+    </Key>
+    <Property Name="IdGrupoRecurso" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="IdOpcionRecurso" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="NombreOpcionRecurso" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DescripcionOpcionRecurso" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Estatus" Type="Boolean" />
+    <NavigationProperty Name="gruporecurso" Relationship="rvseguridadModel.FK_opcionrecurso_gruporecurso" FromRole="opcionrecurso" ToRole="gruporecurso" />
+  </EntityType>
+  <EntityType Name="ubicacion">
+    <Key>
+      <PropertyRef Name="IdUbicacion" />
+    </Key>
+    <Property Name="IdUbicacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreUbicacion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="usuario" Relationship="rvseguridadModel.FK_usuario_ubicacion" FromRole="ubicacion" ToRole="usuario" />
+  </EntityType>
+  <Association Name="FK_departamento_empresa">
+    <End Type="rvseguridadModel.empresa" Role="empresa" Multiplicity="0..1" />
+    <End Type="rvseguridadModel.departamento" Role="departamento" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="empresa">
+        <PropertyRef Name="IdEmpresa" />
+      </Principal>
+      <Dependent Role="departamento">
+        <PropertyRef Name="IdEmpresa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_opcionrecurso_gruporecurso">
+    <End Type="rvseguridadModel.gruporecurso" Role="gruporecurso" Multiplicity="0..1" />
+    <End Type="rvseguridadModel.opcionrecurso" Role="opcionrecurso" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="gruporecurso">
+        <PropertyRef Name="IdGrupoRecurso" />
+      </Principal>
+      <Dependent Role="opcionrecurso">
+        <PropertyRef Name="IdGrupoRecurso" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuario_ubicacion">
+    <End Type="rvseguridadModel.ubicacion" Role="ubicacion" Multiplicity="1" />
+    <End Type="rvseguridadModel.usuario" Role="usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ubicacion">
+        <PropertyRef Name="IdUbicacion" />
+      </Principal>
+      <Dependent Role="usuario">
+        <PropertyRef Name="IdUbicacion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="departamentoposicion">
+    <End Type="rvseguridadModel.departamento" Role="departamento" Multiplicity="*" />
+    <End Type="rvseguridadModel.posicion" Role="posicion" Multiplicity="*" />
+  </Association>
+  <EntityType Name="privilegiopermiso">
+    <Key>
+      <PropertyRef Name="IdPrivilegio" />
+    </Key>
+    <Property Name="IdPrivilegio" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Permiso" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="privilegio" Relationship="rvseguridadModel.FK__privilegio" FromRole="privilegiopermiso" ToRole="privilegio" />
+  </EntityType>
+  <EntityType Name="usuariodepartamentoposicion">
+    <Key>
+      <PropertyRef Name="IdUsuario" />
+      <PropertyRef Name="IdDepartamento" />
+      <PropertyRef Name="IdPosicion" />
+    </Key>
+    <Property Name="IdUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IdDepartamento" Type="Int32" Nullable="false" />
+    <Property Name="IdPosicion" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="departamento" Relationship="rvseguridadModel.FK_usuariodepartamentoposicion_departamento" FromRole="usuariodepartamentoposicion" ToRole="departamento" />
+    <NavigationProperty Name="posicion" Relationship="rvseguridadModel.FK_usuariodepartamentoposicion_posicion" FromRole="usuariodepartamentoposicion" ToRole="posicion" />
+    <NavigationProperty Name="usuario" Relationship="rvseguridadModel.FK_usuariodepartamentoposicion_usuario" FromRole="usuariodepartamentoposicion" ToRole="usuario" />
+  </EntityType>
+  <Association Name="FK_usuariodepartamentoposicion_departamento">
+    <End Type="rvseguridadModel.departamento" Role="departamento" Multiplicity="1" />
+    <End Type="rvseguridadModel.usuariodepartamentoposicion" Role="usuariodepartamentoposicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="departamento">
+        <PropertyRef Name="IdDepartamento" />
+      </Principal>
+      <Dependent Role="usuariodepartamentoposicion">
+        <PropertyRef Name="IdDepartamento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuariodepartamentoposicion_posicion">
+    <End Type="rvseguridadModel.posicion" Role="posicion" Multiplicity="1" />
+    <End Type="rvseguridadModel.usuariodepartamentoposicion" Role="usuariodepartamentoposicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="posicion">
+        <PropertyRef Name="IdPosicion" />
+      </Principal>
+      <Dependent Role="usuariodepartamentoposicion">
+        <PropertyRef Name="IdPosicion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__privilegio">
+    <End Type="rvseguridadModel.privilegio" Role="privilegio" Multiplicity="1" />
+    <End Type="rvseguridadModel.privilegiopermiso" Role="privilegiopermiso" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="privilegio">
+        <PropertyRef Name="IdPrivilegio" />
+      </Principal>
+      <Dependent Role="privilegiopermiso">
+        <PropertyRef Name="IdPrivilegio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuariodepartamentoposicion_usuario">
+    <End Type="rvseguridadModel.usuario" Role="usuario" Multiplicity="1" />
+    <End Type="rvseguridadModel.usuariodepartamentoposicion" Role="usuariodepartamentoposicion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="IdUsuario" />
+      </Principal>
+      <Dependent Role="usuariodepartamentoposicion">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

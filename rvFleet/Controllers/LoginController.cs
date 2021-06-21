@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using rvFleet.ViewModels;
 using System.Web.Security;
 using Newtonsoft.Json;
+using rvFleet.POCO;
 
 namespace rvFleet.Controllers
 {
@@ -19,7 +20,7 @@ namespace rvFleet.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(usuario user)
+        public ActionResult Index(LoginModel user)
         {
             try
             {
@@ -47,7 +48,7 @@ namespace rvFleet.Controllers
             }
         }
 
-        public void CreateCookie(usuario user)
+        public void CreateCookie(LoginModel user)
         {
             FormsAuthenticationTicket ticket;
             string cookieStr;

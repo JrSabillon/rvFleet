@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using rvFleet.POCO;
 
 namespace rvFleet.ViewModels
 {
@@ -15,7 +16,7 @@ namespace rvFleet.ViewModels
         /// <param name="UserId">Id del usuario</param>
         /// <param name="Password">Contraseña actual encriptada</param>
         /// <returns>Respuesta booleana que indica si el usuario a sido validado correctamente.</returns>
-        public void LoginUser(string UserId, string Password, out bool IsValidated, out string Message, usuario user)
+        public void LoginUser(string UserId, string Password, out bool IsValidated, out string Message, LoginModel user)
         {
             try
             {
@@ -38,6 +39,7 @@ namespace rvFleet.ViewModels
                         {
                             ///Obtener datos de la empresa para usarlas en la app
                             user.IdEmpresa = result.IdEmpresa;
+                            user.NombreUsuario = result.NombreUsuario;
 
                             IsValidated = true;
                         }

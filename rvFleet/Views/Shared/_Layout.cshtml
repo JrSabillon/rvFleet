@@ -14,7 +14,7 @@
 <body>
 
     @Html.Action("SideBar", "Nav")
-    <div class="my-container active-cont" id="div-content">
+    <div class="my-container" id="div-content">
         @Html.Partial("_NavBar")
         <div class="body-content pt-4" id="div-content">
             @RenderBody()
@@ -25,34 +25,19 @@
         </div>
     </div>
 
+    <div class="modal" id="modal-loading" tabindex="-1" role="dialog" aria-labelledby="modal-loading" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="w-100 text-center">
+                <div class="spinner-border text-white" style="width: 3em; height: 3em" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <br />
+                <label class="text-white">Cargando...</label>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="~/Scripts/dist/index.js"></script>
     @RenderSection("scripts", required: false)
-
-    <script>
-        $(document).ready(function () {
-            var menu_btn = document.querySelector("#menu-btn");
-            var sidebar = document.querySelector("#sidebar");
-            var container = document.querySelector(".my-container");
-            menu_btn.addEventListener("click", () => {
-                sidebar.classList.toggle("active-nav");
-                container.classList.toggle("active-cont");
-            });
-
-            ViewLayout();
-
-            $(window).on('resize', function () {
-                ViewLayout();
-            });
-        });
-
-        function ViewLayout() {
-            if (window.innerWidth < 799) {
-                $('#sidebar').removeClass('active-nav');
-                $('#div-content').removeClass('active-cont');
-            } else {
-                $('#sidebar').addClass('active-nav');
-                $('#div-content').addClass('active-cont');
-            }
-        }
-    </script>
 </body>
 </html>

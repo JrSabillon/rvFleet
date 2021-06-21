@@ -5,6 +5,7 @@ using System.Web;
 using rvFleet.App_Code;
 using rvFleet.Models;
 using MySql.Data.MySqlClient;
+using System.Data.Entity;
 
 namespace rvFleet.ViewModels
 {
@@ -32,6 +33,35 @@ namespace rvFleet.ViewModels
                 throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
             }
             catch(Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Obtener detalles de la factura seleccionada.
+        /// </summary>
+        /// <param name="FacCodigoOrden">Id de la orden</param>
+        /// <returns></returns>
+        public facturas GetFactura(int FacCodigoOrden)
+        {
+            try
+            {
+                facturas facturas = new facturas();
+
+                using (var context = new rvfleetEntities())
+                {
+                    facturas = context.facturas.Where(x => x.FacCodigoOrden.Equals(FacCodigoOrden)).Include(x => x.proveedor).Include(x => x.detallefactura)
+                        .Include(x => x.archivofactura).FirstOrDefault();
+                }
+
+                return facturas;
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
@@ -77,7 +107,7 @@ namespace rvFleet.ViewModels
 
                 using (var context = new rvfleetEntities())
                 {
-                    ordenes = context.facturas.Where(x => string.IsNullOrEmpty(x.FacNumeroFactura)).ToList();
+                    ordenes = context.facturas.Where(x => string.IsNullOrEmpty(x.FacNumeroFactura)).Include(x => x.detallefactura).ToList();
                 }
 
                 return ordenes;
@@ -150,8 +180,41 @@ namespace rvFleet.ViewModels
                 {
                     context.facturas.Add(factura);
                     context.SaveChanges();
+                    //var FacCodigoOrden = factura.FacCodigoOrden;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
 
-                    var FacCodigoOrden = factura.FacCodigoOrden;
+        public facturas UpdateFactura(facturas factura)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var CurrentFactura = context.facturas.Find(factura.FacCodigoOrden);
+                    CurrentFactura.FacCodigoProveedor = factura.FacCodigoProveedor;
+                    CurrentFactura.FacUsuarioPago = factura.FacUsuarioPago;
+                    CurrentFactura.FacFechaOrden = factura.FacFechaOrden;
+                    CurrentFactura.FacFechaFactura = factura.FacFechaFactura;
+                    CurrentFactura.FacNumeroFactura = factura.FacNumeroFactura;
+                    CurrentFactura.FacKilometraje = factura.FacKilometraje;
+                    CurrentFactura.FacComentario = factura.FacComentario;
+                    CurrentFactura.FacValorFactura = factura.detallefactura.Sum(x => x.DetValor);
+                    CurrentFactura.detallefactura.Clear();
+                    context.SaveChanges();
+
+                    ///Update detalleFactura
+                    CurrentFactura.detallefactura = factura.detallefactura;
+                    context.SaveChanges();
+                    return CurrentFactura;
                 }
             }
             catch (MySqlException dbExc)

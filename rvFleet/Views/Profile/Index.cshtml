@@ -1,0 +1,129 @@
+﻿@using rvFleet.Models;
+@model rvFleet.Models.usuario
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    vehiculos vehiculo = ViewBag.Vehiculo;
+}
+
+<h2>Mi perfil</h2>
+<hr />
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <p class="mb-0">@ViewBag.Message</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+@using (Html.BeginForm("Index", "Profile", FormMethod.Post, new { id = "form-user" }))
+{
+    @Html.HiddenFor(x => x.Contrasena)<ul class="nav nav-tabs" role="tablist" id="nav-tab">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#div-tab-data" role="tab" aria-selected="true">
+                Datos personales
+            </a>
+        </li>
+        @if (ViewBag.UserHasVehicle)
+        { 
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#div-tab-vehicle" role="tab" aria-selected="true">
+                    Vehículo
+                </a>
+            </li>
+        }
+    </ul>
+    <div class="tab-content mt-4">
+        <div id="div-tab-data" class="tab-pane fade show active">
+            <div class="row form-group">
+                <div class="col-12">
+                    @Html.LabelFor(x => x.IdEmpresa)
+                    @Html.DropDownList("IdEmpresa", null, new { @class = "form-control col-12", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                    @Html.LabelFor(x => x.CodigoRRHH)
+                    @Html.TextBoxFor(x => x.CodigoRRHH, new { @class = "form-control col-12", @readonly = "readonly" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                    @Html.LabelFor(x => x.IdUsuario)
+                    @Html.TextBoxFor(x => x.IdUsuario, new { @class = "form-control col-12", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                    @Html.LabelFor(x => x.NombreUsuario)
+                    @Html.TextBoxFor(x => x.NombreUsuario, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.NombreUsuario, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                    @Html.LabelFor(x => x.IdentidadUsuario)
+                    @Html.TextBoxFor(x => x.IdentidadUsuario, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.IdentidadUsuario, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 form-group">
+                    @Html.LabelFor(x => x.Correo)
+                    @Html.TextBoxFor(x => x.Correo, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.Correo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <button class="btn btn-outline-success">
+                <i class="fa fa-save"></i>
+                Guardar
+            </button>
+        </div>
+        <div id="div-tab-vehicle" class="tab-pane fade">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>Placa</td>
+                        <td>@vehiculo.VehPlaca</td>
+                    </tr>
+                    <tr>
+                        <td>VIN</td>
+                        <td>@vehiculo.VehVIN</td>
+                    </tr>
+                    <tr>
+                        <td>Motor</td>
+                        <td>@vehiculo.VehMotor</td>
+                    </tr>
+                    <tr>
+                        <td>Cilindraje</td>
+                        <td>@vehiculo.VehCilindraje</td>
+                    </tr>
+                    <tr>
+                        <td>Año</td>
+                        <td>@vehiculo.VehAno</td>
+                    </tr>
+                    <tr>
+                        <td>Color</td>
+                        <td>@vehiculo.VehColor</td>
+                    </tr>
+                    <tr>
+                        <td>Marca</td>
+                        <td>@vehiculo.VehMarca</td>
+                    </tr>
+                    <tr>
+                        <td>Modelo</td>
+                        <td>@vehiculo.VehModelo</td>
+                    </tr>
+                    <tr>
+                        <td>Matricula vigente hasta</td>
+                        @if (DateTime.Now.Month > vehiculo.VehFechaMatricula.Month)
+                        {
+                            <td>@string.Format("{0} {1}, {2}", vehiculo.VehFechaMatricula.Day, vehiculo.VehFechaMatricula.ToString("MMMM"), DateTime.Now.AddYears(1).Year)</td>
+                        }
+                        else
+                        {
+                            <td>@string.Format("{0} {1}, {2}", vehiculo.VehFechaMatricula.Day, vehiculo.VehFechaMatricula.ToString("MMMM"), DateTime.Now.Year)</td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+    </div>
+}

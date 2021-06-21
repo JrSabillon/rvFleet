@@ -25,6 +25,7 @@ namespace rvFleet.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<archivofactura> archivofactura { get; set; }
         public virtual DbSet<conductorhistorico> conductorhistorico { get; set; }
         public virtual DbSet<detallefactura> detallefactura { get; set; }
         public virtual DbSet<facturas> facturas { get; set; }
@@ -35,5 +36,7 @@ namespace rvFleet.Models
         public virtual DbSet<sucursales> sucursales { get; set; }
         public virtual DbSet<ubicacionhistorica> ubicacionhistorica { get; set; }
         public virtual DbSet<vehiculos> vehiculos { get; set; }
+        public virtual DbSet<usuarios> usuarios { get; set; }
+        public virtual DbSet<vehiclefulldata> vehiclefulldata { get; set; }
     }
 }

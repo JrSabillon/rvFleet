@@ -17,6 +17,7 @@ namespace rvFleet.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public facturas()
         {
+            this.archivofactura = new HashSet<archivofactura>();
             this.detallefactura = new HashSet<detallefactura>();
         }
     
@@ -33,7 +34,10 @@ namespace rvFleet.Models
         public string FacCodigoUsuarioIngreso { get; set; }
         public Nullable<System.DateTime> FacFechaOrden { get; set; }
         public string FacKilometraje { get; set; }
+        public string FacUsuarioPago { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<archivofactura> archivofactura { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<detallefactura> detallefactura { get; set; }
         public virtual proveedor proveedor { get; set; }
