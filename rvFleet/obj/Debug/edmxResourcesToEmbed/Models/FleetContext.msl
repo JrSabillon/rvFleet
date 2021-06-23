@@ -40,6 +40,7 @@
     <EntitySetMapping Name="facturas">
       <EntityTypeMapping TypeName="rvfleetModel.facturas">
         <MappingFragment StoreEntitySet="facturas">
+          <ScalarProperty Name="FacAplicaImpuesto" ColumnName="FacAplicaImpuesto" />
           <ScalarProperty Name="FacUsuarioPago" ColumnName="FacUsuarioPago" />
           <ScalarProperty Name="FacKilometraje" ColumnName="FacKilometraje" />
           <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
@@ -60,6 +61,8 @@
     <EntitySetMapping Name="kilometrajehistorico">
       <EntityTypeMapping TypeName="rvfleetModel.kilometrajehistorico">
         <MappingFragment StoreEntitySet="kilometrajehistorico">
+          <ScalarProperty Name="KilFotografia" ColumnName="KilFotografia" />
+          <ScalarProperty Name="KilUsuarioIngreso" ColumnName="KilUsuarioIngreso" />
           <ScalarProperty Name="KilComentario" ColumnName="KilComentario" />
           <ScalarProperty Name="KilKilometraje" ColumnName="KilKilometraje" />
           <ScalarProperty Name="KilFechaIngreso" ColumnName="KilFechaIngreso" />
@@ -94,6 +97,7 @@
     <EntitySetMapping Name="rubros">
       <EntityTypeMapping TypeName="rvfleetModel.rubros">
         <MappingFragment StoreEntitySet="rubros">
+          <ScalarProperty Name="DistanciaCambio" ColumnName="DistanciaCambio" />
           <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
           <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
         </MappingFragment>

@@ -200,6 +200,7 @@ namespace rvFleet.ViewModels
                 using (var context = new rvfleetEntities())
                 {
                     var CurrentFactura = context.facturas.Find(factura.FacCodigoOrden);
+                    var total = factura.detallefactura.Sum(x => x.DetValor);
                     CurrentFactura.FacCodigoProveedor = factura.FacCodigoProveedor;
                     CurrentFactura.FacUsuarioPago = factura.FacUsuarioPago;
                     CurrentFactura.FacFechaOrden = factura.FacFechaOrden;
@@ -207,7 +208,8 @@ namespace rvFleet.ViewModels
                     CurrentFactura.FacNumeroFactura = factura.FacNumeroFactura;
                     CurrentFactura.FacKilometraje = factura.FacKilometraje;
                     CurrentFactura.FacComentario = factura.FacComentario;
-                    CurrentFactura.FacValorFactura = factura.detallefactura.Sum(x => x.DetValor);
+                    CurrentFactura.FacAplicaImpuesto = factura.FacAplicaImpuesto;
+                    CurrentFactura.FacValorFactura = factura.FacAplicaImpuesto.Value ? total * 0.15 + total : total;
                     CurrentFactura.detallefactura.Clear();
                     context.SaveChanges();
 

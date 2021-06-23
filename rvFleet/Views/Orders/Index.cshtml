@@ -58,6 +58,7 @@
         <thead class="bg-dark text-white">
             <tr>
                 <th>#</th>
+                <th>Fecha</th>
                 <th>Facturado</th>
                 <th>Proveedor</th>
                 <th>Detalle</th>
@@ -73,6 +74,7 @@
                 {
                     <tr>
                         <td>@item.FacCodigoOrden</td>
+                        <td>@item.FacFechaOrden.Value.ToString("yyyy-MM-dd")</td>
                         @if (string.IsNullOrEmpty(item.FacNumeroFactura))
                         {
                             <td class="text-center">

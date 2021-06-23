@@ -8,10 +8,21 @@ var json_factura = {
     FacNumeroFactura: '',
     FacKilometraje: 0,
     FacComentario: '',
+    FacAplicaImpuesto: 0,
     detallefactura: detail_json_array
 }
 
 $(document).ready(function () {
+    $('#FacCodigoProveedor').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+    });
+
+    $('#DetPlacaVehiculo').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+    });
+
     $('#select-rubro').select2({
         theme: 'bootstrap4',
         width: '100%',
@@ -37,6 +48,24 @@ $(document).ready(function () {
                 val = val.replace(/\.+$/, "");
         }
         $(this).val(val);
+    });
+
+    $('#input-check-imp').on('click', function () {
+        if ($(this).is(':checked')) {
+            //Calcular total + impuesto del total actual
+            var subtotal = parseFloat($('#span-caption-total').text().replace(',', ''));
+            var total = subtotal * 0.15 + subtotal;
+
+            $('#span-caption-total').text(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+        } else {
+            var total = 0;
+
+            for (var i = 0; i < detail_json_array.length; i++) {
+                total = total + detail_json_array[i].DetValor;
+            }
+
+            $('#span-caption-total').text(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+        }
     });
 
     ValidateRubroDetalle();
@@ -104,6 +133,7 @@ function AddDetail() {
 
     $('#DetCantidad').val('1');
     $('#DetValor').val('');
+    $('#textarea-description').val('');
     $("#select-rubroDetalle").val($("#select-rubroDetalle option:first").val()).trigger('change.select2');
     LoadJSON(vehicle.text(), rubro.val(), detail, amount, price);
     CalculateTotal();
@@ -128,6 +158,10 @@ function CalculateTotal() {
         total = total + detail_json_array[i].DetValor;
     }
 
+    if ($('#input-check-imp').is(':checked')) {
+        total = total * 0.15 + total;
+    }
+
     $('#span-caption-total').text(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
 }
 
@@ -141,6 +175,7 @@ function createRequest(source, urlNew, urlEdit) {
     json_factura.FacNumeroFactura = $('#FacNumeroFactura').val();
     json_factura.FacKilometraje = $('#FacKilometraje').val();
     json_factura.FacComentario = $('#FacComentario').val();
+    json_factura.FacAplicaImpuesto = $('#input-check-imp').is(':checked');
     json_factura.detallefactura = detail_json_array;
 
     if (json_factura.FacFechaOrden == '') {

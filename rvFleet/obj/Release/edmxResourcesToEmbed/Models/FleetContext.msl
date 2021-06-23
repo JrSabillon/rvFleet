@@ -120,6 +120,53 @@
     <EntitySetMapping Name="vehiculos">
       <EntityTypeMapping TypeName="rvfleetModel.vehiculos">
         <MappingFragment StoreEntitySet="vehiculos">
+          <ScalarProperty Name="VehFotoTrasera" ColumnName="VehFotoTrasera" />
+          <ScalarProperty Name="VehFotoLateralIzquierda" ColumnName="VehFotoLateralIzquierda" />
+          <ScalarProperty Name="VehFotoLateralDerecha" ColumnName="VehFotoLateralDerecha" />
+          <ScalarProperty Name="VehFotoFrontal" ColumnName="VehFotoFrontal" />
+          <ScalarProperty Name="VehCodigoUsuario" ColumnName="VehCodigoUsuario" />
+          <ScalarProperty Name="VehUrlFotoRevision" ColumnName="VehUrlFotoRevision" />
+          <ScalarProperty Name="VehNumeroPoliza" ColumnName="VehNumeroPoliza" />
+          <ScalarProperty Name="VehFechaMatricula" ColumnName="VehFechaMatricula" />
+          <ScalarProperty Name="VehCodigoEmpresa" ColumnName="VehCodigoEmpresa" />
+          <ScalarProperty Name="VehCodigoProveedor" ColumnName="VehCodigoProveedor" />
+          <ScalarProperty Name="VehCodigoAresSun" ColumnName="VehCodigoAresSun" />
+          <ScalarProperty Name="VehModelo" ColumnName="VehModelo" />
+          <ScalarProperty Name="VehMarca" ColumnName="VehMarca" />
+          <ScalarProperty Name="VehColor" ColumnName="VehColor" />
+          <ScalarProperty Name="VehAno" ColumnName="VehAno" />
+          <ScalarProperty Name="VehCilindraje" ColumnName="VehCilindraje" />
+          <ScalarProperty Name="VehMotor" ColumnName="VehMotor" />
+          <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
+          <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
+          <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuarios">
+      <EntityTypeMapping TypeName="rvfleetModel.usuarios">
+        <MappingFragment StoreEntitySet="usuarios">
+          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+          <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+          <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Jefe" ColumnName="Jefe" />
+          <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
+          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+          <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vehiclefulldata">
+      <EntityTypeMapping TypeName="rvfleetModel.vehiclefulldata">
+        <MappingFragment StoreEntitySet="vehiclefulldata">
+          <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
+          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+          <ScalarProperty Name="VehCodigoUsuario" ColumnName="VehCodigoUsuario" />
           <ScalarProperty Name="VehUrlFotoRevision" ColumnName="VehUrlFotoRevision" />
           <ScalarProperty Name="VehNumeroPoliza" ColumnName="VehNumeroPoliza" />
           <ScalarProperty Name="VehFechaMatricula" ColumnName="VehFechaMatricula" />

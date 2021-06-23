@@ -223,7 +223,7 @@ namespace rvFleet.Controllers
         }
 
         [HttpPost]
-        public JsonResult New(facturas facturas)
+        public JsonResult New(facturas facturas, string CalculateTax)
         {
             try
             {

@@ -12,6 +12,8 @@
     <EntitySet Name="sucursales" EntityType="rvfleetModel.sucursales" />
     <EntitySet Name="ubicacionhistorica" EntityType="rvfleetModel.ubicacionhistorica" />
     <EntitySet Name="vehiculos" EntityType="rvfleetModel.vehiculos" />
+    <EntitySet Name="usuarios" EntityType="rvfleetModel.usuarios" />
+    <EntitySet Name="vehiclefulldata" EntityType="rvfleetModel.vehiclefulldata" />
     <AssociationSet Name="FK__facturas" Association="rvfleetModel.FK__facturas">
       <End Role="facturas" EntitySet="facturas" />
       <End Role="archivofactura" EntitySet="archivofactura" />
@@ -23,6 +25,10 @@
     <AssociationSet Name="FK_facturas_proveedor" Association="rvfleetModel.FK_facturas_proveedor">
       <End Role="proveedor" EntitySet="proveedor" />
       <End Role="facturas" EntitySet="facturas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_vehiculos_proveedor" Association="rvfleetModel.FK_vehiculos_proveedor">
+      <End Role="proveedor" EntitySet="proveedor" />
+      <End Role="vehiculos" EntitySet="vehiculos" />
     </AssociationSet>
     <AssociationSet Name="FK__rubros" Association="rvfleetModel.FK__rubros">
       <End Role="rubros" EntitySet="rubros" />
@@ -114,6 +120,7 @@
     <Property Name="ProNombreBanco" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="ProTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK_facturas_proveedor" FromRole="proveedor" ToRole="facturas" />
+    <NavigationProperty Name="vehiculos" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="proveedor" ToRole="vehiculos" />
   </EntityType>
   <EntityType Name="rubrodetalle">
     <Key>
@@ -152,7 +159,6 @@
   <EntityType Name="vehiculos">
     <Key>
       <PropertyRef Name="VehCodigoVehiculo" />
-      <PropertyRef Name="VehPlaca" />
       <PropertyRef Name="VehCodigoAresSun" />
     </Key>
     <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
@@ -161,15 +167,81 @@
     <Property Name="VehMotor" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="VehCilindraje" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
     <Property Name="VehAno" Type="Int32" Nullable="false" />
-    <Property Name="VehColor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VehColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="VehMarca" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
     <Property Name="VehModelo" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
     <Property Name="VehCodigoAresSun" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="VehCodigoProveedor" Type="Int32" />
-    <Property Name="VehCodigoEmpresa" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="VehCodigoEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="VehFechaMatricula" Type="DateTime" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="VehUrlFotoRevision" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="VehNumeroPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VehUrlFotoRevision" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="VehCodigoUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VehFotoFrontal" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="VehFotoLateralDerecha" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="VehFotoLateralIzquierda" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="VehFotoTrasera" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="proveedor" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="vehiculos" ToRole="proveedor" />
+  </EntityType>
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="CodigoRRHH" />
+      <PropertyRef Name="IdUsuario" />
+      <PropertyRef Name="Contrasena" />
+      <PropertyRef Name="Estado" />
+      <PropertyRef Name="FechaCreacion" />
+      <PropertyRef Name="NombreUsuario" />
+      <PropertyRef Name="IdUbicacion" />
+      <PropertyRef Name="IdentidadUsuario" />
+      <PropertyRef Name="FechaIngreso" />
+      <PropertyRef Name="IdEmpresa" />
+    </Key>
+    <Property Name="CodigoRRHH" Type="Int32" Nullable="false" />
+    <Property Name="IdUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Contrasena" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Estado" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
+    <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="IdUbicacion" Type="Int32" Nullable="false" />
+    <Property Name="Jefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IdentidadUsuario" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
+    <Property Name="IdEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vehiclefulldata">
+    <Key>
+      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="VehPlaca" />
+      <PropertyRef Name="VehVIN" />
+      <PropertyRef Name="VehMotor" />
+      <PropertyRef Name="VehCilindraje" />
+      <PropertyRef Name="VehAno" />
+      <PropertyRef Name="VehMarca" />
+      <PropertyRef Name="VehModelo" />
+      <PropertyRef Name="VehCodigoAresSun" />
+      <PropertyRef Name="VehFechaMatricula" />
+      <PropertyRef Name="NombreUsuario" />
+      <PropertyRef Name="NombreEmpresa" />
+    </Key>
+    <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" />
+    <Property Name="VehPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="VehVIN" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="VehMotor" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="VehCilindraje" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="VehAno" Type="Int32" Nullable="false" />
+    <Property Name="VehColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VehMarca" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="VehModelo" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="VehCodigoAresSun" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VehCodigoProveedor" Type="Int32" />
+    <Property Name="VehCodigoEmpresa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="VehFechaMatricula" Type="DateTime" Nullable="false" />
+    <Property Name="VehNumeroPoliza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="VehUrlFotoRevision" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="VehCodigoUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="NombreEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK__facturas">
     <End Type="rvfleetModel.facturas" Role="facturas" Multiplicity="1" />
@@ -204,6 +276,18 @@
       </Principal>
       <Dependent Role="facturas">
         <PropertyRef Name="FacCodigoProveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_vehiculos_proveedor">
+    <End Type="rvfleetModel.proveedor" Role="proveedor" Multiplicity="0..1" />
+    <End Type="rvfleetModel.vehiculos" Role="vehiculos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="proveedor">
+        <PropertyRef Name="ProCodigoProveedor" />
+      </Principal>
+      <Dependent Role="vehiculos">
+        <PropertyRef Name="VehCodigoProveedor" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -73,12 +73,8 @@
                     </div>
                     <div class="col-md-4 col-lg-3 form-group">
                         @Html.LabelFor(x => x.FacKilometraje)
-                        @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", placeholder = "0" })
+                        @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", placeholder = "0", onchange = "formatThousands(this);" })
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(x => x.FacComentario)
-                    @Html.TextAreaFor(x => x.FacComentario, new { rows = "3", @class = "form-control col-12", placeholder = "Ingrese una observación (opcional)..." })
                 </div>
             </div>
         </div>
@@ -93,67 +89,78 @@
         </div>
         <div class="collapse show" id="collapse-factura-detalle">
             <div class="card-body">
-            <div class="row">
-                <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
-                    <label>Vehículo</label>
-                    @Html.DropDownList("DetPlacaVehiculo", null, new { @class = "form-control col-12" })
-                </div>
-                <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
-                    <label>Rubro</label>
-                    @Html.DropDownList("DetCodigoRubro", null, new { @class = "form-control col-12", id = "select-rubro", onchange = $"LoadRubroDetalles('{Url.Action("GetRubroDetalles", "Orders")}');" })
-                </div>
-                <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
-                    <label>Detalle</label>
-                    @Html.DropDownList("DetCodigoDescripcion", null, new { @class = "form-control col-12", id = "select-rubroDetalle", onchange="ValidateRubroDetalle();" })
-                </div>
-                <div class="col-12 form-group d-none" id="div-descriptionDetail">
-                    <div class="alert alert-info">
-                        <label>Parece que no tenemos registrado el elemento que ingresaras en la factura, favor detalla un poco lo que deseas registrar.</label>
+                <div class="row">
+                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                        <label>Vehículo</label>
+                        @Html.DropDownList("DetPlacaVehiculo", null, new { @class = "form-control col-12" })
                     </div>
-                    <label>Decripción</label>
-                    <textarea rows="3" class="form-control col-12" id="textarea-description" placeholder="Ingresar descripción para el detalle de la factura..."></textarea>
+                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                        <label>Rubro</label>
+                        @Html.DropDownList("DetCodigoRubro", null, new { @class = "form-control col-12", id = "select-rubro", onchange = $"LoadRubroDetalles('{Url.Action("GetRubroDetalles", "Orders")}');" })
+                    </div>
+                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                        <label>Detalle</label>
+                        @Html.DropDownList("DetCodigoDescripcion", null, new { @class = "form-control col-12", id = "select-rubroDetalle", onchange = "ValidateRubroDetalle();" })
+                    </div>
+                    <div class="col-12 form-group d-none" id="div-descriptionDetail">
+                        <div class="alert alert-info">
+                            <label>Parece que no tenemos registrado el elemento que ingresaras en la factura, favor detalla un poco lo que deseas registrar.</label>
+                        </div>
+                        <label>Decripción</label>
+                        <textarea rows="3" class="form-control col-12" id="textarea-description" placeholder="Ingresar descripción para el detalle de la factura..."></textarea>
+                    </div>
+                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                        <label>Cantidad</label>
+                        <input type="number" min="0" max="999" class="form-control col-12" value="1" name="DetCantidad" id="DetCantidad" placeholder="0" />
+                    </div>
+                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                        <label>Precio</label>
+                        <input type="text" class="form-control col-12 decimal" name="DetValor" id="DetValor" placeholder="0.00" />
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-outline-success" type="button" onclick="AddDetail();">Agregar detalle</button>
+                    </div>
                 </div>
-                <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
-                    <label>Cantidad</label>
-                    <input type="number" min="0" max="999" class="form-control col-12" value="1" name="DetCantidad" id="DetCantidad" placeholder="0" />
-                </div>
-                <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
-                    <label>Precio</label>
-                    <input type="text" class="form-control col-12 decimal" name="DetValor" id="DetValor" placeholder="0.00" />
-                </div>
-                <div class="col-12">
-                    <button class="btn btn-outline-success" type="button" onclick="AddDetail();">Agregar detalle</button>
-                </div>
-            </div>
 
-            <br />
+                <br />
 
-            <div class="alert alert-danger d-none" id="div-alert-message">
-                <label id="label-alert-message"></label>
+                <div class="alert alert-danger d-none" id="div-alert-message">
+                    <label id="label-alert-message"></label>
+                </div>
+                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Vehículo</th>
+                                <th>Rubro</th>
+                                <th>Detalle</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-details">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 text-left text-md-center mt-2">
+                    <label class="text-muted">Total: <span id="span-caption-total">00.0</span></label>
+                </div>
             </div>
-            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                <table class="table table-striped table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Vehículo</th>
-                            <th>Rubro</th>
-                            <th>Detalle</th>
-                            <th>Cantidad</th>
-                            <th>Precio</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-details">
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-12 text-left text-md-center mt-2">
-                <label class="text-muted">Total: <span id="span-caption-total">00.0</span></label>
-            </div>
-        </div>
         </div>
     </div>
 
+    <br />
+
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="form-group">
+                @Html.LabelFor(x => x.FacComentario)
+                @Html.TextAreaFor(x => x.FacComentario, new { rows = "3", @class = "form-control col-12", placeholder = "Ingrese una observación (opcional)..." })
+            </div>
+        </div>
+    </div>
+    
     <br />
 
     <div class="row">

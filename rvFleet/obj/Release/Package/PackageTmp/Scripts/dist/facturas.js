@@ -12,6 +12,16 @@ var json_factura = {
 }
 
 $(document).ready(function () {
+    $('#FacCodigoProveedor').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+    });
+
+    $('#DetPlacaVehiculo').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+    });
+
     $('#select-rubro').select2({
         theme: 'bootstrap4',
         width: '100%',

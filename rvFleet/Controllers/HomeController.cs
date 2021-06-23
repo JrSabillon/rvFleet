@@ -18,11 +18,29 @@ namespace rvFleet.Controllers
         
         public ActionResult Index()
         {
-            var userData = BaseViewModel.GetUserData();
-            var model = new NavViewModel().GetPrivilegios(userData.IdUsuario);
-            ViewBag.UserName = userData.NombreUsuario;
+            try
+            {
+                VehiclesViewModel vehiclesViewModel = new VehiclesViewModel();
+                KilometrajeHistoricoViewModel kilometrajeHistoricoViewModel = new KilometrajeHistoricoViewModel();
 
-            return View(model);
+                var userData = BaseViewModel.GetUserData();
+                var model = new NavViewModel().GetPrivilegios(userData.IdUsuario);
+                ViewBag.UserName = userData.NombreUsuario;
+
+                var vehicle = vehiclesViewModel.GetVehiculoUsuario(userData.IdUsuario);
+                if(vehicle != null)
+                {
+                    //el usuario tiene un vehiculo asignado, verificar que ya ingreso el kilometraje de hoy.
+                    ViewBag.KilometrajeUploaded = kilometrajeHistoricoViewModel.KilometrajeUploaded(vehicle.VehCodigoVehiculo);
+                }
+
+                return View(model);
+            }
+            catch(Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
         }
 
         public ActionResult About()

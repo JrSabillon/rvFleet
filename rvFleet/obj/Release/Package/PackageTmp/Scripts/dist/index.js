@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var width;
+
+$(document).ready(function () {
     var menu_btn = document.querySelector("#menu-btn");
     var sidebar = document.querySelector("#sidebar");
     var container = document.querySelector(".my-container");
@@ -9,18 +11,24 @@
 
     ViewLayout();
 
+    width = $(window).width();
+
     $(window).on('resize', function () {
         ViewLayout();
     });
 });
 
 function ViewLayout() {
-    if (window.innerWidth < 799) {
-        $('#sidebar').removeClass('active-nav');
-        $('#div-content').removeClass('active-cont');
-    } else {
-        $('#sidebar').addClass('active-nav');
-        $('#div-content').addClass('active-cont');
+    if (width != $(window).width()) {
+        width = $(window).width();
+
+        if (window.innerWidth < 799) {
+            $('#sidebar').removeClass('active-nav');
+            $('#div-content').removeClass('active-cont');
+        } else {
+            $('#sidebar').addClass('active-nav');
+            $('#div-content').addClass('active-cont');
+        }
     }
 }
 
@@ -33,4 +41,8 @@ function isLoading(load) {
     }
 
     $('#modal-loading').modal('hide');
+}
+
+function formatThousands(element) {
+    element.value = element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

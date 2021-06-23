@@ -15,5 +15,9 @@ namespace rvFleet.App_Code
         /// Path donde se guardaran los archivos de las facturas
         /// </summary>
         public static string FacturasPath = ConfigurationManager.AppSettings["FacturasPath"];
+        /// <summary>
+        /// Path donde se guardaran los archivos de los vehiculos (Kilometrajes, fotos del vehiculo, etc).
+        /// </summary>
+        public static string VehiculosPath = ConfigurationManager.AppSettings["VehiculosPath"];
     }
 }

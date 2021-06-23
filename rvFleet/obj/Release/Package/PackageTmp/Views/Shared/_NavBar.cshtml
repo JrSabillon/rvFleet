@@ -19,7 +19,7 @@
                 @user.IdUsuario
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="@Url.Action("Assigned", "Vehicles", routeValues: new { user.IdUsuario })">Mi vehículo</a>
+                <a class="dropdown-item" href="@Url.Action("Index", "Profile")">Mi perfil</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="@Url.Action("Logout", "Nav")" id="navbarDropdown">
                     Salir

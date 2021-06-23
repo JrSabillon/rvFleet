@@ -18,5 +18,7 @@ namespace rvFleet.Models
         public System.DateTime KilFechaIngreso { get; set; }
         public int KilKilometraje { get; set; }
         public string KilComentario { get; set; }
+        public string KilUsuarioIngreso { get; set; }
+        public string KilFotografia { get; set; }
     }
 }

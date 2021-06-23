@@ -54,7 +54,7 @@
             @if (ViewBag.Updated == "Updated")
             {
                 <div class="alert alert-success alert-dismissible fade show">
-                    <label>@ViewBag.Message</label>
+                    <label>@Html.Raw(ViewBag.Message)</label>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -104,10 +104,6 @@
                             @Html.LabelFor(x => x.FacKilometraje)
                             @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", placeholder = "0" })
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.FacComentario)
-                        @Html.TextAreaFor(x => x.FacComentario, new { rows = "3", @class = "form-control col-12", placeholder = "Ingrese una observación (opcional)..." })
                     </div>
                 </div>
                 <div id="div-tab-files" class="tab-pane fade">
@@ -256,6 +252,17 @@
             <label class="text-muted">Total: <span id="span-caption-total">@Model.FacValorFactura.ToString("N")</span></label>
         </div>
     </div>
+    </div>
+</div>
+
+<br />
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="form-group">
+            @Html.LabelFor(x => x.FacComentario)
+            @Html.TextAreaFor(x => x.FacComentario, new { rows = "3", @class = "form-control col-12", placeholder = "Ingrese una observación (opcional)..." })
+        </div>
     </div>
 </div>
 

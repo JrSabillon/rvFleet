@@ -35,6 +35,7 @@ namespace rvFleet.Models
         public Nullable<System.DateTime> FacFechaOrden { get; set; }
         public string FacKilometraje { get; set; }
         public string FacUsuarioPago { get; set; }
+        public Nullable<bool> FacAplicaImpuesto { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<archivofactura> archivofactura { get; set; }

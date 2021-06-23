@@ -1,0 +1,282 @@
+﻿@model rvFleet.Models.vehiculos
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row align-items-center">
+    <div class="col-12 col-md-6">
+        <h2>Editar vehículo</h2>
+    </div>
+    <div class="col-12 col-md-6 align-self-center">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent shadow">
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "Home")">Inicio</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Control", "Vehicles")">Control</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Editar</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<hr />
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <label>@Html.Raw(ViewBag.Message)</label>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@using (Html.BeginForm("Edit", "Vehicles", FormMethod.Post, new { id = "form-newVehicle", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(x => x.VehCodigoVehiculo)
+    <ul class="nav nav-tabs" role="tablist" id="nav-tab">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#div-tab-data" role="tab" aria-selected="true">
+                Datos del vehículo
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#div-tab-files" role="tab" aria-selected="true">
+                Archivos
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content mt-4">
+        <div id="div-tab-data" class="tab-pane fade show active">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehPlaca)
+                    @Html.TextBoxFor(x => x.VehPlaca, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehPlaca, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehVIN)
+                    @Html.TextBoxFor(x => x.VehVIN, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehVIN, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehMotor)
+                    @Html.TextBoxFor(x => x.VehMotor, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehMotor, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehCilindraje)
+                    @Html.TextBoxFor(x => x.VehCilindraje, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehCilindraje, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehAno)
+                    @Html.TextBoxFor(x => x.VehAno, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehAno, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehColor)
+                    @Html.TextBoxFor(x => x.VehColor, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehColor, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehMarca)
+                    @Html.TextBoxFor(x => x.VehMarca, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehMarca, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehModelo)
+                    @Html.TextBoxFor(x => x.VehModelo, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehModelo, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehFechaMatricula)
+                    @Html.TextBoxFor(x => x.VehFechaMatricula, "{0:yyyy-MM-dd}", new { @class = "form-control col-12", type = "date" })
+                    @Html.ValidationMessageFor(x => x.VehFechaMatricula, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <fieldset>
+                <legend class="form-group">Datos adicionales</legend>
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                        @Html.LabelFor(x => x.VehCodigoAresSun)
+                        @Html.TextBoxFor(x => x.VehCodigoAresSun, null, new { @class = "form-control col-12" })
+                        @Html.ValidationMessageFor(x => x.VehCodigoAresSun, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                        @Html.LabelFor(x => x.VehNumeroPoliza)
+                        @Html.TextBoxFor(x => x.VehNumeroPoliza, null, new { @class = "form-control col-12" })
+                        @Html.ValidationMessageFor(x => x.VehNumeroPoliza, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                        @Html.LabelFor(x => x.VehCodigoProveedor)
+                        @Html.DropDownList("VehCodigoProveedor", null, "NO ASIGNADO", new { @class = "form-control col-12" })
+                        @Html.ValidationMessageFor(x => x.VehCodigoProveedor, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                        @Html.LabelFor(x => x.VehCodigoEmpresa)
+                        @Html.DropDownList("VehCodigoEmpresa", null, "NO ASIGNADO", new { @class = "form-control col-12" })
+                        @Html.ValidationMessageFor(x => x.VehCodigoEmpresa, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                        @Html.LabelFor(x => x.VehCodigoUsuario)
+                        @Html.DropDownList("VehCodigoUsuario", null, "NO ASIGNADO", new { @class = "form-control col-12" })
+                        @Html.ValidationMessageFor(x => x.VehCodigoUsuario, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div id="div-tab-files" class="tab-pane fade">
+            <div class="table-responsive">
+                <table style="border-spacing: 25px; border-collapse: separate;">
+                    <tr>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehUrlFotoRevision))
+                                {
+                                    <img id="img-revision" class="card-img-top img-thumbnail img-fluid" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img id="img-revision" class="card-img-top" src="@Url.Content($"~{Model.VehUrlFotoRevision}")" alt="Card image cap">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Boleta de revisión</h5>
+                                    @Html.TextBoxFor(x => x.ImgRevision, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <div class="d-inline">
+                                        <button class="btn btn-info btn-sm">
+                                            <i class="fa fa-eye"></i>
+                                            Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehFotoFrontal))
+                                {
+                                    <img id="img-delantera" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img id="img-delantera" class="card-img-top" src="@Url.Content($"~{Model.VehFotoFrontal}")" alt="Card image cap">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Fotografía delantera</h5>
+                                    @Html.TextBoxFor(x => x.ImgDelantera, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehFotoLateralIzquierda))
+                                {
+                                    <img id="img-izquierda" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img id="img-izquierda" class="card-img-top" src="@Url.Content($"~{Model.VehFotoLateralIzquierda}")" alt="Card image cap">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Fotografía izquierda</h5>
+                                    @Html.TextBoxFor(x => x.ImgIzquierda, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehFotoLateralDerecha))
+                                {
+                                    <img id="img-derecha" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img id="img-derecha" class="card-img-top" src="@Url.Content($"~{Model.VehFotoLateralDerecha}")" alt="Card image cap">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Fotografía derecha</h5>
+                                    @Html.TextBoxFor(x => x.ImgDerecha, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehFotoTrasera))
+                                {
+                                    <img id="img-trasera" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                }
+                                else
+                                {
+                                    <img id="img-trasera" class="card-img-top" src="@Url.Content($"~{Model.VehFotoTrasera}")" alt="Card image cap">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Fotografía trasera</h5>
+                                    @Html.TextBoxFor(x => x.ImgTrasera, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <button class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br />
+
+        <button class="btn btn-outline-success">
+            <i class="fa fa-save"></i>
+            Guardar
+        </button>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#ImgRevision").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-revision').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $("#ImgDelantera").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-delantera').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>

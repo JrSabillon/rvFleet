@@ -55,6 +55,7 @@
     <Property Name="FacFechaOrden" Type="datetime" Precision="0" />
     <Property Name="FacKilometraje" Type="varchar" MaxLength="50" />
     <Property Name="FacUsuarioPago" Type="varchar" MaxLength="150" />
+    <Property Name="FacAplicaImpuesto" Type="bit" />
   </EntityType>
   <EntityType Name="kilometrajehistorico">
     <Key>
@@ -64,7 +65,9 @@
     <Property Name="KilCodigoVehiculo" Type="int" Nullable="false" />
     <Property Name="KilFechaIngreso" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="KilKilometraje" Type="int" Nullable="false" />
-    <Property Name="KilComentario" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="KilComentario" Type="varchar" MaxLength="250" />
+    <Property Name="KilUsuarioIngreso" Type="varchar" MaxLength="50" />
+    <Property Name="KilFotografia" Type="varchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="proveedor">
     <Key>
@@ -94,6 +97,7 @@
     </Key>
     <Property Name="CodigoRubro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NombreRubro" Type="varchar" MaxLength="250" />
+    <Property Name="DistanciaCambio" Type="int" />
   </EntityType>
   <EntityType Name="sucursales">
     <Key>
@@ -115,6 +119,7 @@
   <EntityType Name="vehiculos">
     <Key>
       <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="VehPlaca" />
       <PropertyRef Name="VehCodigoAresSun" />
     </Key>
     <Property Name="VehCodigoVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -123,14 +128,14 @@
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="VehAno" Type="int" Nullable="false" />
-    <Property Name="VehColor" Type="varchar" MaxLength="50" />
+    <Property Name="VehColor" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
     <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
     <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
     <Property Name="VehFotoFrontal" Type="varchar" MaxLength="500" />
@@ -176,10 +181,13 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
       <PropertyRef Name="VehMotor" />
       <PropertyRef Name="VehCilindraje" />
       <PropertyRef Name="VehAno" />
+      <PropertyRef Name="VehColor" />
       <PropertyRef Name="VehMarca" />
       <PropertyRef Name="VehModelo" />
       <PropertyRef Name="VehCodigoAresSun" />
+      <PropertyRef Name="VehCodigoEmpresa" />
       <PropertyRef Name="VehFechaMatricula" />
+      <PropertyRef Name="VehNumeroPoliza" />
       <PropertyRef Name="NombreUsuario" />
       <PropertyRef Name="NombreEmpresa" />
     </Key>
@@ -189,14 +197,14 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="VehAno" Type="int" Nullable="false" />
-    <Property Name="VehColor" Type="varchar" MaxLength="50" />
+    <Property Name="VehColor" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
     <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
     <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
     <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
@@ -250,6 +258,9 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <!--Errores durante la generación:
+advertencia 6035: La relación 'FK_kilometrajehistorico_vehiculos' tiene columnas que no forman parte de la clave de la tabla en el lado principal de la relación. Se excluyó la relación.
+        <Association Name="FK_kilometrajehistorico_vehiculos" />-->
   <Association Name="FK_vehiculos_proveedor">
     <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
     <End Role="vehiculos" Type="Self.vehiculos" Multiplicity="*" />

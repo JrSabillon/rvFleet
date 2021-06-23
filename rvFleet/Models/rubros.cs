@@ -22,6 +22,7 @@ namespace rvFleet.Models
     
         public int CodigoRubro { get; set; }
         public string NombreRubro { get; set; }
+        public Nullable<int> DistanciaCambio { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<rubrodetalle> rubrodetalle { get; set; }
