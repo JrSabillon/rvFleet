@@ -13,10 +13,6 @@
     }
 </style>
 
-<script src="~/Scripts/select2.js"></script>
-<link href="~/Content/css/select2.css" rel="stylesheet" />
-<link href="~/Content/select2_bootstrap4.css" rel="stylesheet" />
-
 <div class="row">
     <div class="col-12 col-md-6">
         <h2>Orden #0</h2>
@@ -51,7 +47,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6 form-group">
                         @Html.LabelFor(x => x.FacCodigoProveedor)
-                        @Html.DropDownList("FacCodigoProveedor", null, new { @class = "form-control" })
+                        @Html.DropDownList("FacCodigoProveedor", null, new { @class = "form-control", onchange = $"loadNumeroFactura('{Url.Action("GetNumeroFactura", "Orders")}');" })
                     </div>
                     <div class="col-12 col-md-6 form-group">
                         @Html.LabelFor(x => x.FacUsuarioPago)
@@ -71,10 +67,6 @@
                         @Html.LabelFor(x => x.FacNumeroFactura)
                         @Html.TextBoxFor(x => x.FacNumeroFactura, new { @class = "form-control col-12", placeholder = "xxx-xxx-xx-xxxxxxxx" })
                     </div>
-                    <div class="col-md-4 col-lg-3 form-group">
-                        @Html.LabelFor(x => x.FacKilometraje)
-                        @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", placeholder = "0", onchange = "formatThousands(this);" })
-                    </div>
                 </div>
             </div>
         </div>
@@ -90,15 +82,21 @@
         <div class="collapse show" id="collapse-factura-detalle">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                    <div class="col-sm-6 col-lg-3 col-xl-3 form-group">
                         <label>Vehículo</label>
-                        @Html.DropDownList("DetPlacaVehiculo", null, new { @class = "form-control col-12" })
+                        @Html.DropDownList("DetPlacaVehiculo", null, new { @class = "form-control col-12", onchange = "VerifyVehicleRegistry();" })
                     </div>
-                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                    <div class="col-sm-6 col-lg-3 form-group">
+                        <label>Kilometraje</label>
+                        <input type="text" name="DetKilometraje" id="DetKilometraje" class="form-control col-12" placeholder="0" onchange="formatThousands(this);" />
+                        @*@Html.LabelFor(x => x.FacKilometraje)*@
+                        @*@Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", placeholder = "0", onchange = "formatThousands(this);" })*@
+                    </div>
+                    <div class="col-sm-6 col-lg-3 col-xl-3 form-group">
                         <label>Rubro</label>
                         @Html.DropDownList("DetCodigoRubro", null, new { @class = "form-control col-12", id = "select-rubro", onchange = $"LoadRubroDetalles('{Url.Action("GetRubroDetalles", "Orders")}');" })
                     </div>
-                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                    <div class="col-sm-6 col-lg-3 col-xl-3 form-group">
                         <label>Detalle</label>
                         @Html.DropDownList("DetCodigoDescripcion", null, new { @class = "form-control col-12", id = "select-rubroDetalle", onchange = "ValidateRubroDetalle();" })
                     </div>
@@ -109,16 +107,32 @@
                         <label>Decripción</label>
                         <textarea rows="3" class="form-control col-12" id="textarea-description" placeholder="Ingresar descripción para el detalle de la factura..."></textarea>
                     </div>
-                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                    <div class="col-sm-6 col-lg-3 col-xl-3 form-group">
                         <label>Cantidad</label>
                         <input type="number" min="0" max="999" class="form-control col-12" value="1" name="DetCantidad" id="DetCantidad" placeholder="0" />
                     </div>
-                    <div class="col-sm-6 col-lg-4 col-xl-3 form-group">
+                    <div class="col-sm-6 col-lg-3 col-xl-3 form-group">
                         <label>Precio</label>
                         <input type="text" class="form-control col-12 decimal" name="DetValor" id="DetValor" placeholder="0.00" />
                     </div>
-                    <div class="col-12">
-                        <button class="btn btn-outline-success" type="button" onclick="AddDetail();">Agregar detalle</button>
+                </div>
+
+                <div class="row align-items-end">
+                    <div class="col-12 col-lg-6 form-group">
+                        <button id="button-saveDetail" class="btn btn-outline-success" type="button" onclick="AddDetail();">
+                            <i class="fa fa-save"></i>
+                            Agregar detalle
+                        </button>
+                        <button id="button-updateDetail" class="btn btn-outline-success d-none" type="button" onclick="UpdateDetail();">
+                            <i class="fa fa-pencil"></i>
+                            Modificar detalle
+                        </button>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="form-check float-left float-lg-right">
+                            <input type="checkbox" class="form-check-input" id="input-check-imp" name="FacAplicaImpuesto">
+                            <label class="form-check-label" for="input-check-imp">Agregar Impuesto 15%</label>
+                        </div>
                     </div>
                 </div>
 
@@ -127,11 +141,12 @@
                 <div class="alert alert-danger d-none" id="div-alert-message">
                     <label id="label-alert-message"></label>
                 </div>
-                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                <div id="table-detail" class="table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-striped table-bordered">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Vehículo</th>
+                                <th>Kilometraje</th>
                                 <th>Rubro</th>
                                 <th>Detalle</th>
                                 <th>Cantidad</th>

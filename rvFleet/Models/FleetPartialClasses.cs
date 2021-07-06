@@ -33,8 +33,16 @@ namespace rvFleet.Models
         public HttpPostedFileBase ImgIzquierda { get; set; }
         public HttpPostedFileBase ImgDerecha { get; set; }
         public HttpPostedFileBase ImgTrasera { get; set; }
+        public HttpPostedFileBase ImgMotor { get; set; }
+        public HttpPostedFileBase ImgInterior { get; set; }
     }
 
     [MetadataType(typeof(vehiclesMetadata))]
     public partial class vehiclefulldata { }
+
+    public partial class GetVehicleGraphData_Result
+    {
+        public string BackgroundColor { get; set; }
+        public string BorderColor { get; set; }
+    }
 }

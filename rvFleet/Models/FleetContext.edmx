@@ -41,7 +41,24 @@
           <Property Name="DetCantidad" Type="int" Nullable="false" />
           <Property Name="DetPlacaVehiculo" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="DetCodigoRubro" Type="varchar" MaxLength="25" />
+          <Property Name="DetKilometraje" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'def.rvfleet.facturahistorico' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="facturahistorico">
+          <Property Name="FechaPago" Type="varchar" MaxLength="50" />
+          <Property Name="FechaFacturo" Type="varchar" MaxLength="50" />
+          <Property Name="UsuarioPago" Type="varchar" MaxLength="100" />
+          <Property Name="Empresa" Type="varchar" MaxLength="250" />
+          <Property Name="NumeroFactura" Type="varchar" MaxLength="100" />
+          <Property Name="Detalle" Type="varchar" MaxLength="500" />
+          <Property Name="Valor" Type="varchar" MaxLength="50" />
+          <Property Name="Vehiculo" Type="varchar" MaxLength="100" />
+          <Property Name="Kilometraje" Type="varchar" MaxLength="50" />
+          <Property Name="Rubro" Type="varchar" MaxLength="150" />
+          <Property Name="FechaEntregaAdmin" Type="varchar" MaxLength="50" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="250" />
+        </EntityType>-->
         <EntityType Name="facturas">
           <Key>
             <PropertyRef Name="FacCodigoOrden" />
@@ -58,7 +75,6 @@
           <Property Name="FacPagado" Type="bool" Nullable="false" />
           <Property Name="FacCodigoUsuarioIngreso" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="FacFechaOrden" Type="datetime" Precision="0" />
-          <Property Name="FacKilometraje" Type="varchar" MaxLength="50" />
           <Property Name="FacUsuarioPago" Type="varchar" MaxLength="150" />
           <Property Name="FacAplicaImpuesto" Type="bit" />
         </EntityType>
@@ -147,37 +163,12 @@
           <Property Name="VehFotoLateralDerecha" Type="varchar" MaxLength="500" />
           <Property Name="VehFotoLateralIzquierda" Type="varchar" MaxLength="500" />
           <Property Name="VehFotoTrasera" Type="varchar" MaxLength="500" />
+          <Property Name="VehFotoMotor" Type="varchar" MaxLength="500" />
+          <Property Name="VehFotoInterior" Type="varchar" MaxLength="500" />
+          <Property Name="VehKilometraje" Type="int" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'def.rvfleet.usuarios' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <EntityType Name="usuarios">
-          <Key>
-            <PropertyRef Name="CodigoRRHH" />
-            <PropertyRef Name="IdUsuario" />
-            <PropertyRef Name="Contrasena" />
-            <PropertyRef Name="Estado" />
-            <PropertyRef Name="FechaCreacion" />
-            <PropertyRef Name="NombreUsuario" />
-            <PropertyRef Name="IdUbicacion" />
-            <PropertyRef Name="IdentidadUsuario" />
-            <PropertyRef Name="FechaIngreso" />
-            <PropertyRef Name="IdEmpresa" />
-          </Key>
-          <Property Name="CodigoRRHH" Type="int" Nullable="false" />
-          <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Contrasena" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Estado" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="FechaCreacion" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="IdUbicacion" Type="int" Nullable="false" />
-          <Property Name="Jefe" Type="varchar" MaxLength="50" />
-          <Property Name="Correo" Type="varchar" MaxLength="100" />
-          <Property Name="IdentidadUsuario" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="FechaIngreso" Type="datetime" Precision="0" Nullable="false" />
-          <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
-        </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vehiclefulldata">
           <Key>
             <PropertyRef Name="VehCodigoVehiculo" />
@@ -263,8 +254,8 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errores durante la generación:
-advertencia 6035: La relación 'FK_kilometrajehistorico_vehiculos' tiene columnas que no forman parte de la clave de la tabla en el lado principal de la relación. Se excluyó la relación.
+        <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_kilometrajehistorico_vehiculos' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
         <Association Name="FK_kilometrajehistorico_vehiculos" />-->
         <Association Name="FK_vehiculos_proveedor">
           <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
@@ -278,6 +269,9 @@ advertencia 6035: La relación 'FK_kilometrajehistorico_vehiculos' tiene columna
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+          <Parameter Name="VehPlaca" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="rvfleetModelStoreContainer">
           <EntitySet Name="archivofactura" EntityType="Self.archivofactura" Schema="" store:Type="Tables" />
           <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" Schema="" store:Type="Tables" />
@@ -290,22 +284,6 @@ advertencia 6035: La relación 'FK_kilometrajehistorico_vehiculos' tiene columna
           <EntitySet Name="sucursales" EntityType="Self.sucursales" Schema="" store:Type="Tables" />
           <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" Schema="" store:Type="Tables" />
           <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="" store:Type="Tables" />
-          <EntitySet Name="usuarios" EntityType="Self.usuarios" store:Type="Views" store:Schema="">
-            <DefiningQuery>SELECT
-`usuarios`.`CodigoRRHH`, 
-`usuarios`.`IdUsuario`, 
-`usuarios`.`Contrasena`, 
-`usuarios`.`Estado`, 
-`usuarios`.`FechaCreacion`, 
-`usuarios`.`NombreUsuario`, 
-`usuarios`.`IdUbicacion`, 
-`usuarios`.`Jefe`, 
-`usuarios`.`Correo`, 
-`usuarios`.`IdentidadUsuario`, 
-`usuarios`.`FechaIngreso`, 
-`usuarios`.`IdEmpresa`
-FROM `rvfleet.usuarios` AS `usuarios`</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
             <DefiningQuery>SELECT
 `vehiclefulldata`.`VehCodigoVehiculo`, 
@@ -365,7 +343,6 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
           <EntitySet Name="sucursales" EntityType="rvfleetModel.sucursales" />
           <EntitySet Name="ubicacionhistorica" EntityType="rvfleetModel.ubicacionhistorica" />
           <EntitySet Name="vehiculos" EntityType="rvfleetModel.vehiculos" />
-          <EntitySet Name="usuarios" EntityType="rvfleetModel.usuarios" />
           <EntitySet Name="vehiclefulldata" EntityType="rvfleetModel.vehiclefulldata" />
           <AssociationSet Name="FK__facturas" Association="rvfleetModel.FK__facturas">
             <End Role="facturas" EntitySet="facturas" />
@@ -387,7 +364,19 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
             <End Role="rubros" EntitySet="rubros" />
             <End Role="rubrodetalle" EntitySet="rubrodetalle" />
           </AssociationSet>
-        </EntityContainer>
+          <FunctionImport Name="GetVehicleGraphData" ReturnType="Collection(rvfleetModel.GetVehicleGraphData_Result)">
+            <Parameter Name="VehPlaca" Mode="In" Type="String" />
+          </FunctionImport>
+          </EntityContainer>
+        <ComplexType Name="GetVehicleGraphData_Result" >
+          <Property Type="Int32" Name="Orden" Nullable="false" />
+          <Property Type="Int32" Name="CodigoRubro" Nullable="false" />
+          <Property Type="String" Name="NombreRubro" Nullable="false" />
+          <Property Type="Int32" Name="KilometrajeFacturado" Nullable="false" />
+          <Property Type="Int32" Name="KilometrajeActual" Nullable="false" />
+          <Property Type="Int32" Name="Diferencia" Nullable="false" />
+          <Property Type="Double" Name="Porcentaje" Nullable="false" />
+        </ComplexType>
         <EntityType Name="archivofactura">
           <Key>
             <PropertyRef Name="FacArchivoCodigo" />
@@ -425,6 +414,7 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
           <Property Name="DetCantidad" Type="Int32" Nullable="false" />
           <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="DetCodigoRubro" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="DetKilometraje" Type="Int32" Nullable="false" />
           <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK_detallefactura_facturas" FromRole="detallefactura" ToRole="facturas" />
         </EntityType>
         <EntityType Name="facturas">
@@ -443,7 +433,6 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
           <Property Name="FacPagado" Type="Boolean" Nullable="false" />
           <Property Name="FacCodigoUsuarioIngreso" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FacFechaOrden" Type="DateTime" />
-          <Property Name="FacKilometraje" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FacUsuarioPago" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="FacAplicaImpuesto" Type="Boolean" />
           <NavigationProperty Name="archivofactura" Relationship="rvfleetModel.FK__facturas" FromRole="facturas" ToRole="archivofactura" />
@@ -539,33 +528,10 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
           <Property Name="VehFotoLateralDerecha" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="VehFotoLateralIzquierda" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="VehFotoTrasera" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehFotoMotor" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehFotoInterior" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="VehKilometraje" Type="Int32" />
           <NavigationProperty Name="proveedor" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="vehiculos" ToRole="proveedor" />
-        </EntityType>
-        <EntityType Name="usuarios">
-          <Key>
-            <PropertyRef Name="CodigoRRHH" />
-            <PropertyRef Name="IdUsuario" />
-            <PropertyRef Name="Contrasena" />
-            <PropertyRef Name="Estado" />
-            <PropertyRef Name="FechaCreacion" />
-            <PropertyRef Name="NombreUsuario" />
-            <PropertyRef Name="IdUbicacion" />
-            <PropertyRef Name="IdentidadUsuario" />
-            <PropertyRef Name="FechaIngreso" />
-            <PropertyRef Name="IdEmpresa" />
-          </Key>
-          <Property Name="CodigoRRHH" Type="Int32" Nullable="false" />
-          <Property Name="IdUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Contrasena" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Estado" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
-          <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="IdUbicacion" Type="Int32" Nullable="false" />
-          <Property Name="Jefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="IdentidadUsuario" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
-          <Property Name="IdEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="vehiclefulldata">
           <Key>
@@ -664,6 +630,7 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetVehicleGraphData1_Result" />
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -696,6 +663,7 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
           <EntitySetMapping Name="detallefactura">
             <EntityTypeMapping TypeName="rvfleetModel.detallefactura">
               <MappingFragment StoreEntitySet="detallefactura">
+                <ScalarProperty Name="DetKilometraje" ColumnName="DetKilometraje" />
                 <ScalarProperty Name="DetCodigoRubro" ColumnName="DetCodigoRubro" />
                 <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
                 <ScalarProperty Name="DetCantidad" ColumnName="DetCantidad" />
@@ -711,7 +679,6 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
               <MappingFragment StoreEntitySet="facturas">
                 <ScalarProperty Name="FacAplicaImpuesto" ColumnName="FacAplicaImpuesto" />
                 <ScalarProperty Name="FacUsuarioPago" ColumnName="FacUsuarioPago" />
-                <ScalarProperty Name="FacKilometraje" ColumnName="FacKilometraje" />
                 <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
                 <ScalarProperty Name="FacCodigoUsuarioIngreso" ColumnName="FacCodigoUsuarioIngreso" />
                 <ScalarProperty Name="FacPagado" ColumnName="FacPagado" />
@@ -793,6 +760,9 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
           <EntitySetMapping Name="vehiculos">
             <EntityTypeMapping TypeName="rvfleetModel.vehiculos">
               <MappingFragment StoreEntitySet="vehiculos">
+                <ScalarProperty Name="VehKilometraje" ColumnName="VehKilometraje" />
+                <ScalarProperty Name="VehFotoInterior" ColumnName="VehFotoInterior" />
+                <ScalarProperty Name="VehFotoMotor" ColumnName="VehFotoMotor" />
                 <ScalarProperty Name="VehFotoTrasera" ColumnName="VehFotoTrasera" />
                 <ScalarProperty Name="VehFotoLateralIzquierda" ColumnName="VehFotoLateralIzquierda" />
                 <ScalarProperty Name="VehFotoLateralDerecha" ColumnName="VehFotoLateralDerecha" />
@@ -813,24 +783,6 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
                 <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
                 <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
                 <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="usuarios">
-            <EntityTypeMapping TypeName="rvfleetModel.usuarios">
-              <MappingFragment StoreEntitySet="usuarios">
-                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
-                <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
-                <ScalarProperty Name="Correo" ColumnName="Correo" />
-                <ScalarProperty Name="Jefe" ColumnName="Jefe" />
-                <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
-                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
-                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -858,6 +810,19 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetVehicleGraphData" FunctionName="rvfleetModel.Store.GetVehicleGraphData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleGraphData_Result">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
+                <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+                <ScalarProperty Name="KilometrajeFacturado" ColumnName="KilometrajeFacturado" />
+                <ScalarProperty Name="KilometrajeActual" ColumnName="KilometrajeActual" />
+                <ScalarProperty Name="Diferencia" ColumnName="Diferencia" />
+                <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

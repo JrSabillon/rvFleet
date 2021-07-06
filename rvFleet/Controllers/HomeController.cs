@@ -31,7 +31,9 @@ namespace rvFleet.Controllers
                 if(vehicle != null)
                 {
                     //el usuario tiene un vehiculo asignado, verificar que ya ingreso el kilometraje de hoy.
+                    //TODO: Descomentar para que muestre la alerta de subir el kilometraje.
                     ViewBag.KilometrajeUploaded = kilometrajeHistoricoViewModel.KilometrajeUploaded(vehicle.VehCodigoVehiculo);
+                    //ViewBag.KilometrajeUploaded = true;
                 }
 
                 return View(model);

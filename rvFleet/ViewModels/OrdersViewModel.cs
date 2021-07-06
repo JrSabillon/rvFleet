@@ -206,7 +206,6 @@ namespace rvFleet.ViewModels
                     CurrentFactura.FacFechaOrden = factura.FacFechaOrden;
                     CurrentFactura.FacFechaFactura = factura.FacFechaFactura;
                     CurrentFactura.FacNumeroFactura = factura.FacNumeroFactura;
-                    CurrentFactura.FacKilometraje = factura.FacKilometraje;
                     CurrentFactura.FacComentario = factura.FacComentario;
                     CurrentFactura.FacAplicaImpuesto = factura.FacAplicaImpuesto;
                     CurrentFactura.FacValorFactura = factura.FacAplicaImpuesto.Value ? total * 0.15 + total : total;
@@ -217,6 +216,33 @@ namespace rvFleet.ViewModels
                     CurrentFactura.detallefactura = factura.detallefactura;
                     context.SaveChanges();
                     return CurrentFactura;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public string GetNumeroFactura(int CodigoProveedor)
+        {
+            try
+            {
+                string result = string.Empty;
+
+                using (var context = new rvfleetEntities())
+                {
+                    var factura = context.facturas.Where(x => x.FacCodigoProveedor.Equals(CodigoProveedor) && !string.IsNullOrEmpty(x.FacNumeroFactura))
+                        .OrderByDescending(x => x.FacCodigoOrden).FirstOrDefault();
+
+                    if(factura != null)
+                        result = factura.FacNumeroFactura;
+
+                    return result;
                 }
             }
             catch (MySqlException dbExc)

@@ -4,6 +4,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .img-thumbnail img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+</style>
+
 <div class="row align-items-center">
     <div class="col-12 col-md-6">
         <h2>Editar vehículo</h2>
@@ -142,17 +150,23 @@
                             <div class="card" style="width: 18rem;">
                                 @if (string.IsNullOrEmpty(Model.VehUrlFotoRevision))
                                 {
-                                    <img id="img-revision" class="card-img-top img-thumbnail img-fluid" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    //
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-revision" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img id="img-revision" class="card-img-top" src="@Url.Content($"~{Model.VehUrlFotoRevision}")" alt="Card image cap">
+                                    @*~/Content/images/logos/rv.jpg*@
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-revision" class="card-img-top img-thumbnail" width="286" height="230" src="@Url.Content($"~{Model.VehUrlFotoRevision}")" alt="Card image cap">
+                                    </div>
                                 }
                                 <div class="card-body">
                                     <h5 class="card-title">Boleta de revisión</h5>
                                     @Html.TextBoxFor(x => x.ImgRevision, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
                                     <div class="d-inline">
-                                        <button class="btn btn-info btn-sm">
+                                        <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehUrlFotoRevision', 'Boleta de revisión')">
                                             <i class="fa fa-eye"></i>
                                             Ver
                                         </button>
@@ -164,16 +178,20 @@
                             <div class="card" style="width: 18rem;">
                                 @if (string.IsNullOrEmpty(Model.VehFotoFrontal))
                                 {
-                                    <img id="img-delantera" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-delantera" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img id="img-delantera" class="card-img-top" src="@Url.Content($"~{Model.VehFotoFrontal}")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-delantera" class="card-img-top" src="@Url.Content($"~{Model.VehFotoFrontal}")" alt="Card image cap">
+                                    </div>
                                 }
                                 <div class="card-body">
                                     <h5 class="card-title">Fotografía delantera</h5>
                                     @Html.TextBoxFor(x => x.ImgDelantera, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
-                                    <button class="btn btn-info btn-sm">
+                                    <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehFotoFrontal', 'Fotografía frontal')">
                                         <i class="fa fa-eye"></i>
                                         Ver
                                     </button>
@@ -184,16 +202,20 @@
                             <div class="card" style="width: 18rem;">
                                 @if (string.IsNullOrEmpty(Model.VehFotoLateralIzquierda))
                                 {
-                                    <img id="img-izquierda" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-izquierda" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img id="img-izquierda" class="card-img-top" src="@Url.Content($"~{Model.VehFotoLateralIzquierda}")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-izquierda" class="card-img-top" src="@Url.Content($"~{Model.VehFotoLateralIzquierda}")" alt="Card image cap">
+                                    </div>
                                 }
                                 <div class="card-body">
                                     <h5 class="card-title">Fotografía izquierda</h5>
                                     @Html.TextBoxFor(x => x.ImgIzquierda, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
-                                    <button class="btn btn-info btn-sm">
+                                    <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehFotoLateralIzquierda', 'Fotografía izquierda')">
                                         <i class="fa fa-eye"></i>
                                         Ver
                                     </button>
@@ -204,16 +226,20 @@
                             <div class="card" style="width: 18rem;">
                                 @if (string.IsNullOrEmpty(Model.VehFotoLateralDerecha))
                                 {
-                                    <img id="img-derecha" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-derecha" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img id="img-derecha" class="card-img-top" src="@Url.Content($"~{Model.VehFotoLateralDerecha}")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-derecha" class="card-img-top" src="@Url.Content($"~{Model.VehFotoLateralDerecha}")" alt="Card image cap">
+                                    </div>
                                 }
                                 <div class="card-body">
                                     <h5 class="card-title">Fotografía derecha</h5>
                                     @Html.TextBoxFor(x => x.ImgDerecha, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
-                                    <button class="btn btn-info btn-sm">
+                                    <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehFotoLateralDerecha', 'Fotografía derecha')">
                                         <i class="fa fa-eye"></i>
                                         Ver
                                     </button>
@@ -224,16 +250,68 @@
                             <div class="card" style="width: 18rem;">
                                 @if (string.IsNullOrEmpty(Model.VehFotoTrasera))
                                 {
-                                    <img id="img-trasera" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-trasera" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
                                 }
                                 else
                                 {
-                                    <img id="img-trasera" class="card-img-top" src="@Url.Content($"~{Model.VehFotoTrasera}")" alt="Card image cap">
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-trasera" class="card-img-top" src="@Url.Content($"~{Model.VehFotoTrasera}")" alt="Card image cap">
+                                    </div>
                                 }
                                 <div class="card-body">
                                     <h5 class="card-title">Fotografía trasera</h5>
                                     @Html.TextBoxFor(x => x.ImgTrasera, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
-                                    <button class="btn btn-info btn-sm">
+                                    <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehFotoTrasera', 'Fotografía trasera')">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehFotoMotor))
+                                {
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-motor" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-motor" class="card-img-top" src="@Url.Content($"~{Model.VehFotoMotor}")" alt="Card image cap">
+                                    </div>
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Fotografía del motor</h5>
+                                    @Html.TextBoxFor(x => x.ImgMotor, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehFotoMotor', 'Fotografía del motor')">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="card" style="width: 18rem;">
+                                @if (string.IsNullOrEmpty(Model.VehFotoTrasera))
+                                {
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-interior" class="card-img-top" src="@Url.Content("~/Content/images/others/placeholder.png")" alt="Card image cap">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="img-thumbnail" style="width: 286px; height: 230px;">
+                                        <img id="img-interior" class="card-img-top" src="@Url.Content($"~{Model.VehFotoInterior}")" alt="Card image cap">
+                                    </div>
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">Fotografía interior</h5>
+                                    @Html.TextBoxFor(x => x.ImgInterior, new { type = "file", @class = "form-control-file mb-2", accept = "image/*" })
+                                    <button type="button" class="btn btn-info btn-sm" onclick="ViewPhoto('@Model.VehFotoInterior', 'Fotografía interior')">
                                         <i class="fa fa-eye"></i>
                                         Ver
                                     </button>
@@ -252,6 +330,26 @@
         </button>
     </div>
 }
+
+<!-- Modal -->
+<div class="modal fade" id="modal-img" tabindex="-1" role="dialog" aria-labelledby="modal-img" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-img-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="img-preview" style="width: 100%; height: auto;" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(function () {
@@ -278,5 +376,92 @@
                 reader.readAsDataURL(this.files[0]);
             }
         });
+
+        $("#ImgIzquierda").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-izquierda').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $("#ImgDerecha").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-derecha').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $("#ImgTrasera").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-trasera').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $("#ImgMotor").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-motor').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $("#ImgInterior").change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-interior').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $('#VehCodigoProveedor').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+        });
+
+        $('#VehCodigoEmpresa').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+        });
+
+        $('#VehCodigoUsuario').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+        });
+
     });
+
+    function ViewPhoto(source, title) {
+        if (source == '') {
+            alert('Adjunte una imagen para poder visualizarla.');
+            return;
+        }
+
+        $('#img-preview').attr("src", source);
+        $('#modal-img-title').text(title);
+        $('#modal-img').modal();
+    }
 </script>

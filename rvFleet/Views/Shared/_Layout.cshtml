@@ -7,13 +7,16 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/fontawesome")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryui")
     @Styles.Render("~/Content/cssjqryUi")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/jqueryui")*@
+    <script src="~/Scripts/select2.js"></script>
+    <link href="~/Content/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/select2_bootstrap4.css" rel="stylesheet" />
     <style>
-        .select2-search__field{
+        .select2-search__field {
             max-width: 100% !important;
         }
     </style>

@@ -21,15 +21,17 @@ namespace rvFleet.Controllers
         }
 
         // GET: Kilometraje
-        public ActionResult Upload(kilometrajehistorico Kilometraje, HttpPostedFileBase KilometrajeImg)
+        public ActionResult Upload(string KilKilometraje, HttpPostedFileBase KilometrajeImg)
         {
             try
             {
+                kilometrajehistorico Kilometraje = new kilometrajehistorico();
                 var user = BaseViewModel.GetUserData();
                 var vehicle = VehiclesViewModel.GetVehiculoUsuario(user.IdUsuario);
                 Kilometraje.KilUsuarioIngreso = user.IdUsuario;
                 Kilometraje.KilFechaIngreso = DateTime.Today;
                 Kilometraje.KilCodigoVehiculo = vehicle.VehCodigoVehiculo;
+                Kilometraje.KilKilometraje = Convert.ToInt32(KilKilometraje.Replace(",", ""));
                 Kilometraje.KilFotografia = this.SaveImageKilometraje(Kilometraje.KilCodigoVehiculo, KilometrajeImg);
 
                 KilometrajeViewModel.UploadKilometraje(Kilometraje);

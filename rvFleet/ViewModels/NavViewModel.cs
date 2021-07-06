@@ -5,16 +5,17 @@ using System.Web;
 using rvFleet.Models;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using rvFleet.App_Code;
 
 namespace rvFleet.ViewModels
 {
     public class NavViewModel
     {
-        
+
         public List<privilegio> GetPrivilegios(string UserId)
         {
             List<privilegio> privilegios = new List<privilegio>();
-            MySqlConnection conn = new MySqlConnection("server=127.0.0.1;user id=root;password=desarrollo;persistsecurityinfo=True;database=rvseguridad;");
+            MySqlConnection conn = new MySqlConnection(Constants.SecurityStaticConnection);
             
             try
             {

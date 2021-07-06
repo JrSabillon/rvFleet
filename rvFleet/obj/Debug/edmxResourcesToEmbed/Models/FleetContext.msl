@@ -27,6 +27,7 @@
     <EntitySetMapping Name="detallefactura">
       <EntityTypeMapping TypeName="rvfleetModel.detallefactura">
         <MappingFragment StoreEntitySet="detallefactura">
+          <ScalarProperty Name="DetKilometraje" ColumnName="DetKilometraje" />
           <ScalarProperty Name="DetCodigoRubro" ColumnName="DetCodigoRubro" />
           <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
           <ScalarProperty Name="DetCantidad" ColumnName="DetCantidad" />
@@ -42,7 +43,6 @@
         <MappingFragment StoreEntitySet="facturas">
           <ScalarProperty Name="FacAplicaImpuesto" ColumnName="FacAplicaImpuesto" />
           <ScalarProperty Name="FacUsuarioPago" ColumnName="FacUsuarioPago" />
-          <ScalarProperty Name="FacKilometraje" ColumnName="FacKilometraje" />
           <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
           <ScalarProperty Name="FacCodigoUsuarioIngreso" ColumnName="FacCodigoUsuarioIngreso" />
           <ScalarProperty Name="FacPagado" ColumnName="FacPagado" />
@@ -124,6 +124,9 @@
     <EntitySetMapping Name="vehiculos">
       <EntityTypeMapping TypeName="rvfleetModel.vehiculos">
         <MappingFragment StoreEntitySet="vehiculos">
+          <ScalarProperty Name="VehKilometraje" ColumnName="VehKilometraje" />
+          <ScalarProperty Name="VehFotoInterior" ColumnName="VehFotoInterior" />
+          <ScalarProperty Name="VehFotoMotor" ColumnName="VehFotoMotor" />
           <ScalarProperty Name="VehFotoTrasera" ColumnName="VehFotoTrasera" />
           <ScalarProperty Name="VehFotoLateralIzquierda" ColumnName="VehFotoLateralIzquierda" />
           <ScalarProperty Name="VehFotoLateralDerecha" ColumnName="VehFotoLateralDerecha" />
@@ -144,24 +147,6 @@
           <ScalarProperty Name="VehVIN" ColumnName="VehVIN" />
           <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
           <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="usuarios">
-      <EntityTypeMapping TypeName="rvfleetModel.usuarios">
-        <MappingFragment StoreEntitySet="usuarios">
-          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-          <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
-          <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
-          <ScalarProperty Name="Correo" ColumnName="Correo" />
-          <ScalarProperty Name="Jefe" ColumnName="Jefe" />
-          <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
-          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
-          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
-          <ScalarProperty Name="Estado" ColumnName="Estado" />
-          <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
-          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-          <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -189,5 +174,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetVehicleGraphData" FunctionName="rvfleetModel.Store.GetVehicleGraphData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleGraphData_Result">
+          <ScalarProperty Name="Orden" ColumnName="Orden" />
+          <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
+          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+          <ScalarProperty Name="KilometrajeFacturado" ColumnName="KilometrajeFacturado" />
+          <ScalarProperty Name="KilometrajeActual" ColumnName="KilometrajeActual" />
+          <ScalarProperty Name="Diferencia" ColumnName="Diferencia" />
+          <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -51,11 +51,20 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.95.4\lib\net46\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.14.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.14.0\lib\net45\Google.Protobuf.dll</HintPath>
@@ -90,6 +99,14 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
@@ -171,6 +188,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
     <Reference Include="Zstandard.Net, Version=1.1.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\Zstandard.Net.dll</HintPath>
     </Reference>
@@ -182,8 +200,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ExceptionsController.cs" />
+    <Compile Include="Controllers\GraphsController.cs" />
     <Compile Include="Controllers\KilometrajeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Models\archivofactura.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
@@ -214,6 +234,12 @@
     </Compile>
     <Compile Include="Models\FleetMetadata.cs" />
     <Compile Include="Models\FleetPartialClasses.cs" />
+    <Compile Include="Models\GetVehicleGraphData1_Result.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetVehicleGraphData_Result.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\kilometrajehistorico.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
@@ -232,15 +258,13 @@
     <Compile Include="Models\ubicacionhistorica.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\usuarios.cs">
-      <DependentUpon>FleetContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\vehiclefulldata.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vehiculos.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="POCO\FacturaHistorico.cs" />
     <Compile Include="POCO\ItemModel.cs" />
     <Compile Include="POCO\LoginModel.cs" />
     <Compile Include="POCO\VehicleModel.cs" />
@@ -335,6 +359,8 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\fontawesome\font-awesome.css" />
@@ -416,6 +442,8 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\dist\facturas.js" />
     <Content Include="Scripts\dist\index.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -643,6 +671,10 @@
     <Content Include="Views\Exceptions\Index.cshtml" />
     <Content Include="Views\Vehicles\New.cshtml" />
     <Content Include="Views\Vehicles\Edit.cshtml" />
+    <Content Include="Views\Graphs\Vehicles.cshtml" />
+    <Content Include="Views\Orders\Historic.cshtml" />
+    <Content Include="Views\Reports\Vehicles.cshtml" />
+    <Content Include="Views\Shared\_MonthlyCostsVehicles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -99,7 +99,7 @@
                             <p>Parece que aun no has subido el kilometraje de hoy, favor ingresa una foto del kilometraje de hoy y escribe en el recuadro de abajo el kilometraje.</p>
                             @Html.TextBox("KilometrajeImg", null, new { @class = "form-control-file", type = "file" })     
                             <br />
-                            @Html.TextBox("KilKilometraje", null, new { @class = "form-control col-12", placeholder = "Kilometraje" })
+                            @Html.TextBox("KilKilometraje", null, new { @class = "form-control col-12", placeholder = "Kilometraje", onchange = "formatThousands(this);" })
                         </div>
                         <div class="modal-footer">
                             <button id="button-upload" type="submit" class="btn btn-success" onclick="return CanUpload();">Subir</button>
@@ -111,9 +111,9 @@
     }
 }
 
-
 <script type="text/javascript">
     $(document).ready(function () {
+        
         if ($('#modal-kilometraje')) {
             setTimeout(function () {
                 $('#modal-kilometraje').modal({

@@ -4,20 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0993b476b0324aad8aa83cf21fc5bbbd" Name="Diagram1" ZoomLevel="41">
-        <EntityTypeShape EntityType="rvfleetModel.archivofactura" Width="1.5" PointX="5.25" PointY="7.25" />
-        <EntityTypeShape EntityType="rvfleetModel.conductorhistorico" Width="1.5" PointX="5.75" PointY="3.75" />
-        <EntityTypeShape EntityType="rvfleetModel.detallefactura" Width="1.5" PointX="5.25" PointY="10.375" />
-        <EntityTypeShape EntityType="rvfleetModel.facturas" Width="1.5" PointX="3" PointY="7.875" />
-        <EntityTypeShape EntityType="rvfleetModel.kilometrajehistorico" Width="1.5" PointX="7.75" PointY="3.75" />
-        <EntityTypeShape EntityType="rvfleetModel.proveedor" Width="1.5" PointX="0.75" PointY="5.625" />
-        <EntityTypeShape EntityType="rvfleetModel.rubrodetalle" Width="1.5" PointX="8" PointY="0.875" />
-        <EntityTypeShape EntityType="rvfleetModel.rubros" Width="1.5" PointX="5.75" PointY="1" />
-        <EntityTypeShape EntityType="rvfleetModel.sucursales" Width="1.5" PointX="7.75" PointY="6.75" />
-        <EntityTypeShape EntityType="rvfleetModel.ubicacionhistorica" Width="1.5" PointX="9.75" PointY="3.75" />
-        <EntityTypeShape EntityType="rvfleetModel.vehiculos" Width="1.5" PointX="3" PointY="1.375" />
-        <EntityTypeShape EntityType="rvfleetModel.usuarios" Width="1.5" PointX="9.75" PointY="6.75" />
-        <EntityTypeShape EntityType="rvfleetModel.vehiclefulldata" Width="1.5" PointX="11.75" PointY="0.75" />
+      <Diagram DiagramId="0993b476b0324aad8aa83cf21fc5bbbd" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="rvfleetModel.archivofactura" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="rvfleetModel.conductorhistorico" Width="1.5" PointX="7.75" PointY="3.75" />
+        <EntityTypeShape EntityType="rvfleetModel.detallefactura" Width="1.5" PointX="5.25" PointY="4.5" />
+        <EntityTypeShape EntityType="rvfleetModel.facturas" Width="1.5" PointX="3" PointY="2.25" />
+        <EntityTypeShape EntityType="rvfleetModel.kilometrajehistorico" Width="1.5" PointX="7.75" PointY="6.75" />
+        <EntityTypeShape EntityType="rvfleetModel.proveedor" Width="1.5" PointX="0.75" PointY="6" />
+        <EntityTypeShape EntityType="rvfleetModel.rubrodetalle" Width="1.5" PointX="10" PointY="0.875" />
+        <EntityTypeShape EntityType="rvfleetModel.rubros" Width="1.5" PointX="7.75" PointY="0.875" />
+        <EntityTypeShape EntityType="rvfleetModel.sucursales" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="rvfleetModel.ubicacionhistorica" Width="1.5" PointX="5.75" PointY="9.75" />
+        <EntityTypeShape EntityType="rvfleetModel.vehiculos" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="rvfleetModel.vehiclefulldata" Width="1.5" PointX="9.75" PointY="6.75" />
         <AssociationConnector Association="rvfleetModel.FK__facturas" />
         <AssociationConnector Association="rvfleetModel.FK_detallefactura_facturas" />
         <AssociationConnector Association="rvfleetModel.FK_facturas_proveedor" />

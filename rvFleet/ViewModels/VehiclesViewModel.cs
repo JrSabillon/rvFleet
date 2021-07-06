@@ -194,9 +194,55 @@ namespace rvFleet.ViewModels
                     CurrentVehicle.VehCodigoProveedor = vehicle.VehCodigoProveedor;
                     CurrentVehicle.VehCodigoEmpresa = vehicle.VehCodigoEmpresa;
                     CurrentVehicle.VehCodigoUsuario = vehicle.VehCodigoUsuario;
+                    CurrentVehicle.VehUrlFotoRevision = vehicle.VehUrlFotoRevision ?? CurrentVehicle.VehUrlFotoRevision;
+                    CurrentVehicle.VehFotoFrontal = vehicle.VehFotoFrontal ?? CurrentVehicle.VehFotoFrontal;
+                    CurrentVehicle.VehFotoLateralDerecha = vehicle.VehFotoLateralDerecha ?? CurrentVehicle.VehFotoLateralDerecha;
+                    CurrentVehicle.VehFotoLateralIzquierda = vehicle.VehFotoLateralIzquierda ?? CurrentVehicle.VehFotoLateralIzquierda;
+                    CurrentVehicle.VehFotoTrasera = vehicle.VehFotoTrasera ?? CurrentVehicle.VehFotoTrasera;
+                    CurrentVehicle.VehFotoMotor = vehicle.VehFotoMotor ?? CurrentVehicle.VehFotoMotor;
+                    CurrentVehicle.VehFotoInterior = vehicle.VehFotoInterior ?? CurrentVehicle.VehFotoInterior;
                     context.SaveChanges();
 
                     return CurrentVehicle;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public List<GetVehicleGraphData_Result> GetGraphData(string VehPlaca)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var graphData = context.GetVehicleGraphData(VehPlaca).ToList();
+                    foreach (var item in graphData)
+                    {
+                        if(item.Porcentaje > 70)
+                        {
+                            item.BackgroundColor = Colors.Green;
+                            item.BorderColor = Colors.GreenBorder;
+                        }
+                        else if(item.Porcentaje > 30)
+                        {
+                            item.BackgroundColor = Colors.Yellow;
+                            item.BorderColor = Colors.YellowBorder;
+                        }
+                        else
+                        {
+                            item.BackgroundColor = Colors.Red;
+                            item.BorderColor = Colors.RedBorder;
+                        }
+                    }
+
+                    return graphData;
                 }
             }
             catch (MySqlException dbExc)

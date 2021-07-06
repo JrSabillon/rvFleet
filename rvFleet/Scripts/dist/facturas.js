@@ -1,16 +1,17 @@
-﻿var detail_json_array = [];
+﻿
+var detailId = '', updatingRow = null;
+var detail_json_array = [];
 var json_factura = {
-    FacCodigoOrden: 0,
-    FacCodigoProveedor: '',
-    FacUsuarioPago: '',
-    FacFechaOrden: '',
-    FacFechaFactura: '',
-    FacNumeroFactura: '',
-    FacKilometraje: 0,
-    FacComentario: '',
-    FacAplicaImpuesto: 0,
-    detallefactura: detail_json_array
-}
+    FacCodigoOrden      : 0,
+    FacCodigoProveedor  : '',
+    FacUsuarioPago      : '',
+    FacFechaOrden       : '',
+    FacFechaFactura     : '',
+    FacNumeroFactura    : '',
+    FacComentario       : '',
+    FacAplicaImpuesto   : 0,
+    detallefactura      : detail_json_array
+};
 
 $(document).ready(function () {
     $('#FacCodigoProveedor').select2({
@@ -61,7 +62,7 @@ $(document).ready(function () {
             var total = 0;
 
             for (var i = 0; i < detail_json_array.length; i++) {
-                total = total + detail_json_array[i].DetValor;
+                total = total + (detail_json_array[i].DetValor * 1);
             }
 
             $('#span-caption-total').text(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
@@ -72,12 +73,25 @@ $(document).ready(function () {
 });
 
 function AddDetail() {
-    var vehicle, rubro, detail, amount, price;
+    var vehicle, rubro, detail, amount, price, detailId, kilometraje;
     vehicle = $('#DetPlacaVehiculo option:selected');
     rubro = $('#select-rubro option:selected');
     detail = $('#select-rubroDetalle option:selected');
     amount = $('#DetCantidad').val();
+    kilometraje = $('#DetKilometraje').val();
     price = $('#DetValor').val();
+    detailId = detail.val();
+
+
+    if (kilometraje.trim() == '') {
+        $('#DetKilometraje').addClass('is-invalid');
+        $('#div-alert-message').removeClass('d-none');
+        $('#label-alert-message').text('El kilometraje es obligatorio.');
+
+        return;
+    } else {
+        $('#DetKilometraje').removeClass('is-invalid');
+    }
 
     if (price == '') {
         $('#DetValor').addClass('is-invalid');
@@ -115,15 +129,20 @@ function AddDetail() {
         detail = detail.text();
     }
 
+    LoadJSON(vehicle.text(), rubro.val(), detail, amount, price, kilometraje.replace(',', ''));
     price = price * 1;
     $('#div-alert-message').addClass('d-none');
     var html = `<tr>
                         <td>${vehicle.text()}</td>
+                        <td>${kilometraje}</td>
                         <td>${rubro.text()}</td>
                         <td>${detail}</td>
                         <td>${amount}</td>
                         <td>${price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</td>
-                        <td class="text-center">
+                        <td class="text-center" style="white-space:nowrap">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="editDetail('${vehicle.val()}', '${kilometraje}', '${rubro.val()}', '${detail}', '${detailId}', '${amount}', '${price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}', event)">
+                                <i class="fa fa-pencil"></i>
+                            </button>
                             <button type="button" class="btn btn-danger btn-sm delete-button">
                                 <i class="fa fa-trash-o"></i>
                             </button>
@@ -134,9 +153,40 @@ function AddDetail() {
     $('#DetCantidad').val('1');
     $('#DetValor').val('');
     $('#textarea-description').val('');
+
     $("#select-rubroDetalle").val($("#select-rubroDetalle option:first").val()).trigger('change.select2');
-    LoadJSON(vehicle.text(), rubro.val(), detail, amount, price);
     CalculateTotal();
+}
+
+function editDetail(vehicle, kilometraje, rubro, detail, detailID, amount, price, e) {
+    detailId = detailID;
+    $('#DetPlacaVehiculo').val(vehicle).trigger('change.select2');
+    $('#select-rubro').val(rubro).trigger('change.select2');
+    $('#DetKilometraje').val(returnFormatThousands(kilometraje));
+    $('#DetCantidad').val(amount);
+    $('#DetValor').val(price);
+
+    if (detailId == 0) {
+        $('#textarea-description').val(detail);
+    }
+
+    updatingRow = $(e.target).closest('tr').index();
+    $('#button-updateDetail').removeClass('d-none');
+    $('#button-saveDetail').addClass('d-none');
+}
+
+function UpdateDetail() {
+    $('#table-detail tbody tr').eq(updatingRow).remove();
+    detail_json_array.splice(updatingRow, 1);
+    AddDetail();
+    $('#DetCantidad').val('1');
+    $('#DetValor').val('');
+    $('#textarea-description').val('');
+    $("#select-rubroDetalle").val($("#select-rubroDetalle option:first").val()).trigger('change.select2');
+    $('#button-updateDetail').addClass('d-none');
+    $('#button-saveDetail').removeClass('d-none');
+    
+    updatingRow = null;
 }
 
 function ValidateRubroDetalle() {
@@ -147,15 +197,24 @@ function ValidateRubroDetalle() {
     }
 }
 
-function LoadJSON(vehiculo, rubro, detalle, cantidad, precio) {
-    detail_json_array.push({ DetPlacaVehiculo: vehiculo, DetCodigoRubro: rubro, DetDescripcion: detalle, DetCantidad: cantidad, DetValor: precio });
+function LoadJSON(vehiculo, rubro, detalle, cantidad, precio, kilometraje) {
+    detail_json_array.push(
+        {
+            DetPlacaVehiculo: vehiculo,
+            DetCodigoRubro: rubro,
+            DetDescripcion: detalle,
+            DetCantidad: cantidad,
+            DetValor: precio,
+            DetKilometraje: kilometraje
+        }
+    );
 }
 
 function CalculateTotal() {
     var total = 0;
 
     for (var i = 0; i < detail_json_array.length; i++) {
-        total = total + detail_json_array[i].DetValor;
+        total = total + (detail_json_array[i].DetValor * 1);
     }
 
     if ($('#input-check-imp').is(':checked')) {
@@ -173,7 +232,6 @@ function createRequest(source, urlNew, urlEdit) {
     json_factura.FacFechaOrden = $('#FacFechaOrden').val();
     json_factura.FacFechaFactura = $('#FacFechaFactura').val();
     json_factura.FacNumeroFactura = $('#FacNumeroFactura').val();
-    json_factura.FacKilometraje = $('#FacKilometraje').val();
     json_factura.FacComentario = $('#FacComentario').val();
     json_factura.FacAplicaImpuesto = $('#input-check-imp').is(':checked');
     json_factura.detallefactura = detail_json_array;
@@ -183,13 +241,6 @@ function createRequest(source, urlNew, urlEdit) {
         $('#FacFechaOrden').addClass('is-invalid');
     } else {
         $('#FacFechaOrden').removeClass('is-invalid');
-    }
-
-    if (json_factura.FacKilometraje == '') {
-        flag = false;
-        $('#FacKilometraje').addClass('is-invalid');
-    } else {
-        $('#FacKilometraje').removeClass('is-invalid');
     }
 
     if (flag) {
@@ -237,7 +288,37 @@ function LoadRubroDetalles(url) {
             $('#select-rubroDetalle').append(`<option value="${item.CodigoDetalle}">${item.NombreDetalle}</option>`);
         });
 
+        if (detailId != '') {
+            $('#select-rubroDetalle').val(detailId).trigger('change.select2');
+            detailId = '';
+        }
         ValidateRubroDetalle();
         isLoading(false);
     });
+}
+
+function loadNumeroFactura(url) {
+    isLoading(true);
+
+    var proveedor = $('#FacCodigoProveedor');
+    $.get(url, { CodigoProveedor: proveedor.val() }, function (data) {
+        if (data.status == 200) {
+            $('#FacNumeroFactura').val(data.message);
+        }
+
+        isLoading(false);
+    });
+}
+
+function VerifyVehicleRegistry() {
+    if (detail_json_array.length > 0) {
+        var CurrentVehicle = $('#DetPlacaVehiculo option:selected').text();
+
+        $.each(detail_json_array, function (index, item) {
+            if (item.DetPlacaVehiculo == CurrentVehicle) {
+                $('#DetKilometraje').val(returnFormatThousands(item.DetKilometraje));
+                return;
+            }
+        });
+    }
 }

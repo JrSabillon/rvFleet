@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using rvFleet.ViewModels;
 using rvFleet.Models;
 using PagedList;
+using rvFleet.App_Code;
+using System.IO;
 
 namespace rvFleet.Controllers
 {
@@ -149,6 +151,15 @@ namespace rvFleet.Controllers
                     return View(vehicle);
                 }
 
+                //Salvar Imagenes
+                vehicle.VehUrlFotoRevision = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgRevision, "Revision");
+                vehicle.VehFotoFrontal = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgDelantera, "Frontal");
+                vehicle.VehFotoLateralDerecha = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgDerecha, "Derecha");
+                vehicle.VehFotoLateralIzquierda = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgIzquierda, "Izquierda");
+                vehicle.VehFotoTrasera = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgTrasera, "Trasera");
+                vehicle.VehFotoMotor = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgMotor, "Motor");
+                vehicle.VehFotoInterior = this.SaveImage(vehicle.VehCodigoVehiculo, vehicle.ImgInterior, "Interior");
+
                 var model = VehiclesViewModel.UpdateVehicle(vehicle);
 
                 ViewBag.Message = "Modificaciones realizadas exitósamente";
@@ -159,6 +170,29 @@ namespace rvFleet.Controllers
                 ViewBag.Message = exc.Message;
                 return View("Error");
             }
+        }
+
+        public string SaveImage(int CodigoVehiculo, HttpPostedFileBase Image, string TipoImagen)
+        {
+            if(Image != null)
+            {
+                string VehiculosPath = Constants.VehiculosPath;
+                string filePath = Server.MapPath($"~{VehiculosPath}/{CodigoVehiculo}/Imagenes");
+                string ext = Path.GetExtension(Image.FileName);
+                string _FileName = $"{TipoImagen}_{CodigoVehiculo}_{DateTime.Now.ToString("yyyyMMdd")}{ext}";
+
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
+                string _path = Path.Combine(filePath, _FileName);
+                Image.SaveAs(_path);
+
+                return $"{VehiculosPath}/{CodigoVehiculo}/Imagenes/{_FileName}";
+            }
+
+            return null;
         }
 
         public ActionResult Details(string VehPlaca)

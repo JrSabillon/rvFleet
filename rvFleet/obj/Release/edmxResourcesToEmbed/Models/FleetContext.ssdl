@@ -36,7 +36,24 @@
     <Property Name="DetCantidad" Type="int" Nullable="false" />
     <Property Name="DetPlacaVehiculo" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="DetCodigoRubro" Type="varchar" MaxLength="25" />
+    <Property Name="DetKilometraje" Type="int" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'def.rvfleet.facturahistorico' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="facturahistorico">
+          <Property Name="FechaPago" Type="varchar" MaxLength="50" />
+          <Property Name="FechaFacturo" Type="varchar" MaxLength="50" />
+          <Property Name="UsuarioPago" Type="varchar" MaxLength="100" />
+          <Property Name="Empresa" Type="varchar" MaxLength="250" />
+          <Property Name="NumeroFactura" Type="varchar" MaxLength="100" />
+          <Property Name="Detalle" Type="varchar" MaxLength="500" />
+          <Property Name="Valor" Type="varchar" MaxLength="50" />
+          <Property Name="Vehiculo" Type="varchar" MaxLength="100" />
+          <Property Name="Kilometraje" Type="varchar" MaxLength="50" />
+          <Property Name="Rubro" Type="varchar" MaxLength="150" />
+          <Property Name="FechaEntregaAdmin" Type="varchar" MaxLength="50" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="250" />
+        </EntityType>-->
   <EntityType Name="facturas">
     <Key>
       <PropertyRef Name="FacCodigoOrden" />
@@ -53,8 +70,8 @@
     <Property Name="FacPagado" Type="bool" Nullable="false" />
     <Property Name="FacCodigoUsuarioIngreso" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="FacFechaOrden" Type="datetime" Precision="0" />
-    <Property Name="FacKilometraje" Type="varchar" MaxLength="50" />
     <Property Name="FacUsuarioPago" Type="varchar" MaxLength="150" />
+    <Property Name="FacAplicaImpuesto" Type="bit" />
   </EntityType>
   <EntityType Name="kilometrajehistorico">
     <Key>
@@ -64,7 +81,9 @@
     <Property Name="KilCodigoVehiculo" Type="int" Nullable="false" />
     <Property Name="KilFechaIngreso" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="KilKilometraje" Type="int" Nullable="false" />
-    <Property Name="KilComentario" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="KilComentario" Type="varchar" MaxLength="250" />
+    <Property Name="KilUsuarioIngreso" Type="varchar" MaxLength="50" />
+    <Property Name="KilFotografia" Type="varchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="proveedor">
     <Key>
@@ -94,6 +113,7 @@
     </Key>
     <Property Name="CodigoRubro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NombreRubro" Type="varchar" MaxLength="250" />
+    <Property Name="DistanciaCambio" Type="int" />
   </EntityType>
   <EntityType Name="sucursales">
     <Key>
@@ -115,6 +135,7 @@
   <EntityType Name="vehiculos">
     <Key>
       <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="VehPlaca" />
       <PropertyRef Name="VehCodigoAresSun" />
     </Key>
     <Property Name="VehCodigoVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
@@ -123,51 +144,26 @@
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="VehAno" Type="int" Nullable="false" />
-    <Property Name="VehColor" Type="varchar" MaxLength="50" />
+    <Property Name="VehColor" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
     <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
     <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
     <Property Name="VehFotoFrontal" Type="varchar" MaxLength="500" />
     <Property Name="VehFotoLateralDerecha" Type="varchar" MaxLength="500" />
     <Property Name="VehFotoLateralIzquierda" Type="varchar" MaxLength="500" />
     <Property Name="VehFotoTrasera" Type="varchar" MaxLength="500" />
+    <Property Name="VehFotoMotor" Type="varchar" MaxLength="500" />
+    <Property Name="VehFotoInterior" Type="varchar" MaxLength="500" />
+    <Property Name="VehKilometraje" Type="int" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'def.rvfleet.usuarios' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-  <EntityType Name="usuarios">
-    <Key>
-      <PropertyRef Name="CodigoRRHH" />
-      <PropertyRef Name="IdUsuario" />
-      <PropertyRef Name="Contrasena" />
-      <PropertyRef Name="Estado" />
-      <PropertyRef Name="FechaCreacion" />
-      <PropertyRef Name="NombreUsuario" />
-      <PropertyRef Name="IdUbicacion" />
-      <PropertyRef Name="IdentidadUsuario" />
-      <PropertyRef Name="FechaIngreso" />
-      <PropertyRef Name="IdEmpresa" />
-    </Key>
-    <Property Name="CodigoRRHH" Type="int" Nullable="false" />
-    <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Contrasena" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Estado" Type="varchar" MaxLength="25" Nullable="false" />
-    <Property Name="FechaCreacion" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
-    <Property Name="IdUbicacion" Type="int" Nullable="false" />
-    <Property Name="Jefe" Type="varchar" MaxLength="50" />
-    <Property Name="Correo" Type="varchar" MaxLength="100" />
-    <Property Name="IdentidadUsuario" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="FechaIngreso" Type="datetime" Precision="0" Nullable="false" />
-    <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
-  </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="vehiclefulldata">
     <Key>
       <PropertyRef Name="VehCodigoVehiculo" />
@@ -176,10 +172,13 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
       <PropertyRef Name="VehMotor" />
       <PropertyRef Name="VehCilindraje" />
       <PropertyRef Name="VehAno" />
+      <PropertyRef Name="VehColor" />
       <PropertyRef Name="VehMarca" />
       <PropertyRef Name="VehModelo" />
       <PropertyRef Name="VehCodigoAresSun" />
+      <PropertyRef Name="VehCodigoEmpresa" />
       <PropertyRef Name="VehFechaMatricula" />
+      <PropertyRef Name="VehNumeroPoliza" />
       <PropertyRef Name="NombreUsuario" />
       <PropertyRef Name="NombreEmpresa" />
     </Key>
@@ -189,14 +188,14 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="VehAno" Type="int" Nullable="false" />
-    <Property Name="VehColor" Type="varchar" MaxLength="50" />
+    <Property Name="VehColor" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehMarca" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
     <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
     <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
     <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
@@ -250,6 +249,9 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_kilometrajehistorico_vehiculos' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_kilometrajehistorico_vehiculos" />-->
   <Association Name="FK_vehiculos_proveedor">
     <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
     <End Role="vehiculos" Type="Self.vehiculos" Multiplicity="*" />
@@ -262,6 +264,9 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="VehPlaca" Type="varchar" Mode="In" />
+  </Function>
   <EntityContainer Name="rvfleetModelStoreContainer">
     <EntitySet Name="archivofactura" EntityType="Self.archivofactura" Schema="" store:Type="Tables" />
     <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" Schema="" store:Type="Tables" />
@@ -274,22 +279,6 @@ advertencia 6002: La tabla o vista 'def.rvfleet.vehiclefulldata' no tiene defini
     <EntitySet Name="sucursales" EntityType="Self.sucursales" Schema="" store:Type="Tables" />
     <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" Schema="" store:Type="Tables" />
     <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="" store:Type="Tables" />
-    <EntitySet Name="usuarios" EntityType="Self.usuarios" store:Type="Views" store:Schema="">
-      <DefiningQuery>SELECT
-`usuarios`.`CodigoRRHH`, 
-`usuarios`.`IdUsuario`, 
-`usuarios`.`Contrasena`, 
-`usuarios`.`Estado`, 
-`usuarios`.`FechaCreacion`, 
-`usuarios`.`NombreUsuario`, 
-`usuarios`.`IdUbicacion`, 
-`usuarios`.`Jefe`, 
-`usuarios`.`Correo`, 
-`usuarios`.`IdentidadUsuario`, 
-`usuarios`.`FechaIngreso`, 
-`usuarios`.`IdEmpresa`
-FROM `rvfleet.usuarios` AS `usuarios`</DefiningQuery>
-    </EntitySet>
     <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
       <DefiningQuery>SELECT
 `vehiclefulldata`.`VehCodigoVehiculo`, 

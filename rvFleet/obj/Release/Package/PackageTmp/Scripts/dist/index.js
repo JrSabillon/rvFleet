@@ -46,3 +46,7 @@ function isLoading(load) {
 function formatThousands(element) {
     element.value = element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+function returnFormatThousands(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

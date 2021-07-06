@@ -76,10 +76,10 @@
                             @Html.LabelFor(x => x.FacNumeroFactura)
                             @Html.TextBoxFor(x => x.FacNumeroFactura, new { @class = "form-control col-12", placeholder = "xxx-xxx-xx-xxxxxxxx", @readonly = "readonly" })
                         </div>
-                        <div class="col-md-4 col-lg-3 form-group">
+                        @*<div class="col-md-4 col-lg-3 form-group">
                             @Html.LabelFor(x => x.FacKilometraje)
                             @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", @readonly = "readonly", placeholder = "0" })
-                        </div>
+                        </div>*@
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(x => x.FacComentario)
@@ -156,7 +156,7 @@
                         {
                             <tr>
                                 <td>@item.DetPlacaVehiculo</td>
-                                <td>@item.DetCodigoRubro</td>
+                                <td>@item.NombreRubro</td>
                                 <td>@item.DetDescripcion</td>
                                 <td>@item.DetCantidad</td>
                                 <td>@item.DetValor.ToString("N")</td>

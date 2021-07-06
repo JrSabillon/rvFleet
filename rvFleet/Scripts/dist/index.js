@@ -16,12 +16,6 @@ $(document).ready(function () {
     $(window).on('resize', function () {
         ViewLayout();
     });
-
-    $('input[type=datetime]').datepicker({
-                dateFormat: "dd/M/yy",
-                changeMonth: true,
-                changeYear: true
-            });
 });
 
 function ViewLayout() {
@@ -51,4 +45,8 @@ function isLoading(load) {
 
 function formatThousands(element) {
     element.value = element.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function returnFormatThousands(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

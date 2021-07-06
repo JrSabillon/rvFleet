@@ -13,8 +13,6 @@ namespace rvFleet.Models
         public DateTime FacFechaOrden;
         [Display(Name = "Proveedor")]
         public int FacCodigoProveedor;
-        [Display(Name = "Kilometraje")]
-        public string FacKilometraje;
         [Display(Name = "Fecha de facturación")]
         public string FacFechaFactura;
         [Display(Name = "Número de factura")]
