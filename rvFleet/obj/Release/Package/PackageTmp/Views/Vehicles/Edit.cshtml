@@ -12,26 +12,19 @@
     }
 </style>
 
-<div class="row align-items-center">
-    <div class="col-12 col-md-6">
-        <h2>Editar vehículo</h2>
-    </div>
-    <div class="col-12 col-md-6 align-self-center">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent shadow">
-                <li class="breadcrumb-item">
-                    <a href="@Url.Action("Index", "Home")">Inicio</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="@Url.Action("Control", "Vehicles")">Control</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Editar</li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
-<hr />
+<h4>Editar vehículo</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Control", "Vehicles")">Control</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Editar</li>
+    </ol>
+</nav>
 
 @if (!string.IsNullOrEmpty(ViewBag.Message))
 {
@@ -58,7 +51,7 @@
             </a>
         </li>
     </ul>
-    <div class="tab-content mt-4">
+    <div class="tab-content p-4 bg-white shadow">
         <div id="div-tab-data" class="tab-pane fade show active">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
@@ -328,6 +321,10 @@
             <i class="fa fa-save"></i>
             Guardar
         </button>
+        <a class="btn btn-outline-danger" href="@Url.Action("Control", "Vehicles")">
+            <i class="fa fa-times"></i>
+            Cancelar
+        </a>
     </div>
 }
 

@@ -37,6 +37,7 @@ namespace rvFleet.Models
         public string VehFotoMotor { get; set; }
         public string VehFotoInterior { get; set; }
         public Nullable<int> VehKilometraje { get; set; }
+        public string VehColorIdentificador { get; set; }
     
         public virtual proveedor proveedor { get; set; }
     }

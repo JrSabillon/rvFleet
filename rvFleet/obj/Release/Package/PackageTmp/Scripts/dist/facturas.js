@@ -79,9 +79,8 @@ function AddDetail() {
     detail = $('#select-rubroDetalle option:selected');
     amount = $('#DetCantidad').val();
     kilometraje = $('#DetKilometraje').val();
-    price = $('#DetValor').val();
+    price = $('#DetValor').val().replace(',', '');
     detailId = detail.val();
-
 
     if (kilometraje.trim() == '') {
         $('#DetKilometraje').addClass('is-invalid');
@@ -321,4 +320,22 @@ function VerifyVehicleRegistry() {
             }
         });
     }
+}
+
+function ValidateNumFactura(url) {
+    $.get(url, { FacNumeroFactura: $('#FacNumeroFactura').val() }, function (data) {
+        if (data.status == 200) {
+            if (data.message == "Error") {
+                $('#div-alert-message-factura').removeClass('d-none');
+                $('#label-alert-message-factura').text('¡Atención! Este número de factura ya se encuentra registrado.');
+                $('#FacNumeroFactura').addClass('is-invalid');
+            } else {
+                $('#div-alert-message-factura').addClass('d-none');
+                $('#label-alert-message-factura').text('');
+                $('#FacNumeroFactura').removeClass('is-invalid');
+            }
+        } else {
+            alert(data.message);
+        }
+    });
 }

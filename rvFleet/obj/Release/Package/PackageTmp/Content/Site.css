@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 65px;
     padding-bottom: 20px;
+    background-color: #efeff6;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -129,4 +130,8 @@ textarea {
 
 #form-factura .card-header{
     cursor: pointer;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
 }

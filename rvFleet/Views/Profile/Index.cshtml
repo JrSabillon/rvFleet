@@ -6,8 +6,17 @@
     vehiculos vehiculo = ViewBag.Vehiculo;
 }
 
-<h2>Mi perfil</h2>
-<hr />
+<h4>Mi perfil</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Mi perfil</li>
+    </ol>
+</nav>
+
 @if (!string.IsNullOrEmpty(ViewBag.Message))
 {
     <div class="alert alert-success alert-dismissible fade show">
@@ -34,7 +43,7 @@
             </li>
         }
     </ul>
-    <div class="tab-content mt-4">
+    <div class="tab-content p-4 bg-white shadow-sm">
         <div id="div-tab-data" class="tab-pane fade show active">
             <div class="row form-group">
                 <div class="col-12">
@@ -74,6 +83,10 @@
                 <i class="fa fa-save"></i>
                 Guardar
             </button>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-outline-danger">
+                <i class="fa fa-times"></i>
+                Cancelar
+            </a>
         </div>
         <div id="div-tab-vehicle" class="tab-pane fade">
             <table class="table table-striped">
@@ -124,6 +137,5 @@
                 </tbody>
             </table>
         </div>
-        <hr />
     </div>
 }

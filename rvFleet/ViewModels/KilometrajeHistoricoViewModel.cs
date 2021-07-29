@@ -45,12 +45,17 @@ namespace rvFleet.ViewModels
             {
                 using (var context = new rvfleetEntities())
                 {
-                    var NewKilometraje = context.kilometrajehistorico.Add(Kilometraje);
-                    var vehicle = context.vehiculos.Where(x => x.VehCodigoVehiculo.Equals(Kilometraje.KilCodigoVehiculo)).FirstOrDefault();
-                    vehicle.VehKilometraje = Kilometraje.KilKilometraje;
-                    context.SaveChanges();
+                    if(context.kilometrajehistorico.Where(x => x.KilFechaIngreso.Equals(Kilometraje.KilFechaIngreso) && x.KilCodigoVehiculo.Equals(Kilometraje.KilCodigoVehiculo)).Count() == 0)
+                    {
+                        var NewKilometraje = context.kilometrajehistorico.Add(Kilometraje);
+                        var vehicle = context.vehiculos.Where(x => x.VehCodigoVehiculo.Equals(Kilometraje.KilCodigoVehiculo)).FirstOrDefault();
+                        vehicle.VehKilometraje = Kilometraje.KilKilometraje;
+                        context.SaveChanges();
 
-                    return NewKilometraje;
+                        return NewKilometraje;
+                    }
+
+                    return new kilometrajehistorico();
                 }
             }
             catch (MySqlException dbExc)

@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="rvfleetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="rvfleetEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="GetPartsCost" ReturnType="Collection(rvfleetModel.GetPartsCost_Result)">
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="GetVehicleAnualCostsGraphData" ReturnType="Collection(rvfleetModel.GetVehicleAnualCostsGraphData_Result)">
+      <Parameter Name="YearFilter" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetVehicleCosts" ReturnType="Collection(rvfleetModel.GetVehicleCosts_Result)">
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="GetVehicleGraphData" ReturnType="Collection(rvfleetModel.GetVehicleGraphData_Result)">
+      <Parameter Name="VehPlaca" Mode="In" Type="String" />
+    </FunctionImport>
     <EntitySet Name="archivofactura" EntityType="rvfleetModel.archivofactura" />
     <EntitySet Name="conductorhistorico" EntityType="rvfleetModel.conductorhistorico" />
     <EntitySet Name="detallefactura" EntityType="rvfleetModel.detallefactura" />
@@ -12,6 +26,10 @@
     <EntitySet Name="sucursales" EntityType="rvfleetModel.sucursales" />
     <EntitySet Name="ubicacionhistorica" EntityType="rvfleetModel.ubicacionhistorica" />
     <EntitySet Name="vehiculos" EntityType="rvfleetModel.vehiculos" />
+    <EntitySet Name="kilometrajeporvehiculoanoactual" EntityType="rvfleetModel.kilometrajeporvehiculoanoactual" />
+    <EntitySet Name="recommendedmaintenance" EntityType="rvfleetModel.recommendedmaintenance" />
+    <EntitySet Name="usuarios" EntityType="rvfleetModel.usuarios" />
+    <EntitySet Name="vehiclecosts" EntityType="rvfleetModel.vehiclecosts" />
     <EntitySet Name="vehiclefulldata" EntityType="rvfleetModel.vehiclefulldata" />
     <AssociationSet Name="FK__facturas" Association="rvfleetModel.FK__facturas">
       <End Role="facturas" EntitySet="facturas" />
@@ -33,9 +51,6 @@
       <End Role="rubros" EntitySet="rubros" />
       <End Role="rubrodetalle" EntitySet="rubrodetalle" />
     </AssociationSet>
-    <FunctionImport Name="GetVehicleGraphData" ReturnType="Collection(rvfleetModel.GetVehicleGraphData_Result)">
-      <Parameter Name="VehPlaca" Mode="In" Type="String" />
-    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="GetVehicleGraphData_Result">
     <Property Type="Int32" Name="Orden" Nullable="false" />
@@ -45,6 +60,23 @@
     <Property Type="Int32" Name="KilometrajeActual" Nullable="false" />
     <Property Type="Int32" Name="Diferencia" Nullable="false" />
     <Property Type="Double" Name="Porcentaje" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="GetVehicleAnualCostsGraphData_Result">
+    <Property Type="Int32" Name="DetCodigoRubro" Nullable="false" />
+    <Property Type="String" Name="NombreRubro" Nullable="false" />
+    <Property Type="Double" Name="FacValorFactura" Nullable="false" />
+    <Property Type="Double" Name="Porcentaje" Nullable="false" />
+    <Property Type="String" Name="ColorIdentificador" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="GetVehicleCosts_Result">
+    <Property Type="String" Name="DETPLACAVEHICULO" Nullable="false" />
+    <Property Type="Double" Name="VALOR" Nullable="false" />
+    <Property Type="String" Name="VehColorIdentificador" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="GetPartsCost_Result">
+    <Property Type="String" Name="NombreRubro" Nullable="false" />
+    <Property Type="Double" Name="Total" Nullable="false" />
+    <Property Type="String" Name="ColorIdentificador" Nullable="false" />
   </ComplexType>
   <EntityType Name="archivofactura">
     <Key>
@@ -152,6 +184,7 @@
     <Property Name="CodigoRubro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="NombreRubro" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="DistanciaCambio" Type="Int32" />
+    <Property Name="ColorIdentificador" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="rubrodetalle" Relationship="rvfleetModel.FK__rubros" FromRole="rubros" ToRole="rubrodetalle" />
   </EntityType>
   <EntityType Name="sucursales">
@@ -200,7 +233,64 @@
     <Property Name="VehFotoMotor" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="VehFotoInterior" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="VehKilometraje" Type="Int32" />
+    <Property Name="VehColorIdentificador" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="proveedor" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="vehiculos" ToRole="proveedor" />
+  </EntityType>
+  <EntityType Name="kilometrajeporvehiculoanoactual">
+    <Key>
+      <PropertyRef Name="KilCodigoVehiculo" />
+      <PropertyRef Name="KilFechaIngreso" />
+      <PropertyRef Name="VehPlaca" />
+    </Key>
+    <Property Name="KilCodigoVehiculo" Type="Int32" Nullable="false" />
+    <Property Name="KilFechaIngreso" Type="DateTime" Nullable="false" />
+    <Property Name="KilFechaIngreso_Mes" Type="Int32" />
+    <Property Name="KilKilometraje" Type="Int32" />
+    <Property Name="VehPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="VehColorIdentificador" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="recommendedmaintenance">
+    <Key>
+      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="DetPlacaVehiculo" />
+    </Key>
+    <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" />
+    <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="NombreRubro" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="VidaRestante" Type="Int64" />
+  </EntityType>
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="CodigoRRHH" />
+      <PropertyRef Name="IdUsuario" />
+      <PropertyRef Name="Contrasena" />
+      <PropertyRef Name="Estado" />
+      <PropertyRef Name="FechaCreacion" />
+      <PropertyRef Name="NombreUsuario" />
+      <PropertyRef Name="IdUbicacion" />
+      <PropertyRef Name="IdentidadUsuario" />
+      <PropertyRef Name="FechaIngreso" />
+      <PropertyRef Name="IdEmpresa" />
+    </Key>
+    <Property Name="CodigoRRHH" Type="Int32" Nullable="false" />
+    <Property Name="IdUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Contrasena" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Estado" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
+    <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="IdUbicacion" Type="Int32" Nullable="false" />
+    <Property Name="Jefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IdentidadUsuario" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
+    <Property Name="IdEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="vehiclecosts">
+    <Key>
+      <PropertyRef Name="DETPLACAVEHICULO" />
+    </Key>
+    <Property Name="DETPLACAVEHICULO" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="VALOR" Type="Double" />
   </EntityType>
   <EntityType Name="vehiclefulldata">
     <Key>
@@ -299,5 +389,4 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <ComplexType Name="GetVehicleGraphData1_Result" />
 </Schema>

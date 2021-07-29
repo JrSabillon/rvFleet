@@ -1,0 +1,91 @@
+﻿@using Newtonsoft.Json;
+@model List<rvFleet.Models.kilometrajeporvehiculoanoactual>
+@{ 
+    //var maxMonth = Model.Max(x => x.KilFechaIngreso_Mes);
+    var maxMonth = DateTime.Now.Month;
+    var JsonData = JsonConvert.SerializeObject(Model);
+}
+
+<canvas id="canvas-line-chart-km" class="m-auto" style="width: 100%; height: 100%"></canvas>
+
+<script type="text/javascript">
+    var JsonArrayKMs = JSON.parse('@Html.Raw(JsonData)');
+    var months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var monthsIndex = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    var KMsdata = {
+        labels: [],
+        datasets: []
+    };
+
+    function loadCarKMsLine() {
+        var previousMonths = [...months]; //Meses anteriores para completar los 12 meses.
+        var monthsRegistered = [];
+        previousMonths.splice(0, 12 - (12 - @maxMonth));
+        months.splice(@maxMonth, months.length); //Meses desde Enero hasta hoy.
+        months = previousMonths.concat(months);
+
+        KMsdata.labels = months;
+        var groups = JsonArrayKMs.reduce(function (r, a) {
+            r[a.KilCodigoVehiculo] = r[a.KilCodigoVehiculo] || [];
+            r[a.KilCodigoVehiculo].push(a);
+            return r;
+        }, Object.create(null));
+
+
+        $.each(groups, function (index, item) {
+            var data = {
+                label: item[0].VehPlaca,
+                data: [],
+                backgroundColor: item[0].VehColorIdentificador,
+                borderColor: item[0].VehColorIdentificador,
+                fill: false,
+                tension: 0
+            };
+
+            $.each(item, function (index, subitem) {
+                monthsRegistered.push(subitem.KilFechaIngreso_Mes);
+                data.data.push(subitem.KilKilometraje);
+            });
+
+            console.log(item[0].VehPlaca);
+            console.log(monthsRegistered);
+            console.log(
+                monthsIndex.filter(function (v) {
+                    return monthsRegistered.indexOf(v) == -1;
+                })
+            );
+
+            for (var i = 0; i < monthsRegistered.length; i++) {
+                if (i + 1 < monthsRegistered.length) {
+                    console.log(i);
+                }
+            }
+
+            monthsRegistered = [];
+
+            KMsdata.datasets.push(data);
+        });
+
+        const config = {
+            type: 'line',
+            data: KMsdata,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'end',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Kilometraje por vehículo'
+                    }
+                }
+            },
+        };
+
+        var ctx = $('#canvas-line-chart-km');
+        var myChart = new Chart(ctx, config);
+    };
+
+</script>

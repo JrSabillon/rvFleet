@@ -1,4 +1,4 @@
-﻿
+﻿@model rvFleet.POCO.Reports.ReportsModel
 @{
     ViewBag.Title = "Vehicles";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,116 +10,134 @@
         width: 100%;
         table-layout: fixed;
     }
+
     table.scroll tbody {
         display: block;
         height: 225px !important;
         overflow-y: auto;
         overflow-x: hidden;
     }
+
+    .card-footer,
+    .card-header {
+        background-color: white;
+    }
 </style>
 
-<div class="row">
-    <div class="col-12 col-md-6 form-group">
-        <h2>Reportes de vehículos</h2>
-    </div>
-    <div class="col-12 col-md-6">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent shadow">
-                <li class="breadcrumb-item">
-                    <a href="@Url.Action("Index", "Home")">Inicio</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Vehículos</li>
-            </ol>
-        </nav>
-    </div>
-</div>
+<script type="text/javascript">
+    function createColor() {
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        //rgb(4, 30, 159)
+        console.log("Color: rgb(" + r + ", " + g + ", " + b + ")");
+    }
+</script>
+<input type="color" class="d-none" />
+<button class="btn btn-sm d-none" onclick="createColor();">Crear color</button>
 
-<hr />
+<h4><i class="fa fa-bar-chart-o"></i> Reportes de vehículos</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Reportes vehiculares</li>
+    </ol>
+</nav>
 
 <div class="row">
-    <div class="col-12 col-lg-6 form-group">
+    <div class="col-12 col-xl-6">
         <div class="row">
-            <div class="col-6 form-group">
-                <div class="card" style="height: 250px;">
+            <div class="col-12 form-group">
+                <div class="card shadow" style="height: 515px">
                     <div class="card-header">
-                        <i class="fa fa-wrench"></i>
-                        Mantenimientos próximos
-                    </div>
-                    <div class="card-body pb-0">
-                        <div id="carouselExampleIndicators" class="carousel slide h-100" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active bg-dark"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="1" class="bg-dark"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="2" class="bg-dark"></li>
-                            </ol>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <label>Vehículo: <span>M276670</span></label> <br />
-                                    <label>Rubro: <span>Amortiguadores</span></label>
-                                </div>
-                                <div class="carousel-item">
-                                    <label>Vehículo: <span>M276670</span></label> <br />
-                                    <label>Rubro: <span>Aire acondicionado</span></label>
-                                </div>
-                                <div class="carousel-item">
-                                    <label>Vehículo: <span>PDG7426</span></label> <br />
-                                    <label>Rubro: <span>Fricciones delanteras</span></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <button class="btn btn-info btn-sm">
-                            Mas detalles <i class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card" style="height: 250px">
-                    <div class="card-header">
-                        <i class="fa fa-truck"></i>
-                        Vehículos
+                        <i class="fa fa-money"></i>
+                        Costos mensuales por vehículo
                     </div>
                     <div class="card-body">
-                        <h5>Asignados <span class="badge badge-success">5</span></h5>
-                        <h5>Sin asignar <span class="badge badge-warning">6</span></h5>
-                        <hr />
-                        <h5>Total <span class="badge badge-primary">11</span></h5>
+                        @{
+                            Html.RenderPartial("_MonthlyCostsVehicles", Model.VehicleCosts);
+                        }
                     </div>
                     <div class="card-footer text-center">
-                        <a href="@Url.Action("Control", "Vehicles")" class="btn btn-info btn-sm">
+                        <a class="btn btn-info btn-sm" href="@Url.Action("VehiclesCosts", "Reports")">
                             Mas detalles <i class="fa fa-arrow-circle-right"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-6 offset-6">
-                <div class="card" style="height: 250px">
-                    <div class="card-header">
-                        Lorem
+            <div class="col-12 form-group">
+                <div class="row">
+                    <div class="col-12 col-xl-6 form-group">
+                        <div class="card shadow" style="height: 285px;">
+                            <div class="card-header">
+                                <i class="fa fa-wrench"></i>
+                                Mantenimientos próximos
+                            </div>
+                            <div class="card-body pb-0">
+                                @{
+                                    Html.RenderPartial("_RecommendedCarMaintenance", Model.RecommendedMaintenances);
+                                }
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-info btn-sm">
+                                    Mas detalles <i class="fa fa-arrow-circle-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        Lorem ipsum dolor sit amet
-                    </div>
-                    <div class="card-footer text-center">
-                        <button class="btn btn-info btn-sm">
-                            Mas detalles <i class="fa fa-arrow-circle-right"></i>
-                        </button>
+                    <div class="col-12 col-xl-6">
+                        <div class="card shadow" style="height: 285px">
+                            <div class="card-header">
+                                <i class="fa fa-truck"></i>
+                                Vehículos
+                            </div>
+                            <div class="card-body">
+                                <h5>Asignados <span class="badge badge-success">@ViewBag.CarsAssigned</span></h5>
+                                <h5>Sin asignar <span class="badge badge-warning">@ViewBag.CarsUnassigned</span></h5>
+                                <hr />
+                                <h5>Total <span class="badge badge-primary">@ViewBag.TotalCars</span></h5>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="@Url.Action("Control", "Vehicles")" class="btn btn-info btn-sm">
+                                    Mas detalles <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12 col-lg-6">
-        <div class="card" style="height: 515px">
+    <div class="col-12 col-xl-6 form-group">
+        <div class="card shadow" style="height: 815px">
             <div class="card-header">
-                <i class="fa fa-money"></i>
-                Costos mensuales
+                <i class="fa fa-bar-chart-o"></i>
+                Costo anual por rubro - @DateTime.Now.Year
             </div>
-            <div class="card-body">
-                @{ 
-                    Html.RenderPartial("_MonthlyCostsVehicles");
+            <div class="card-body p-0 d-flex">
+                @{
+                    Html.RenderPartial("_AnualCostsGraph", Model.VehicleAnualCostGraphData);
+                }
+            </div>
+            <div class="card-footer text-center">
+                <a class="btn btn-info btn-sm" href="@Url.Action("PartsCost", "Reports")">
+                    Mas detalles <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 form-group">
+        <div class="card shadow" style="height: 515px">
+            <div class="card-header">
+                <i class="fa fa-bar-chart-o"></i>
+                Kilometraje por vehículo
+            </div>
+            <div class="card-body p-0 d-flex">
+                @{
+                    Html.RenderPartial("_CarKMs", Model.KilometrajesPorVehiculoAnoActual);
                 }
             </div>
             <div class="card-footer text-center">
@@ -130,3 +148,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        loadAnualCostsPie();
+        loadCarKMsLine();
+    });
+</script>

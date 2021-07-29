@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using rvFleet.App_Code;
 
 namespace rvFleet.Models
 {
@@ -44,5 +45,20 @@ namespace rvFleet.Models
     {
         public string BackgroundColor { get; set; }
         public string BorderColor { get; set; }
+    }
+
+    public partial class GetVehicleAnualCostsGraphData_Result
+    {
+        public string FormatedNumber => GlobalFunctions.FormatThousandsAndMillions(FacValorFactura);
+    }
+
+    public partial class GetVehicleCosts_Result
+    {
+        public string FormatedNumber => GlobalFunctions.FormatThousandsAndMillions(VALOR);
+    }
+
+    public partial class GetPartsCost_Result
+    {
+        public string FormatedNumber => GlobalFunctions.FormatThousandsAndMillions(Total);
     }
 }

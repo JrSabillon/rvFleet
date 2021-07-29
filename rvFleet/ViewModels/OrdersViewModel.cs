@@ -6,6 +6,8 @@ using rvFleet.App_Code;
 using rvFleet.Models;
 using MySql.Data.MySqlClient;
 using System.Data.Entity;
+using System.Configuration;
+using System.Web.Mvc;
 
 namespace rvFleet.ViewModels
 {
@@ -23,7 +25,7 @@ namespace rvFleet.ViewModels
 
                 using (var context = new rvfleetEntities())
                 {
-                    facturas = context.facturas.Where(x => !string.IsNullOrEmpty(x.FacNumeroFactura)).ToList();
+                    facturas = context.facturas.Where(x => !string.IsNullOrEmpty(x.FacNumeroFactura)).Include(x => x.detallefactura).Include(x => x.proveedor).ToList();
                 }
 
                 return facturas;
@@ -107,7 +109,7 @@ namespace rvFleet.ViewModels
 
                 using (var context = new rvfleetEntities())
                 {
-                    ordenes = context.facturas.Where(x => string.IsNullOrEmpty(x.FacNumeroFactura)).Include(x => x.detallefactura).ToList();
+                    ordenes = context.facturas.Include(x => x.detallefactura).Where(x => string.IsNullOrEmpty(x.FacNumeroFactura)).Include(x => x.detallefactura).Include(x => x.proveedor).ToList();
                 }
 
                 return ordenes;
@@ -126,6 +128,7 @@ namespace rvFleet.ViewModels
         /// Obtener todas las ordenes y facturas.
         /// </summary>
         /// <returns></returns>
+        [OutputCache(Duration = 60)]
         public List<facturas> GetOrdenesFacturas()
         {
             try
@@ -134,7 +137,7 @@ namespace rvFleet.ViewModels
 
                 using (var context = new rvfleetEntities())
                 {
-                    ordenes = context.facturas.ToList();
+                    ordenes = context.facturas.Include(x => x.detallefactura).Include(x => x.proveedor).ToList();
                 }
 
                 return ordenes;
@@ -178,6 +181,10 @@ namespace rvFleet.ViewModels
             {
                 using (var context = new rvfleetEntities())
                 {
+                    //if(context.facturas.Where(x => x.FacNumeroFactura.Equals(factura.FacNumeroFactura)).Count() > 0)
+                    //{
+                    //    throw new Exception("Ya existe un registro con este número de factura.");
+                    //}
                     context.facturas.Add(factura);
                     context.SaveChanges();
                     //var FacCodigoOrden = factura.FacCodigoOrden;
@@ -199,6 +206,11 @@ namespace rvFleet.ViewModels
             {
                 using (var context = new rvfleetEntities())
                 {
+                    if(context.facturas.Where(x => x.FacNumeroFactura.Equals(factura.FacNumeroFactura) && x.FacCodigoOrden != factura.FacCodigoOrden).Count() > 0)
+                    {
+                        throw new Exception("Ya existe un registro con este número de factura.");
+                    }
+
                     var CurrentFactura = context.facturas.Find(factura.FacCodigoOrden);
                     var total = factura.detallefactura.Sum(x => x.DetValor);
                     CurrentFactura.FacCodigoProveedor = factura.FacCodigoProveedor;
@@ -254,5 +266,47 @@ namespace rvFleet.ViewModels
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
         }
+
+        public bool NumeroFacturaDisponible(string FacNumeroFactura)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var facturas = context.facturas.Where(x => x.FacNumeroFactura.Equals(FacNumeroFactura)).Count();
+
+                    return facturas == 0;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        //public List<facturas> GetFacturasByVehicle(string VehPlaca)
+        //{
+        //    string ConnectionString = ConfigurationManager.ConnectionStrings["rvFleetStaticConnection"].ConnectionString;
+        //    SqlConnectionRvFleet = new MySqlConnection(ConnectionString);
+
+        //    try
+        //    {
+        //        string query = $"SELECT * FROM facturas INNER JOIN detallefactura " +
+        //            $"ON facturas.FacCodigoOrden = detallefactura.DetCodigoOrden " +
+        //            $"WHERE detallefactura.DetPlacaVehiculo = '{VehPlaca}'";
+        //    }
+        //    catch (MySqlException dbExc)
+        //    {
+        //        throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+        //    }
+        //}
     }
 }

@@ -29,10 +29,13 @@ namespace rvFleet.Controllers
         }
 
         // GET: Orders
-        public ActionResult Index(string searchString, int? page, string type = "1")
+        public ActionResult Index(string searchString, int? page, string VehPlaca, string sortOrder = "fecha_desc", string type = "1")
         {
             try
             {
+                int pageSize = 5;
+                int pageNumber = (page ?? 1);
+
                 List<facturas> model = new List<facturas>();
                 ViewBag.SelectedType = type;
                 //Cargar datos de las ordenes/facturas
@@ -48,33 +51,61 @@ namespace rvFleet.Controllers
                         model = viewModel.GetOrdenes();
                         break;
                 }
-                
-                //Cargar detalles de cada factura
-                foreach (var item in model)
-                {
-                    List<detallefactura> detallefacturas = viewModel.GetDetallefacturas(item.FacCodigoOrden);
-                    List<string> OrderElements = new List<string>();
-
-
-                    for (int i = 0; i < detallefacturas.Count; i++)
-                    {
-                        OrderElements.Add($"{detallefacturas[i].DetCantidad} {detallefacturas[i].DetDescripcion}");
-                    }
-
-                    item.Detalles = string.Join(", ", OrderElements);
-                    item.NombreProveedor = viewModel.GetProveedor(item.FacCodigoProveedor).ProNombre;
-                }
 
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     ViewBag.searchString = searchString;
-                    model = model.Where(x => x.NombreProveedor.ToLower().Contains(searchString.ToLower()) || x.Detalles.ToLower().Contains(searchString.ToLower())).ToList();
+                    model = model.Where(x => x.proveedor.ProNombre.ToLower().Contains(searchString.ToLower()) || x.detallefactura.Any(y => y.DetDescripcion.ToLower().Contains(searchString.ToLower()))).ToList();
                 }
 
-                model = model.OrderByDescending(x => x.FacCodigoOrden).ToList();
+                ViewBag.VehPlaca = new SelectList(new VehiclesViewModel().GetVehiculos(), "VehPlaca", "VehPlaca", VehPlaca);
+
+                if (!string.IsNullOrEmpty(VehPlaca))
+                {
+                    ViewBag.SelectedVehPlaca = VehPlaca;
+                    model = model.Where(x => x.detallefactura.Any(y => y.DetPlacaVehiculo.Equals(VehPlaca))).ToList();
+                }
+
+                switch (sortOrder)
+                {
+                    case "factura":
+                        model = model.OrderBy(x => x.FacNumeroFactura).ToList();
+                        break;
+                    case "factura_desc":
+                        model = model.OrderByDescending(x => x.FacNumeroFactura).ToList();
+                        break;
+                    case "fecha":
+                        model = model.OrderBy(x => x.FacFechaOrden).ToList();
+                        break;
+                    case "fecha_desc":
+                        model = model.OrderByDescending(x => x.FacFechaOrden).ToList();
+                        break;
+                    case "proveedor":
+                        model = model.OrderBy(x => x.proveedor.ProNombre).ToList();
+                        break;
+                    case "proveedor_desc":
+                        model = model.OrderByDescending(x => x.proveedor.ProNombre).ToList();
+                        break;
+                    case "total":
+                        model = model.OrderBy(x => x.FacValorFactura).ToList();
+                        break;
+                    case "total_desc":
+                        model = model.OrderByDescending(x => x.FacValorFactura).ToList();
+                        break;
+                    default:
+                        model = model.OrderByDescending(x => x.FacFechaOrden).ToList();
+                        break;
+                }
+
+                ViewBag.SortOrder = sortOrder; //Para saber que icono mostrar
+                ViewBag.SortDate = sortOrder == "fecha" ? "fecha_desc" : "fecha";
+                ViewBag.SortFacNumeroFactura = sortOrder == "factura" ? "factura_desc" : "factura";
+                ViewBag.SortProveedor = sortOrder == "proveedor" ? "proveedor_desc" : "proveedor";
+                //ViewBag.SortDetalle = sortOrder == "detalle" ? "detalle_desc" : "detalle";
+                //ViewBag.SortVehiculos = sortOrder == "vehiculos" ? "vehiculos_desc" : "vehiculos";
+                ViewBag.SortTotal = sortOrder == "total" ? "total_desc" : "total";
+
                 ViewBag.Type = new SelectList(GetTypes(), "Value", "Text", type);
-                int pageSize = 5;
-                int pageNumber = (page ?? 1);
                 return View(model.ToPagedList(pageNumber, pageSize));
             }
             catch (Exception exc)
@@ -193,10 +224,18 @@ namespace rvFleet.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int FacCodigoOrden)
+        public ActionResult Details(int FacCodigoOrden, string VehPlaca, string startDate, string endDate, string source)
         {
             try
             {
+                if (source == "Reportes")
+                {
+                    ViewBag.Source = source;
+                    ViewBag.VehPlaca = VehPlaca;
+                    ViewBag.startDate = startDate;
+                    ViewBag.endDate = endDate;
+                }
+
                 var model = viewModel.GetFactura(FacCodigoOrden);
 
                 ViewBag.ArchivosFactura = model.archivofactura;
@@ -242,7 +281,7 @@ namespace rvFleet.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    throw new Exception("Los datos ingresados no son correctos, verifiquelos y vuelva a intentarlo.");
+                    throw new Exception("Los datos ingresados no son correctos, verifíquelos y vuelva a intentarlo.");
                 }
 
                 facturas.FacCodigoUsuarioIngreso = BaseViewModel.GetUserData().IdUsuario;
@@ -276,6 +315,7 @@ namespace rvFleet.Controllers
 
                 if(!Directory.Exists(filePath))
                 {
+
                     Directory.CreateDirectory(filePath);
                 }
 
@@ -368,33 +408,105 @@ namespace rvFleet.Controllers
                 var ws1 = workbook.Worksheet(1);
 
                 var rowsCount = ws1.Rows().Count();
-                List<FacturaHistorico> historicos = new List<FacturaHistorico>();
+                //List<FacturaHistorico> historicos = new List<FacturaHistorico>();
+                List<facturas> facturas = new List<facturas>();
 
+                int Count = 0;
+                var vehiculos = new VehiclesViewModel().GetVehiculos();
                 ///empezamos a recorrer el arreglo desde la posicion 2 para no contar el header.
                 for (int i = 2; i <= rowsCount; i++)
                 {
+                    Count++;
                     var row = ws1.Row(i);
 
                     if (!row.IsEmpty())
                     {
-                        historicos.Add(new FacturaHistorico()
+                        try
+                        { 
+                            //if(Count == 146)
+                            //{
+                            //    //var x = 146;
+                            //}
+
+                            facturas factura = new facturas
+                            {
+                                FacFechaFactura = !string.IsNullOrEmpty(row.Cell(2).Value.ToString()) ? DateTime.Parse(row.Cell(2).Value.ToString()) : DateTime.Now,
+                                FacCodigoProveedor = Convert.ToInt32(row.Cell(14).Value.ToString()),
+                                FacNumeroFactura = row.Cell(5).Value.ToString(),
+                                FacCodigoDetalleFactura = 0,
+                                FacValorFactura = Convert.ToDouble(row.Cell(7).Value.ToString()),
+                                FacComentario = row.Cell(12).Value.ToString() + " - Historico",
+                                FacFechaEntregaAdmin = null,
+                                FacUrlFoto = null,
+                                FacCodigoUsuarioIngreso = "w.sabillon",
+                                FacFechaOrden = DateTime.Parse(row.Cell(2).Value.ToString()),
+                                FacUsuarioPago = row.Cell(3).Value.ToString(),
+                                FacAplicaImpuesto = false
+                            };
+
+                            factura.detallefactura.Add(new detallefactura
+                            {
+                                DetValor = Convert.ToDouble(row.Cell(7).Value.ToString()),
+                                DetCantidad = 1,
+                                DetCodigoRubro = row.Cell(13).Value.ToString(),
+                                DetKilometraje = !string.IsNullOrEmpty(row.Cell(9).Value.ToString()) ? Convert.ToInt32(row.Cell(9).Value.ToString().Replace(",", "")) : 0,
+                                DetPlacaVehiculo = row.Cell(8).Value.ToString(),
+                                DetDescripcion = row.Cell(6).Value.ToString()
+                            });
+
+                            var vehiculo = vehiculos.Where(x => x.VehPlaca.Equals(factura.detallefactura.FirstOrDefault().DetPlacaVehiculo)).FirstOrDefault();
+                            if(vehiculo != null)
+                            {
+                                new OrdersViewModel().CreateFactura(factura);
+                            }
+                            //facturas.Add(factura);
+                        }
+                        catch
                         {
-                            FechaPago = row.Cell(1).Value.ToString(),
-                            FechaFacturo = row.Cell(2).Value.ToString(),
-                            UsuarioPago = row.Cell(3).Value.ToString(),
-                            Empresa = row.Cell(4).Value.ToString(),
-                            NumeroFactura = row.Cell(5).Value.ToString(),
-                            Detalle = row.Cell(6).Value.ToString(),
-                            Valor = row.Cell(7).Value.ToString(),
-                            Vehiculo = row.Cell(8).Value.ToString(),
-                            Kilometraje = row.Cell(9).Value.ToString(),
-                            Rubro = row.Cell(10).Value.ToString(),
-                            FechaEntregaAdmin = row.Cell(11).Value.ToString(),
-                            Observaciones = row.Cell(12).Value.ToString()
-                        });
-                        //var cell = row.Cell(1);
+                            throw new Exception("Error en la fila: " + Count);
+                        }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
+
+
+                //Count = 0;
+                //foreach (var item in facturas)
+                //{
+                //    Count++;
+
+                //    try
+                //    {
+                //        var vehiculo = vehiculos.Where(x => x.VehPlaca.Equals(item.detallefactura.FirstOrDefault().DetPlacaVehiculo)).FirstOrDefault();
+                //        if (vehiculo != null)
+                //        {
+                //            if(Count == 5)
+                //            {
+                //                var x = 0;
+                //            }
+                //            //viewModel.CreateFactura(item);
+                //            kilometrajehistorico kilometrajehistorico = new kilometrajehistorico
+                //            {
+                //                KilCodigoVehiculo = vehiculo.VehCodigoVehiculo,
+                //                KilFechaIngreso = item.FacFechaFactura.Value,
+                //                KilKilometraje = item.detallefactura.FirstOrDefault().DetKilometraje,
+                //                KilComentario = "Agregado automatico",
+                //                KilUsuarioIngreso = "w.sabillon",
+                //                KilFotografia = string.Empty
+                //            };
+
+
+                //            new KilometrajeHistoricoViewModel().UploadKilometraje(kilometrajehistorico);
+                //        }
+                //    }
+                //    catch
+                //    {
+                //        throw new Exception("Error al ingresar el registro: " + Count);
+                //    }
+                //}
 
                 return RedirectToAction("Historic");
             }
@@ -402,6 +514,20 @@ namespace rvFleet.Controllers
             {
                 ViewBag.Message = exc.Message;
                 return View("Error");
+            }
+        }
+
+        public JsonResult ValidateNumeroFactura(string FacNumeroFactura)
+        {
+            try
+            {
+                return viewModel.NumeroFacturaDisponible(FacNumeroFactura) ? 
+                    Json(new { status = HttpStatusCode.OK, message = "Ok" }, JsonRequestBehavior.AllowGet) : 
+                    Json(new { status = HttpStatusCode.OK, message = "Error" }, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception exc)
+            {
+                return Json(new { status = HttpStatusCode.Conflict, message = exc.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -1,0 +1,34 @@
+﻿@model List<rvFleet.Models.vehiclecosts>
+
+<label class="h6 pb-2">Gastos vehiculares del mes de @DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("es")), @DateTime.Now.Year</label>
+<div class="table-responsive">
+    <table class="table table-sm table-bordered table-hover scroll">
+        <thead class="thead-light">
+            <tr>
+                <th>Vehículo</th>
+                <th>Gasto total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DETPLACAVEHICULO</td>
+                    <td>@item.VALOR.Value.ToString("N")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table class="table table-sm">
+        <tbody>
+            <tr>
+                <td class="text-center font-weight-bold">
+                    Total:
+                </td>
+                <td>
+                    @Model.Sum(x => x.VALOR).Value.ToString("N")
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,57 @@
+﻿@using Newtonsoft.Json;
+@model List<rvFleet.Models.GetVehicleCosts_Result>
+@{
+    var JsonData = JsonConvert.SerializeObject(Model);
+}
+
+<canvas id="canvas-pie-chart-vehiclesCost" class="m-auto" style="width: 100%; height: 100%"></canvas>
+
+<script>
+    var JsonArray = JSON.parse('@Html.Raw(JsonData)');
+    var data = {
+        datasets: [],
+        labels: []
+    };
+
+    function loadVehiclesCostPie() {
+        var graphData = [];
+        var labels = [];
+        var formatedNumber = [];
+        var backgroundColors = [];
+
+        $.each(JsonArray, function (index, item) {
+            labels.push(item.DETPLACAVEHICULO);
+            graphData.push(item.VALOR);
+            formatedNumber.push(item.FormatedNumber);
+            backgroundColors.push(item.VehColorIdentificador);
+        });
+
+        data.datasets.push({
+            data: graphData,
+            backgroundColor: backgroundColors,
+            fnumber: formatedNumber
+        });
+        data.labels = labels;
+
+
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                tooltips: {
+                    callbacks: {
+                        label: function (t, d) {
+                            return `${d.labels[t.index]} ${d.datasets[0].fnumber[t.index]}`;
+                        }
+                    }
+                }
+            }
+        };
+
+        var ctx = $('#canvas-pie-chart-vehiclesCost');
+        var myChart = new Chart(ctx, config);
+    };
+
+    loadVehiclesCostPie();
+</script>
+

@@ -114,6 +114,7 @@ warning 6013: The table/view 'def.rvfleet.facturahistorico' does not have a prim
     <Property Name="CodigoRubro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NombreRubro" Type="varchar" MaxLength="250" />
     <Property Name="DistanciaCambio" Type="int" />
+    <Property Name="ColorIdentificador" Type="varchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="sucursales">
     <Key>
@@ -161,6 +162,71 @@ warning 6013: The table/view 'def.rvfleet.facturahistorico' does not have a prim
     <Property Name="VehFotoMotor" Type="varchar" MaxLength="500" />
     <Property Name="VehFotoInterior" Type="varchar" MaxLength="500" />
     <Property Name="VehKilometraje" Type="int" />
+    <Property Name="VehColorIdentificador" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.kilometrajeporvehiculoanoactual' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="kilometrajeporvehiculoanoactual">
+    <Key>
+      <PropertyRef Name="KilCodigoVehiculo" />
+      <PropertyRef Name="KilFechaIngreso" />
+      <PropertyRef Name="VehPlaca" />
+    </Key>
+    <Property Name="KilCodigoVehiculo" Type="int" Nullable="false" />
+    <Property Name="KilFechaIngreso" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="KilFechaIngreso_Mes" Type="int" />
+    <Property Name="KilKilometraje" Type="int" />
+    <Property Name="VehPlaca" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VehColorIdentificador" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.recommendedmaintenance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="recommendedmaintenance">
+    <Key>
+      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="DetPlacaVehiculo" />
+    </Key>
+    <Property Name="VehCodigoVehiculo" Type="int" Nullable="false" />
+    <Property Name="DetPlacaVehiculo" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="NombreRubro" Type="varchar" MaxLength="250" />
+    <Property Name="VidaRestante" Type="bigint" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.usuarios' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="CodigoRRHH" />
+      <PropertyRef Name="IdUsuario" />
+      <PropertyRef Name="Contrasena" />
+      <PropertyRef Name="Estado" />
+      <PropertyRef Name="FechaCreacion" />
+      <PropertyRef Name="NombreUsuario" />
+      <PropertyRef Name="IdUbicacion" />
+      <PropertyRef Name="IdentidadUsuario" />
+      <PropertyRef Name="FechaIngreso" />
+      <PropertyRef Name="IdEmpresa" />
+    </Key>
+    <Property Name="CodigoRRHH" Type="int" Nullable="false" />
+    <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Contrasena" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Estado" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="FechaCreacion" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="IdUbicacion" Type="int" Nullable="false" />
+    <Property Name="Jefe" Type="varchar" MaxLength="50" />
+    <Property Name="Correo" Type="varchar" MaxLength="100" />
+    <Property Name="IdentidadUsuario" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="FechaIngreso" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.vehiclecosts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vehiclecosts">
+    <Key>
+      <PropertyRef Name="DETPLACAVEHICULO" />
+    </Key>
+    <Property Name="DETPLACAVEHICULO" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VALOR" Type="double" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -264,6 +330,20 @@ warning 6035: The relationship 'FK_kilometrajehistorico_vehiculos' has columns t
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="CreateKMForVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="VehPlaca" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetPartsCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="startDate" Type="date" Mode="In" />
+    <Parameter Name="endDate" Type="date" Mode="In" />
+  </Function>
+  <Function Name="GetVehicleAnualCostsGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="YearFilter" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetVehicleCosts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="startDate" Type="date" Mode="In" />
+    <Parameter Name="endDate" Type="date" Mode="In" />
+  </Function>
   <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
     <Parameter Name="VehPlaca" Type="varchar" Mode="In" />
   </Function>
@@ -279,6 +359,46 @@ warning 6035: The relationship 'FK_kilometrajehistorico_vehiculos' has columns t
     <EntitySet Name="sucursales" EntityType="Self.sucursales" Schema="" store:Type="Tables" />
     <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" Schema="" store:Type="Tables" />
     <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="" store:Type="Tables" />
+    <EntitySet Name="kilometrajeporvehiculoanoactual" EntityType="Self.kilometrajeporvehiculoanoactual" store:Type="Views" store:Schema="">
+      <DefiningQuery>SELECT
+`kilometrajeporvehiculoanoactual`.`KilCodigoVehiculo`, 
+`kilometrajeporvehiculoanoactual`.`KilFechaIngreso`, 
+`kilometrajeporvehiculoanoactual`.`KilFechaIngreso_Mes`, 
+`kilometrajeporvehiculoanoactual`.`KilKilometraje`, 
+`kilometrajeporvehiculoanoactual`.`VehPlaca`, 
+`kilometrajeporvehiculoanoactual`.`VehColorIdentificador`
+FROM `rvfleet.kilometrajeporvehiculoanoactual` AS `kilometrajeporvehiculoanoactual`</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="recommendedmaintenance" EntityType="Self.recommendedmaintenance" store:Type="Views" store:Schema="">
+      <DefiningQuery>SELECT
+`recommendedmaintenance`.`VehCodigoVehiculo`, 
+`recommendedmaintenance`.`DetPlacaVehiculo`, 
+`recommendedmaintenance`.`NombreRubro`, 
+`recommendedmaintenance`.`VidaRestante`
+FROM `rvfleet.recommendedmaintenance` AS `recommendedmaintenance`</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="usuarios" EntityType="Self.usuarios" store:Type="Views" store:Schema="">
+      <DefiningQuery>SELECT
+`usuarios`.`CodigoRRHH`, 
+`usuarios`.`IdUsuario`, 
+`usuarios`.`Contrasena`, 
+`usuarios`.`Estado`, 
+`usuarios`.`FechaCreacion`, 
+`usuarios`.`NombreUsuario`, 
+`usuarios`.`IdUbicacion`, 
+`usuarios`.`Jefe`, 
+`usuarios`.`Correo`, 
+`usuarios`.`IdentidadUsuario`, 
+`usuarios`.`FechaIngreso`, 
+`usuarios`.`IdEmpresa`
+FROM `rvfleet.usuarios` AS `usuarios`</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vehiclecosts" EntityType="Self.vehiclecosts" store:Type="Views" store:Schema="">
+      <DefiningQuery>SELECT
+`vehiclecosts`.`DETPLACAVEHICULO`, 
+`vehiclecosts`.`VALOR`
+FROM `rvfleet.vehiclecosts` AS `vehiclecosts`</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
       <DefiningQuery>SELECT
 `vehiclefulldata`.`VehCodigoVehiculo`, 

@@ -5,65 +5,146 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    thead th {
+        white-space: nowrap;
+    }
+    thead th a i{
+        text-align: right;
+    }
+</style>
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <div class="row">
-    <div class="col-12 col-md-6">
-        <h2>Ordenes/Facturas</h2>
+    <div class="col">
+        <h4><i class="fa fa-book"></i> Facturas</h4>
     </div>
-    <div class="col-12 col-md-6 form-group">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent shadow">
-                <li class="breadcrumb-item">
-                    <a href="@Url.Action("Index", "Home")">Inicio</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Facturas</li>
-            </ol>
-        </nav>
+    <div class="col text-right">
+        <a href="@Url.Action("New", "Orders")" class="btn btn-success btn-sm" role="button">
+            <i class="fa fa-plus"></i>
+            Nuevo
+        </a>
     </div>
 </div>
-
-<hr />
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Facturas</li>
+    </ol>
+</nav>
 
 @using (Html.BeginForm("Index", "Orders", FormMethod.Get, new { id = "order-form" }))
 {
     <div class="row form-group">
-        <div class="col-12 col-md-6 col-lg-6">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control col-12" placeholder="Buscar proveedor/detalle..." name="searchString" value="@ViewBag.searchString">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-info">Buscar <i class="fa fa-search"></i></button>
+        <div class="col-12">
+            <div class="form-row">
+                <div class="form-group col-12 col-sm-6">
+                    @Html.Label("Tipo")
+                    @Html.DropDownList("Type", null, new { @class = "form-control col-12", onchange = "$('#order-form').submit()" })
+                </div>
+                <div class="form-group col-12 col-sm-6">
+                    @Html.Label("Vehículo")
+                    @Html.DropDownList("VehPlaca", null, "Todos", new { @class = "form-control col-12", onchange = "$('#order-form').submit()" })
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-md-6 offset-lg-2 col-lg-4">
-            <a href="@Url.Action("New", "Orders")" class="btn btn-outline-success float-right" role="button">
-                <i class="fa fa-plus"></i>
-                Nuevo
-            </a>
         </div>
     </div>
 
     <div class="row form-group">
         <div class="col-12">
-            @Html.DropDownList("Type", null, new { @class = "form-control", onchange = "$('#order-form').submit()" })
+            <div class="input-group mb-3">
+                <input type="text" class="form-control col-12" placeholder="Buscar proveedor/detalle..." name="searchString" value="@ViewBag.searchString">
+                <div class="input-group-append">
+                    <button class="btn btn-info"><i class="fa fa-search"></i> Buscar</button>
+                </div>
+            </div>
         </div>
     </div>
 }
 
-<br />
-
 <div class="table-responsive">
-    <table class="table table-striped table-bordered">
-        <thead class="bg-dark text-white">
+    <table class="table table-hover table-bordered bg-white" id="orders-table">
+        <thead>
             <tr>
-                <th>#</th>
-                <th>Fecha</th>
-                <th>Facturado</th>
-                <th>Proveedor</th>
+                @*<th>#</th>*@
+                <th>
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacNumeroFactura, type = ViewBag.SelectedType })">
+                        Factura
+                        @if (ViewBag.SortOrder == "factura_desc")
+                        {
+                            <i class="fa fa-sort-asc text-right"></i>
+                        }
+                        else if (ViewBag.SortOrder == "factura")
+                        {
+                            <i class="fa fa-sort-desc text-right"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-sort text-right"></i>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortDate, type = ViewBag.SelectedType })">
+                        Fecha
+                        @if (ViewBag.SortOrder == "fecha_desc")
+                        {
+                            <i class="fa fa-sort-asc text-right"></i>
+                        }
+                        else if (ViewBag.SortOrder == "fecha")
+                        {
+                            <i class="fa fa-sort-desc text-right"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-sort text-right"></i>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortProveedor, type = ViewBag.SelectedType })">
+                        Proveedor
+                        @if (ViewBag.SortOrder == "proveedor_desc")
+                        {
+                            <i class="fa fa-sort-asc text-right"></i>
+                        }
+                        else if (ViewBag.SortOrder == "proveedor")
+                        {
+                            <i class="fa fa-sort-desc text-right"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-sort text-right"></i>
+                        }
+                    </a>
+                </th>
                 <th>Detalle</th>
-                <th>Total</th>
-                <th></th>
+                <th>Vehículos</th>
+                <th>
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortTotal, type = ViewBag.SelectedType })">
+                        Total
+                        @if (ViewBag.SortOrder == "total_desc")
+                        {
+                            <i class="fa fa-sort-asc text-right"></i>
+                        }
+                        else if (ViewBag.SortOrder == "total")
+                        {
+                            <i class="fa fa-sort-desc text-right"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-sort text-right"></i>
+                        }
+                    </a>
+                </th>
+                <th>
+                    Facturado
+                </th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -72,39 +153,41 @@
 
                 foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.FacCodigoOrden</td>
-                        <td>@item.FacFechaOrden.Value.ToString("yyyy-MM-dd")</td>
-                        @if (string.IsNullOrEmpty(item.FacNumeroFactura))
-                        {
-                            <td class="text-center">
-                                <i class="fa fa-times text-danger"></i>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">
-                                <i class="fa fa-check text-success"></i>
-                            </td>
-                        }
-                        <td>@item.NombreProveedor</td>
-                        <td>@item.Detalles</td>
-                        <td>@item.FacValorFactura.ToString("N2")</td>
-                        <td class="text-center" style="white-space: nowrap;">
-                            <a href="@Url.Action("Edit", "Orders", new { item.FacCodigoOrden })" class="btn btn-warning btn-sm">
-                                <i class="fa fa-pencil"></i>
-                            </a>
-                            <a href="@Url.Action("Details", "Orders", new { item.FacCodigoOrden })" class="btn btn-info btn-sm">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
+            <tr>
+                @*<td>@item.FacCodigoOrden</td>*@
+                <td>@(string.IsNullOrEmpty(item.FacNumeroFactura) ? "Sin Factura" : item.FacNumeroFactura)</td>
+                <td>@item.FacFechaOrden.Value.ToString("yyyy-MM-dd")</td>
+                <td>@item.proveedor.ProNombre</td>
+                <td>@string.Join(", ", item.detallefactura.Select(x => x.DetDescripcion).ToList())</td>
+                <td>@string.Join(", ", item.detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList())</td>
+                <td>@item.FacValorFactura.ToString("N2")</td>
+                @if (string.IsNullOrEmpty(item.FacNumeroFactura))
+                {
+                    <td class="text-center">
+                        <i class="fa fa-times text-danger"></i>
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center">
+                        <i class="fa fa-check text-success"></i>
+                    </td>
+                }
+                <td class="text-center" style="white-space: nowrap;">
+                    <a href="@Url.Action("Edit", "Orders", new { item.FacCodigoOrden })" class="btn btn-warning btn-sm">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    <a href="@Url.Action("Details", "Orders", new { item.FacCodigoOrden })" class="btn btn-info btn-sm">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
                 }
             }
             else
             {
                 <tr>
-                    <td colspan="5" class="text-center">
+                    <td colspan="7" class="text-center">
                         <label class="h6">No hay registros por mostrar.</label>
                     </td>
                 </tr>
@@ -116,4 +199,19 @@
 <br />
 
 Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.searchString, type = ViewBag.SelectedType }))
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca }))
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#VehPlaca').select2({
+            theme: 'bootstrap4',
+            width: '100%',
+        });
+
+        //$('#orders-table').DataTable({
+        //    language: {
+        //        "url": "~/Scripts/i18n/es.js"
+        //    }
+        //});
+    });
+</script>

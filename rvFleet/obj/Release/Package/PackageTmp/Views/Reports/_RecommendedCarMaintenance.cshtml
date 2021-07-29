@@ -1,0 +1,58 @@
+﻿@model List<rvFleet.Models.recommendedmaintenance>
+@{ 
+    int count = 0;
+}
+
+<div id="carouselExampleIndicators" class="carousel slide h-100" data-ride="carousel">
+    <ol class="carousel-indicators">
+        @foreach (var item in Model)
+        {
+            if (count == 0)
+            {
+                //Es el primer elemento del arreglo
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active bg-dark"></li>
+            }
+            else
+            {
+                <li data-target="#carouselExampleIndicators" data-slide-to="@count" class="bg-dark"></li>
+            }
+
+            count++;
+        }
+    </ol>
+    <div class="carousel-inner">
+        @{
+            count = 0;
+        } 
+        @if (Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                if (count == 0)
+                {
+                    <div class="carousel-item active">
+                        <label>Vehículo: <span>@item.DetPlacaVehiculo</span></label> <br />
+                        <label>Rubro: <span>@item.NombreRubro</span></label> <br />
+                        <label>Kilometros restantes: <span>@string.Format("{0:n0}", item.VidaRestante) KM</span></label>
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item">
+                        <label>Vehículo: <span>@item.DetPlacaVehiculo</span></label> <br />
+                        <label>Rubro: <span>@item.NombreRubro</span></label> <br />
+                        <label>Kilometros restantes: <span>@string.Format("{0:n0}", item.VidaRestante) KM</span></label>
+                    </div>
+                }
+
+                count++;
+            }
+        }
+        else
+        {
+            <div class="w-100 text-center">
+                <h5>No hay mantenimientos recomendados</h5>
+            </div>
+        }
+    </div>
+</div>

@@ -38,7 +38,46 @@ namespace rvFleet.Models
         public virtual DbSet<sucursales> sucursales { get; set; }
         public virtual DbSet<ubicacionhistorica> ubicacionhistorica { get; set; }
         public virtual DbSet<vehiculos> vehiculos { get; set; }
+        public virtual DbSet<kilometrajeporvehiculoanoactual> kilometrajeporvehiculoanoactual { get; set; }
+        public virtual DbSet<recommendedmaintenance> recommendedmaintenance { get; set; }
+        public virtual DbSet<usuarios> usuarios { get; set; }
+        public virtual DbSet<vehiclecosts> vehiclecosts { get; set; }
         public virtual DbSet<vehiclefulldata> vehiclefulldata { get; set; }
+    
+        public virtual ObjectResult<GetPartsCost_Result> GetPartsCost(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetPartsCost_Result>("GetPartsCost", startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<GetVehicleAnualCostsGraphData_Result> GetVehicleAnualCostsGraphData(Nullable<int> yearFilter)
+        {
+            var yearFilterParameter = yearFilter.HasValue ?
+                new ObjectParameter("YearFilter", yearFilter) :
+                new ObjectParameter("YearFilter", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleAnualCostsGraphData_Result>("GetVehicleAnualCostsGraphData", yearFilterParameter);
+        }
+    
+        public virtual ObjectResult<GetVehicleCosts_Result> GetVehicleCosts(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleCosts_Result>("GetVehicleCosts", startDateParameter, endDateParameter);
+        }
     
         public virtual ObjectResult<GetVehicleGraphData_Result> GetVehicleGraphData(string vehPlaca)
         {
