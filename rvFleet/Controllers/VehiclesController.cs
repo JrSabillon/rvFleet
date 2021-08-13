@@ -199,5 +199,13 @@ namespace rvFleet.Controllers
         {
             throw new NotImplementedException();
         }
+
+        public ActionResult Logs(string VehPlaca)
+        {
+            ViewBag.VehPlaca = VehPlaca;
+            var model = new LogsViewModel().GetBitacoravehiculos().Where(x => x.bitacoraPlaca.Equals(VehPlaca)).ToList();
+
+            return View(model);
+        }
     }
 }

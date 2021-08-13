@@ -53,67 +53,76 @@
 }
 
 <div class="row">
-    <div class="col-12 col-lg form-group">
+    <div class="col-12 form-group">
         <div class="card shadow-sm">
             <div class="card-header">
-                <b>Tabla de costos</b>
+                <b>Gastos vehiculares</b>
             </div>
             <div class="card-body">
-                <label>A continuación se presentan los costos vehiculares comprendidos entre las fechas "@FormatedDateToText(startDate)" y "@FormatedDateToText(endDate)".</label>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Buscar placa..." id="input-filter">
-                    <div class="input-group-append">
-                        <span class="input-group-text"><i class="fa fa-search"></i></span>
-                    </div>
-                </div>
-                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                    <table class="table table-hover table-bordered" id="table-vehicleCosts">
-                        <thead>
-                            <tr>
-                                <th>Vehículo</th>
-                                <th>Costo</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Count > 0)
-                            {
-                                foreach (var item in Model)
-                                {
+                <ul class="nav nav-tabs" role="tablist" id="nav-tab-vehicles-cost">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#div-tab-vehicles-cost-table" role="tab" aria-selected="true">
+                            Tabla de costos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#div-tab-vehicles-cost-graph" role="tab" aria-selected="true">
+                            Gráfico
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content mt-4">
+                    <div id="div-tab-vehicles-cost-table" class="tab-pane fade show active">
+                        <label>A continuación se presentan los costos vehiculares comprendidos entre las fechas "@FormatedDateToText(startDate)" y "@FormatedDateToText(endDate)".</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Buscar placa..." id="input-filter">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                            <table class="table table-hover table-bordered tablesorter" id="table-vehicleCosts">
+                                <thead>
                                     <tr>
-                                        <td>@item.DETPLACAVEHICULO</td>
-                                        <td>@item.VALOR.ToString("N")</td>
-                                        <td>
-                                            <a href="@Url.Action("OrdersDetails", new { VehPlaca = item.DETPLACAVEHICULO, startDate = startDate, endDate = endDate })" 
-                                               title="Ver facturas" class="btn btn-sm btn-info">
-                                                <i class="fa fa-book"></i>
-                                            </a>
-                                        </td>
+                                        <th>Vehículo</th>
+                                        <th>Costo</th>
+                                        <th>Acciones</th>
                                     </tr>
-                                }
+                                </thead>
+                                <tbody>
+                                    @if (Model.Count > 0)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.DETPLACAVEHICULO</td>
+                                                <td>@item.VALOR.ToString("N")</td>
+                                                <td>
+                                                    <a href="@Url.Action("OrdersDetails", new { VehPlaca = item.DETPLACAVEHICULO, startDate = startDate, endDate = endDate })"
+                                                       title="Ver facturas" class="btn btn-sm btn-info">
+                                                        <i class="fa fa-book"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="3">No hay datos que coincidan con el criterio de búsqueda.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="div-tab-vehicles-cost-graph" class="tab-pane fade">
+                        <div>
+                            @{
+                                Html.RenderPartial("_VehiclesCostGraph", Model);
                             }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="3">No hay datos que coincidan con el criterio de búsqueda.</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-lg">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <b>Gráfica</b>
-            </div>
-            <div class="card-body">
-                <div style="height: 410px">
-                    @{
-                        Html.RenderPartial("_VehiclesCostGraph", Model);
-                    }
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,5 +137,7 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
+        $('#table-vehicleCosts').tablesorter();
     });
 </script>

@@ -14,11 +14,13 @@ namespace rvFleet.POCO.Reports
             RecommendedMaintenances = new List<recommendedmaintenance>();
             VehicleAnualCostGraphData = new List<GetVehicleAnualCostsGraphData_Result>();
             KilometrajesPorVehiculoAnoActual = new List<kilometrajeporvehiculoanoactual>();
+            VidaUtilData = new List<GetVehicleGraphData_Result>();
         }
 
         public List<vehiclecosts> VehicleCosts { get; set; }
         public List<recommendedmaintenance> RecommendedMaintenances { get; set; }
         public List<GetVehicleAnualCostsGraphData_Result> VehicleAnualCostGraphData { get; set; }
         public List<kilometrajeporvehiculoanoactual> KilometrajesPorVehiculoAnoActual { get; set; } 
+        public List<GetVehicleGraphData_Result> VidaUtilData { get; set; }
     }
 }

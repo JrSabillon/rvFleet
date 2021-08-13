@@ -24,6 +24,7 @@ namespace rvFleet.Models
         public string NombreRubro { get; set; }
         public Nullable<int> DistanciaCambio { get; set; }
         public string ColorIdentificador { get; set; }
+        public Nullable<int> Prioridad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<rubrodetalle> rubrodetalle { get; set; }

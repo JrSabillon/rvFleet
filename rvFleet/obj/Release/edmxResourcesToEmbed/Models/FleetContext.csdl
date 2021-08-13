@@ -13,7 +13,7 @@
       <Parameter Name="endDate" Mode="In" Type="DateTime" />
     </FunctionImport>
     <FunctionImport Name="GetVehicleGraphData" ReturnType="Collection(rvfleetModel.GetVehicleGraphData_Result)">
-      <Parameter Name="VehPlaca" Mode="In" Type="String" />
+      <Parameter Name="VehPlaca_IN" Mode="In" Type="String" />
     </FunctionImport>
     <EntitySet Name="archivofactura" EntityType="rvfleetModel.archivofactura" />
     <EntitySet Name="conductorhistorico" EntityType="rvfleetModel.conductorhistorico" />
@@ -28,7 +28,6 @@
     <EntitySet Name="vehiculos" EntityType="rvfleetModel.vehiculos" />
     <EntitySet Name="kilometrajeporvehiculoanoactual" EntityType="rvfleetModel.kilometrajeporvehiculoanoactual" />
     <EntitySet Name="recommendedmaintenance" EntityType="rvfleetModel.recommendedmaintenance" />
-    <EntitySet Name="usuarios" EntityType="rvfleetModel.usuarios" />
     <EntitySet Name="vehiclecosts" EntityType="rvfleetModel.vehiclecosts" />
     <EntitySet Name="vehiclefulldata" EntityType="rvfleetModel.vehiclefulldata" />
     <AssociationSet Name="FK__facturas" Association="rvfleetModel.FK__facturas">
@@ -51,9 +50,15 @@
       <End Role="rubros" EntitySet="rubros" />
       <End Role="rubrodetalle" EntitySet="rubrodetalle" />
     </AssociationSet>
+    <EntitySet Name="bitacoravehiculo" EntityType="rvfleetModel.bitacoravehiculo" />
+    <EntitySet Name="bitacoracomentario" EntityType="rvfleetModel.bitacoracomentario" />
+    <AssociationSet Name="FK__bitacoravehiculo" Association="rvfleetModel.FK__bitacoravehiculo">
+      <End Role="bitacoravehiculo" EntitySet="bitacoravehiculo" />
+      <End Role="bitacoracomentario" EntitySet="bitacoracomentario" />
+    </AssociationSet>
+    <FunctionImport Name="spGetRubrosNoFacturadosVehiculo" EntitySet="recommendedmaintenance" ReturnType="Collection(rvfleetModel.recommendedmaintenance)" />
   </EntityContainer>
   <ComplexType Name="GetVehicleGraphData_Result">
-    <Property Type="Int32" Name="Orden" Nullable="false" />
     <Property Type="Int32" Name="CodigoRubro" Nullable="false" />
     <Property Type="String" Name="NombreRubro" Nullable="false" />
     <Property Type="Int32" Name="KilometrajeFacturado" Nullable="false" />
@@ -114,7 +119,7 @@
     <Property Name="DetValor" Type="Double" Nullable="false" />
     <Property Name="DetCantidad" Type="Int32" Nullable="false" />
     <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-    <Property Name="DetCodigoRubro" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="DetCodigoRubro" Type="Int32" />
     <Property Name="DetKilometraje" Type="Int32" Nullable="false" />
     <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK_detallefactura_facturas" FromRole="detallefactura" ToRole="facturas" />
   </EntityType>
@@ -185,6 +190,7 @@
     <Property Name="NombreRubro" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="DistanciaCambio" Type="Int32" />
     <Property Name="ColorIdentificador" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Prioridad" Type="Int32" />
     <NavigationProperty Name="rubrodetalle" Relationship="rvfleetModel.FK__rubros" FromRole="rubros" ToRole="rubrodetalle" />
   </EntityType>
   <EntityType Name="sucursales">
@@ -233,7 +239,7 @@
     <Property Name="VehFotoMotor" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="VehFotoInterior" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="VehKilometraje" Type="Int32" />
-    <Property Name="VehColorIdentificador" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="VehColorIdentificador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="proveedor" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="vehiculos" ToRole="proveedor" />
   </EntityType>
   <EntityType Name="kilometrajeporvehiculoanoactual">
@@ -247,50 +253,36 @@
     <Property Name="KilFechaIngreso_Mes" Type="Int32" />
     <Property Name="KilKilometraje" Type="Int32" />
     <Property Name="VehPlaca" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-    <Property Name="VehColorIdentificador" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="VehColorIdentificador" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="recommendedmaintenance">
     <Key>
-      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="CodigoRubro" />
       <PropertyRef Name="DetPlacaVehiculo" />
+      <PropertyRef Name="VehCodigoVehiculo" />
+      <PropertyRef Name="DetCodigoOrden" />
     </Key>
-    <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" />
-    <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="CodigoRubro" Type="Int32" Nullable="false" />
     <Property Name="NombreRubro" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="VehCodigoVehiculo" Type="Int32" Nullable="false" />
+    <Property Name="DistanciaCambio" Type="Int32" />
+    <Property Name="KilometrajeFacturado" Type="Int32" />
+    <Property Name="KilometrajeActual" Type="Int32" />
+    <Property Name="DistanciaRecorrida" Type="Int64" />
     <Property Name="VidaRestante" Type="Int64" />
-  </EntityType>
-  <EntityType Name="usuarios">
-    <Key>
-      <PropertyRef Name="CodigoRRHH" />
-      <PropertyRef Name="IdUsuario" />
-      <PropertyRef Name="Contrasena" />
-      <PropertyRef Name="Estado" />
-      <PropertyRef Name="FechaCreacion" />
-      <PropertyRef Name="NombreUsuario" />
-      <PropertyRef Name="IdUbicacion" />
-      <PropertyRef Name="IdentidadUsuario" />
-      <PropertyRef Name="FechaIngreso" />
-      <PropertyRef Name="IdEmpresa" />
-    </Key>
-    <Property Name="CodigoRRHH" Type="Int32" Nullable="false" />
-    <Property Name="IdUsuario" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Contrasena" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Estado" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-    <Property Name="FechaCreacion" Type="DateTime" Nullable="false" />
-    <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="IdUbicacion" Type="Int32" Nullable="false" />
-    <Property Name="Jefe" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="IdentidadUsuario" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
-    <Property Name="IdEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DetCodigoOrden" Type="Int32" Nullable="false" />
+    <Property Name="FacFechaOrden" Type="DateTime" />
+    <Property Name="Prioridad" Type="Int32" />
   </EntityType>
   <EntityType Name="vehiclecosts">
     <Key>
-      <PropertyRef Name="DETPLACAVEHICULO" />
+      <PropertyRef Name="DetPlacaVehiculo" />
     </Key>
-    <Property Name="DETPLACAVEHICULO" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-    <Property Name="VALOR" Type="Double" />
+    <Property Name="Total" Type="Double" />
+    <Property Name="DetPlacaVehiculo" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="PromedioMensual" Type="Double" />
+    <Property Name="PromedioAnual" Type="Double" />
   </EntityType>
   <EntityType Name="vehiclefulldata">
     <Key>
@@ -386,6 +378,42 @@
       </Principal>
       <Dependent Role="rubrodetalle">
         <PropertyRef Name="CodigoRubro" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="bitacoravehiculo">
+    <Key>
+      <PropertyRef Name="bitacoraId" />
+    </Key>
+    <Property Name="bitacoraId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="bitacoraComentario" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="bitacoraUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="bitacoraFecha" Type="DateTime" />
+    <Property Name="bitacoraPlaca" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="bitacoraTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="bitacoracomentario1" Relationship="rvfleetModel.FK__bitacoravehiculo" FromRole="bitacoravehiculo" ToRole="bitacoracomentario" />
+  </EntityType>
+  <EntityType Name="bitacoracomentario">
+    <Key>
+      <PropertyRef Name="bitacoraId" />
+      <PropertyRef Name="bitacoraComId" />
+    </Key>
+    <Property Name="bitacoraId" Type="Int32" Nullable="false" />
+    <Property Name="bitacoraComId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="bitacoraComRespuesta" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="bitacoraComUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="bitacoraComFecha" Type="DateTime" />
+    <NavigationProperty Name="bitacoravehiculo" Relationship="rvfleetModel.FK__bitacoravehiculo" FromRole="bitacoracomentario" ToRole="bitacoravehiculo" />
+  </EntityType>
+  <Association Name="FK__bitacoravehiculo">
+    <End Type="rvfleetModel.bitacoravehiculo" Role="bitacoravehiculo" Multiplicity="1" />
+    <End Type="rvfleetModel.bitacoracomentario" Role="bitacoracomentario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="bitacoravehiculo">
+        <PropertyRef Name="bitacoraId" />
+      </Principal>
+      <Dependent Role="bitacoracomentario">
+        <PropertyRef Name="bitacoraId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

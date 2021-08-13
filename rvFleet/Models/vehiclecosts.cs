@@ -14,7 +14,9 @@ namespace rvFleet.Models
     
     public partial class vehiclecosts
     {
-        public string DETPLACAVEHICULO { get; set; }
-        public Nullable<double> VALOR { get; set; }
+        public Nullable<double> Total { get; set; }
+        public string DetPlacaVehiculo { get; set; }
+        public Nullable<double> PromedioMensual { get; set; }
+        public Nullable<double> PromedioAnual { get; set; }
     }
 }

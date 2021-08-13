@@ -59,7 +59,11 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.VehPlaca</td>
+                    <td>
+                        <a href="@Url.Action("Logs", "Vehicles", new { item.VehPlaca })">
+                            @item.VehPlaca
+                        </a>
+                    </td>
                     <td>@item.VehColor</td>
                     <td>@item.VehAno</td>
                     <td>@item.NombreEmpresa</td>

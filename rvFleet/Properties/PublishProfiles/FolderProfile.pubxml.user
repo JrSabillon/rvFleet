@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>D:\DeployRV\rvFleet</_PublishTargetUrl>
-    <History>True|2021-07-29T15:51:24.5710878Z;True|2021-07-27T16:44:26.4506555-06:00;True|2021-07-15T11:09:43.5745207-06:00;True|2021-07-14T08:37:21.0019732-06:00;True|2021-07-06T09:01:37.0071192-06:00;True|2021-07-02T09:54:31.0078393-06:00;True|2021-06-25T09:07:54.4233801-06:00;True|2021-06-22T10:38:50.7964569-06:00;True|2021-06-21T16:04:29.9475218-06:00;True|2021-06-16T10:55:53.4205699-06:00;</History>
+    <History>True|2021-08-12T21:49:01.5316534Z;True|2021-08-11T17:11:48.7543565-06:00;True|2021-08-06T16:21:10.4238660-06:00;True|2021-08-06T15:06:03.3239436-06:00;True|2021-08-06T09:51:26.7665502-06:00;True|2021-08-05T10:17:41.2494417-06:00;True|2021-08-04T17:43:59.5879698-06:00;True|2021-07-29T09:51:24.5710878-06:00;True|2021-07-27T16:44:26.4506555-06:00;True|2021-07-15T11:09:43.5745207-06:00;True|2021-07-14T08:37:21.0019732-06:00;True|2021-07-06T09:01:37.0071192-06:00;True|2021-07-02T09:54:31.0078393-06:00;True|2021-06-25T09:07:54.4233801-06:00;True|2021-06-22T10:38:50.7964569-06:00;True|2021-06-21T16:04:29.9475218-06:00;True|2021-06-16T10:55:53.4205699-06:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
@@ -31,6 +31,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
       <publishTime>06/23/2021 18:01:12</publishTime>
+    </File>
+    <File Include="bin/EPPlus.dll">
+      <publishTime>07/22/2021 02:11:36</publishTime>
     </File>
     <File Include="bin/es/System.Web.Helpers.resources.dll">
       <publishTime>11/28/2018 07:04:36</publishTime>
@@ -73,6 +76,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>06/23/2021 18:01:14</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IO.RecyclableMemoryStream.dll">
+      <publishTime>03/10/2021 17:48:48</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>06/23/2021 18:01:14</publishTime>
@@ -240,13 +246,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
     <File Include="bin/rvFleet.dll">
-      <publishTime>07/29/2021 09:51:24</publishTime>
+      <publishTime>08/12/2021 15:49:02</publishTime>
     </File>
     <File Include="bin/rvFleet.pdb">
-      <publishTime>07/29/2021 09:51:24</publishTime>
+      <publishTime>08/12/2021 15:49:02</publishTime>
     </File>
     <File Include="bin/System.Buffers.dll">
       <publishTime>06/23/2021 18:01:14</publishTime>
+    </File>
+    <File Include="bin/System.ComponentModel.Annotations.dll">
+      <publishTime>05/15/2018 07:29:36</publishTime>
     </File>
     <File Include="bin/System.IO.Packaging.dll">
       <publishTime>06/11/2016 17:13:48</publishTime>
@@ -854,6 +863,171 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Content/images/others/placeholder.png">
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
+    <File Include="Content/jquerySorter/bootstrap.less">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/dragtable.mod.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/filter.formatter.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/high-specificity/theme.blue.specific.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/highlights.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/black-asc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/black-desc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/black-unsorted.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/bootstrap-black-unsorted.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/bootstrap-white-unsorted.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/dragtable-handle.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/dragtable-handle.svg">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/dropbox-asc-hovered.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/dropbox-asc.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/dropbox-desc-hovered.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/dropbox-desc.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/green-asc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/green-desc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/green-header.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/green-unsorted.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/ice-asc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/ice-desc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/ice-unsorted.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/metro-black-asc.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/metro-black-desc.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/metro-loading.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/metro-unsorted.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/metro-white-asc.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/metro-white-desc.png">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/white-asc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/white-desc.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/images/white-unsorted.gif">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/metro.less">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/psd/green-asc.psd">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/psd/green-desc.psd">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/psd/green-unsorted.psd">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/psd/metro-style.psd">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.black-ice.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.blue.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.bootstrap.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.bootstrap_2.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.bootstrap_3.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.bootstrap_4.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.dark.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.default.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.dropbox.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.green.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.grey.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.ice.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.jui.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.less">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.materialize.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.metro-dark.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/theme.scss">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Content/jquerySorter/widget.grouping.css">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
     <File Include="Content/login.css">
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
@@ -1011,7 +1185,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
     <File Include="Models/FleetContext.edmx.diagram">
-      <publishTime>07/26/2021 10:12:44</publishTime>
+      <publishTime>08/12/2021 11:22:50</publishTime>
     </File>
     <File Include="Models/SecurityContext.edmx.diagram">
       <publishTime>06/23/2021 18:01:14</publishTime>
@@ -1275,7 +1449,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/19/2021 10:34:06</publishTime>
     </File>
     <File Include="Scripts/dist/facturas.js">
-      <publishTime>07/07/2021 16:17:00</publishTime>
+      <publishTime>08/11/2021 11:09:16</publishTime>
     </File>
     <File Include="Scripts/dist/index.js">
       <publishTime>06/23/2021 18:01:14</publishTime>
@@ -1519,6 +1693,195 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="Scripts/jquery.validate.unobtrusive.min.js">
       <publishTime>06/23/2021 18:01:14</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/extras/jquery.dragtable.mod.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/extras/jquery.metadata.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/extras/semver-mod.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/extras/semver.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/jquery.tablesorter.combined.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/jquery.tablesorter.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/jquery.tablesorter.widgets.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date-extract.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date-iso8601.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date-month.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date-range.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date-two-digit-year.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date-weekday.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-date.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-duration.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-feet-inch-fraction.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-file-type.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-globalize.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-huge-numbers.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-ignore-articles.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-image.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-input-select.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-leading-zeros.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-metric.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-named-numbers.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-network.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/parsers/parser-roman.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-alignChar.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-build-table.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-chart.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-columns.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-columnSelector.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-cssStickyHeaders.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-currentSort.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-editable.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-filter-formatter-html5.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-filter-formatter-jui.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-filter-formatter-select2.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-filter-type-insideRange.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-filter.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-formatter.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-grouping.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-headerTitles.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-lazyload.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-mark.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-math.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-output.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-pager.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-print.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-reflow.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-repeatheaders.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-resizable.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-saveSort.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-scroller.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-sort2Hash.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-sortTbodies.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-staticRow.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-stickyHeaders.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-storage.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-toggle.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-uitheme.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-vertical-group.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
+    </File>
+    <File Include="Scripts/jquerySorter/widgets/widget-view.js">
+      <publishTime>03/03/2020 07:46:04</publishTime>
     </File>
     <File Include="Scripts/Login.js">
       <publishTime>06/23/2021 18:01:14</publishTime>
@@ -1788,7 +2151,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>06/28/2021 11:50:12</publishTime>
+      <publishTime>08/11/2021 17:00:22</publishTime>
     </File>
     <File Include="Views/Login/Index.cshtml">
       <publishTime>06/25/2021 09:15:48</publishTime>
@@ -1797,13 +2160,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/21/2021 20:29:00</publishTime>
     </File>
     <File Include="Views/Orders/Edit.cshtml">
-      <publishTime>07/21/2021 20:29:06</publishTime>
+      <publishTime>08/11/2021 10:58:56</publishTime>
     </File>
     <File Include="Views/Orders/Historic.cshtml">
       <publishTime>07/05/2021 13:54:28</publishTime>
     </File>
     <File Include="Views/Orders/Index.cshtml">
-      <publishTime>07/28/2021 15:47:50</publishTime>
+      <publishTime>08/12/2021 15:47:26</publishTime>
     </File>
     <File Include="Views/Orders/New.cshtml">
       <publishTime>07/21/2021 20:29:16</publishTime>
@@ -1811,17 +2174,20 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Views/Profile/Index.cshtml">
       <publishTime>07/21/2021 20:31:10</publishTime>
     </File>
+    <File Include="Views/Reports/NextMaintenance.cshtml">
+      <publishTime>08/10/2021 15:08:46</publishTime>
+    </File>
     <File Include="Views/Reports/OrdersDetails.cshtml">
-      <publishTime>07/28/2021 16:05:04</publishTime>
+      <publishTime>08/04/2021 14:52:30</publishTime>
     </File>
     <File Include="Views/Reports/PartsCost.cshtml">
-      <publishTime>07/24/2021 12:49:22</publishTime>
+      <publishTime>08/04/2021 10:47:28</publishTime>
     </File>
     <File Include="Views/Reports/Vehicles.cshtml">
       <publishTime>07/28/2021 17:30:42</publishTime>
     </File>
     <File Include="Views/Reports/VehiclesCosts.cshtml">
-      <publishTime>07/27/2021 10:36:36</publishTime>
+      <publishTime>08/04/2021 10:23:26</publishTime>
     </File>
     <File Include="Views/Reports/_AnualCostsGraph.cshtml">
       <publishTime>07/26/2021 10:14:34</publishTime>
@@ -1830,13 +2196,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/13/2021 10:04:50</publishTime>
     </File>
     <File Include="Views/Reports/_MonthlyCostsVehicles.cshtml">
-      <publishTime>07/28/2021 15:59:22</publishTime>
+      <publishTime>08/04/2021 10:44:10</publishTime>
     </File>
     <File Include="Views/Reports/_PartsCostGraph.cshtml">
       <publishTime>07/26/2021 10:15:02</publishTime>
     </File>
     <File Include="Views/Reports/_RecommendedCarMaintenance.cshtml">
-      <publishTime>07/09/2021 10:51:58</publishTime>
+      <publishTime>08/04/2021 09:01:04</publishTime>
     </File>
     <File Include="Views/Reports/_VehiclesCostGraph.cshtml">
       <publishTime>07/24/2021 12:45:58</publishTime>
@@ -1845,7 +2211,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>07/19/2021 11:13:30</publishTime>
+      <publishTime>08/04/2021 10:21:34</publishTime>
     </File>
     <File Include="Views/Shared/_MonthlyCostsVehicles.cshtml">
       <publishTime>07/06/2021 16:02:10</publishTime>
@@ -1857,13 +2223,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/05/2021 10:41:18</publishTime>
     </File>
     <File Include="Views/Vehicles/Control.cshtml">
-      <publishTime>07/21/2021 20:08:06</publishTime>
+      <publishTime>08/11/2021 15:02:14</publishTime>
     </File>
     <File Include="Views/Vehicles/Deliver.cshtml">
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
     <File Include="Views/Vehicles/Edit.cshtml">
       <publishTime>07/21/2021 20:12:12</publishTime>
+    </File>
+    <File Include="Views/Vehicles/Logs.cshtml">
+      <publishTime>08/12/2021 15:14:02</publishTime>
     </File>
     <File Include="Views/Vehicles/New.cshtml">
       <publishTime>07/21/2021 20:10:40</publishTime>
@@ -1878,7 +2247,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2021 18:01:14</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/27/2021 16:44:26</publishTime>
+      <publishTime>08/06/2021 15:06:04</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -21,7 +21,12 @@
         <h4><i class="fa fa-book"></i> Facturas</h4>
     </div>
     <div class="col text-right">
-        <a href="@Url.Action("New", "Orders")" class="btn btn-success btn-sm" role="button">
+        <a class="btn btn-sm btn-primary form-group" 
+           href="@Url.Action("DownloadExcel_Facturas", "Orders", new { searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca })" target="_blank">
+            <i class="fa fa-cloud-download"></i>
+            Exportar a excel
+        </a>
+        <a href="@Url.Action("New", "Orders")" class="btn btn-success btn-sm form-group" role="button">
             <i class="fa fa-plus"></i>
             Nuevo
         </a>
@@ -39,7 +44,7 @@
 
 @using (Html.BeginForm("Index", "Orders", FormMethod.Get, new { id = "order-form" }))
 {
-    <div class="row form-group">
+    <div class="row">
         <div class="col-12">
             <div class="form-row">
                 <div class="form-group col-12 col-sm-6">
@@ -54,9 +59,13 @@
         </div>
     </div>
 
-    <div class="row form-group">
-        <div class="col-12">
-            <div class="input-group mb-3">
+    <div class="row mb-4">
+        <div class="col-4 col-lg-2">
+            <label>Mostrar</label>
+            <input type="number" class="form-control d-inline" step="5" value="@ViewBag.PageSize" name="pageSize" onchange="isLoading(true); $('#order-form').submit();" />
+        </div>
+        <div class="col-8 col-lg-10 align-self-end">
+            <div class="input-group">
                 <input type="text" class="form-control col-12" placeholder="Buscar proveedor/detalle..." name="searchString" value="@ViewBag.searchString">
                 <div class="input-group-append">
                     <button class="btn btn-info"><i class="fa fa-search"></i> Buscar</button>
@@ -72,7 +81,24 @@
             <tr>
                 @*<th>#</th>*@
                 <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacNumeroFactura, type = ViewBag.SelectedType })">
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacCodigoOrden, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
+                        #
+                        @if (ViewBag.SortOrder == "orden_desc")
+                        {
+                            <i class="fa fa-sort-asc text-right"></i>
+                        }
+                        else if (ViewBag.SortOrder == "orden")
+                        {
+                            <i class="fa fa-sort-desc text-right"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-sort text-right"></i>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacNumeroFactura, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
                         Factura
                         @if (ViewBag.SortOrder == "factura_desc")
                         {
@@ -89,7 +115,7 @@
                     </a>
                 </th>
                 <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortDate, type = ViewBag.SelectedType })">
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortDate, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
                         Fecha
                         @if (ViewBag.SortOrder == "fecha_desc")
                         {
@@ -106,7 +132,7 @@
                     </a>
                 </th>
                 <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortProveedor, type = ViewBag.SelectedType })">
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortProveedor, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
                         Proveedor
                         @if (ViewBag.SortOrder == "proveedor_desc")
                         {
@@ -125,7 +151,7 @@
                 <th>Detalle</th>
                 <th>Vehículos</th>
                 <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortTotal, type = ViewBag.SelectedType })">
+                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortTotal, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
                         Total
                         @if (ViewBag.SortOrder == "total_desc")
                         {
@@ -141,9 +167,7 @@
                         }
                     </a>
                 </th>
-                <th>
-                    Facturado
-                </th>
+                <th>Facturado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -154,12 +178,22 @@
                 foreach (var item in Model)
                 {
             <tr>
-                @*<td>@item.FacCodigoOrden</td>*@
+                <td>@item.FacCodigoOrden</td>
                 <td>@(string.IsNullOrEmpty(item.FacNumeroFactura) ? "Sin Factura" : item.FacNumeroFactura)</td>
                 <td>@item.FacFechaOrden.Value.ToString("yyyy-MM-dd")</td>
                 <td>@item.proveedor.ProNombre</td>
                 <td>@string.Join(", ", item.detallefactura.Select(x => x.DetDescripcion).ToList())</td>
-                <td>@string.Join(", ", item.detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList())</td>
+                @{ 
+                    var placas = item.detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList();
+                }
+                <td>
+                    @foreach (var placa in placas) 
+                    {
+                        <a href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placa })">
+                            @placa,
+                        </a>
+                    }
+                </td>
                 <td>@item.FacValorFactura.ToString("N2")</td>
                 @if (string.IsNullOrEmpty(item.FacNumeroFactura))
                 {
@@ -187,7 +221,7 @@
             else
             {
                 <tr>
-                    <td colspan="7" class="text-center">
+                    <td colspan="9" class="text-center">
                         <label class="h6">No hay registros por mostrar.</label>
                     </td>
                 </tr>
@@ -199,7 +233,7 @@
 <br />
 
 Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca, sortOrder = ViewBag.SortOrder }))
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca, sortOrder = ViewBag.SortOrder, pageSize = ViewBag.PageSize }))
 
 <script type="text/javascript">
     $(document).ready(function () {

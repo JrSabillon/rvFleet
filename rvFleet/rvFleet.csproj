@@ -63,6 +63,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=5.7.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.7.2\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="ExcelNumberFormat, Version=1.0.10.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelNumberFormat.1.0.10\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
@@ -79,6 +82,9 @@
       <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.25.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.25\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
@@ -91,11 +97,15 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -120,6 +130,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -209,6 +220,12 @@
     <Compile Include="Models\archivofactura.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\bitacoracomentario.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bitacoravehiculo.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\conductorhistorico.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
@@ -271,9 +288,6 @@
     <Compile Include="Models\ubicacionhistorica.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\usuarios.cs">
-      <DependentUpon>FleetContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\vehiclecosts.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
@@ -296,6 +310,7 @@
     <Compile Include="ViewModels\EnterpriseViewModel.cs" />
     <Compile Include="ViewModels\FacturasViewModel.cs" />
     <Compile Include="ViewModels\KilometrajeHistoricoViewModel.cs" />
+    <Compile Include="ViewModels\LogsViewModel.cs" />
     <Compile Include="ViewModels\OrdersViewModel.cs" />
     <Compile Include="App_Code\Constants.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -550,6 +565,53 @@
     <Content Include="Content\images\logos\rv.jpg" />
     <Content Include="Content\images\logos\sompopo.png" />
     <Content Include="Content\images\others\placeholder.png" />
+    <Content Include="Content\jquerySorter\dragtable.mod.css" />
+    <Content Include="Content\jquerySorter\filter.formatter.css" />
+    <Content Include="Content\jquerySorter\high-specificity\theme.blue.specific.css" />
+    <Content Include="Content\jquerySorter\highlights.css" />
+    <Content Include="Content\jquerySorter\images\black-asc.gif" />
+    <Content Include="Content\jquerySorter\images\black-desc.gif" />
+    <Content Include="Content\jquerySorter\images\black-unsorted.gif" />
+    <Content Include="Content\jquerySorter\images\bootstrap-black-unsorted.png" />
+    <Content Include="Content\jquerySorter\images\bootstrap-white-unsorted.png" />
+    <Content Include="Content\jquerySorter\images\dragtable-handle.png" />
+    <Content Include="Content\jquerySorter\images\dragtable-handle.svg" />
+    <Content Include="Content\jquerySorter\images\dropbox-asc-hovered.png" />
+    <Content Include="Content\jquerySorter\images\dropbox-asc.png" />
+    <Content Include="Content\jquerySorter\images\dropbox-desc-hovered.png" />
+    <Content Include="Content\jquerySorter\images\dropbox-desc.png" />
+    <Content Include="Content\jquerySorter\images\green-asc.gif" />
+    <Content Include="Content\jquerySorter\images\green-desc.gif" />
+    <Content Include="Content\jquerySorter\images\green-header.gif" />
+    <Content Include="Content\jquerySorter\images\green-unsorted.gif" />
+    <Content Include="Content\jquerySorter\images\ice-asc.gif" />
+    <Content Include="Content\jquerySorter\images\ice-desc.gif" />
+    <Content Include="Content\jquerySorter\images\ice-unsorted.gif" />
+    <Content Include="Content\jquerySorter\images\metro-black-asc.png" />
+    <Content Include="Content\jquerySorter\images\metro-black-desc.png" />
+    <Content Include="Content\jquerySorter\images\metro-loading.gif" />
+    <Content Include="Content\jquerySorter\images\metro-unsorted.png" />
+    <Content Include="Content\jquerySorter\images\metro-white-asc.png" />
+    <Content Include="Content\jquerySorter\images\metro-white-desc.png" />
+    <Content Include="Content\jquerySorter\images\white-asc.gif" />
+    <Content Include="Content\jquerySorter\images\white-desc.gif" />
+    <Content Include="Content\jquerySorter\images\white-unsorted.gif" />
+    <Content Include="Content\jquerySorter\theme.black-ice.css" />
+    <Content Include="Content\jquerySorter\theme.blue.css" />
+    <Content Include="Content\jquerySorter\theme.bootstrap.css" />
+    <Content Include="Content\jquerySorter\theme.bootstrap_2.css" />
+    <Content Include="Content\jquerySorter\theme.bootstrap_3.css" />
+    <Content Include="Content\jquerySorter\theme.bootstrap_4.css" />
+    <Content Include="Content\jquerySorter\theme.dark.css" />
+    <Content Include="Content\jquerySorter\theme.default.css" />
+    <Content Include="Content\jquerySorter\theme.dropbox.css" />
+    <Content Include="Content\jquerySorter\theme.green.css" />
+    <Content Include="Content\jquerySorter\theme.grey.css" />
+    <Content Include="Content\jquerySorter\theme.ice.css" />
+    <Content Include="Content\jquerySorter\theme.jui.css" />
+    <Content Include="Content\jquerySorter\theme.materialize.css" />
+    <Content Include="Content\jquerySorter\theme.metro-dark.css" />
+    <Content Include="Content\jquerySorter\widget.grouping.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\select2-bootstrap.css" />
@@ -805,6 +867,14 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Content\jquerySorter\bootstrap.less" />
+    <Content Include="Content\jquerySorter\metro.less" />
+    <Content Include="Content\jquerySorter\psd\green-asc.psd" />
+    <Content Include="Content\jquerySorter\psd\green-desc.psd" />
+    <Content Include="Content\jquerySorter\psd\green-unsorted.psd" />
+    <Content Include="Content\jquerySorter\psd\metro-style.psd" />
+    <Content Include="Content\jquerySorter\theme.less" />
+    <Content Include="Content\jquerySorter\theme.scss" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -817,6 +887,69 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquerySorter\extras\jquery.dragtable.mod.js" />
+    <Content Include="Scripts\jquerySorter\extras\jquery.metadata.js" />
+    <Content Include="Scripts\jquerySorter\extras\semver-mod.js" />
+    <Content Include="Scripts\jquerySorter\extras\semver.js" />
+    <Content Include="Scripts\jquerySorter\jquery.tablesorter.combined.js" />
+    <Content Include="Scripts\jquerySorter\jquery.tablesorter.js" />
+    <Content Include="Scripts\jquerySorter\jquery.tablesorter.widgets.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date-extract.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date-iso8601.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date-month.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date-range.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date-two-digit-year.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date-weekday.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-date.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-duration.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-feet-inch-fraction.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-file-type.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-globalize.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-huge-numbers.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-ignore-articles.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-image.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-input-select.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-leading-zeros.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-metric.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-named-numbers.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-network.js" />
+    <Content Include="Scripts\jquerySorter\parsers\parser-roman.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-alignChar.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-build-table.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-chart.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-columns.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-columnSelector.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-cssStickyHeaders.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-currentSort.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-editable.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-filter-formatter-html5.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-filter-formatter-jui.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-filter-formatter-select2.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-filter-type-insideRange.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-filter.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-formatter.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-grouping.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-headerTitles.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-lazyload.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-mark.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-math.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-output.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-pager.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-print.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-reflow.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-repeatheaders.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-resizable.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-saveSort.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-scroller.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-sort2Hash.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-sortTbodies.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-staticRow.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-stickyHeaders.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-storage.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-toggle.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-uitheme.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-vertical-group.js" />
+    <Content Include="Scripts\jquerySorter\widgets\widget-view.js" />
     <Content Include="Scripts\Login.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\popper-utils.js" />
@@ -942,6 +1075,8 @@
     <Content Include="Views\Reports\_VehiclesCostGraph.cshtml" />
     <Content Include="Views\Reports\_PartsCostGraph.cshtml" />
     <Content Include="Views\Reports\OrdersDetails.cshtml" />
+    <Content Include="Views\Reports\NextMaintenance.cshtml" />
+    <Content Include="Views\Vehicles\Logs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

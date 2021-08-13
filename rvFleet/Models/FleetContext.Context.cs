@@ -40,9 +40,10 @@ namespace rvFleet.Models
         public virtual DbSet<vehiculos> vehiculos { get; set; }
         public virtual DbSet<kilometrajeporvehiculoanoactual> kilometrajeporvehiculoanoactual { get; set; }
         public virtual DbSet<recommendedmaintenance> recommendedmaintenance { get; set; }
-        public virtual DbSet<usuarios> usuarios { get; set; }
         public virtual DbSet<vehiclecosts> vehiclecosts { get; set; }
         public virtual DbSet<vehiclefulldata> vehiclefulldata { get; set; }
+        public virtual DbSet<bitacoravehiculo> bitacoravehiculo { get; set; }
+        public virtual DbSet<bitacoracomentario> bitacoracomentario { get; set; }
     
         public virtual ObjectResult<GetPartsCost_Result> GetPartsCost(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
@@ -79,13 +80,23 @@ namespace rvFleet.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleCosts_Result>("GetVehicleCosts", startDateParameter, endDateParameter);
         }
     
-        public virtual ObjectResult<GetVehicleGraphData_Result> GetVehicleGraphData(string vehPlaca)
+        public virtual ObjectResult<GetVehicleGraphData_Result> GetVehicleGraphData(string vehPlaca_IN)
         {
-            var vehPlacaParameter = vehPlaca != null ?
-                new ObjectParameter("VehPlaca", vehPlaca) :
-                new ObjectParameter("VehPlaca", typeof(string));
+            var vehPlaca_INParameter = vehPlaca_IN != null ?
+                new ObjectParameter("VehPlaca_IN", vehPlaca_IN) :
+                new ObjectParameter("VehPlaca_IN", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleGraphData_Result>("GetVehicleGraphData", vehPlacaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleGraphData_Result>("GetVehicleGraphData", vehPlaca_INParameter);
+        }
+    
+        public virtual ObjectResult<recommendedmaintenance> spGetRubrosNoFacturadosVehiculo()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<recommendedmaintenance>("spGetRubrosNoFacturadosVehiculo");
+        }
+    
+        public virtual ObjectResult<recommendedmaintenance> spGetRubrosNoFacturadosVehiculo(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<recommendedmaintenance>("spGetRubrosNoFacturadosVehiculo", mergeOption);
         }
     }
 }

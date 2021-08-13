@@ -21,33 +21,7 @@
     }
 }
 
-@*<div class="jumbotron">
-        @using (Html.BeginForm("CreateHash", "Home"))
-        {
-            <h2>Crear hash</h2>
-            <input type="text" name="data" class="form-control form-control-sm" />
-            <hr />
-            <input type="submit" value="Crear" class="btn btn-success" />
-        }
-
-        @if (!string.IsNullOrEmpty(ViewBag.Hash))
-        {
-            <br />
-            <p>
-                Hash generado: @ViewBag.Hash
-            </p>
-        }
-    </div>*@
-@*<div class="alert alert-primary alert-dismissible fade show" role="alert">
-        <h4 class="alert-heading">Bienvenido(a) @ViewBag.UserName</h4>
-        <p>Este es el portal de <strong>Vehiculos</strong> de Recarga Veloz, te mostramos una lista de acciones que puedes realizar dentro del portal.</p>
-        <hr>
-        <p class="mb-0">Buena suerte y buen día.</p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>*@
-<h4 class="alert-heading">Bienvenido(a) @ViewBag.UserName</h4>
+<h4 class="alert-heading">Bienvenido(a) @ViewBag.UserName - <a href="#">PDZ3311</a> <span class="badge badge-info">4</span></h4>
 <hr />
 <div class="row">
     @foreach (var item in Model)

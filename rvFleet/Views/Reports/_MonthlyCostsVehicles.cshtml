@@ -2,19 +2,23 @@
 
 <label class="h6 pb-2">Gastos vehiculares del mes de @DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("es")), @DateTime.Now.Year</label>
 <div class="table-responsive">
-    <table class="table table-sm table-bordered table-hover scroll">
+    <table class="table table-sm table-bordered table-hover scroll tablesorter" id="table-global-costs-vehicles">
         <thead class="thead-light">
             <tr>
                 <th>Vehículo</th>
                 <th>Gasto total</th>
+                <th>Promedio mensual</th>
+                <th>Promedio anual</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.DETPLACAVEHICULO</td>
-                    <td>@item.VALOR.Value.ToString("N")</td>
+                    <td>@item.DetPlacaVehiculo</td>
+                    <td>@item.Total.Value.ToString("N")</td>
+                    <td>@item.PromedioMensual.Value.ToString("N")</td>
+                    <td>@item.PromedioAnual.Value.ToString("N")</td>
                 </tr>
             }
         </tbody>
@@ -26,9 +30,15 @@
                     Total:
                 </td>
                 <td>
-                    @Model.Sum(x => x.VALOR).Value.ToString("N")
+                    @Model.Sum(x => x.Total).Value.ToString("N")
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+
+<script>
+    $(function () {
+        $('#table-global-costs-vehicles').tablesorter();
+    })
+</script>

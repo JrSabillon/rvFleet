@@ -20,7 +20,7 @@ namespace rvFleet.Models
         public double DetValor { get; set; }
         public int DetCantidad { get; set; }
         public string DetPlacaVehiculo { get; set; }
-        public string DetCodigoRubro { get; set; }
+        public Nullable<int> DetCodigoRubro { get; set; }
         public int DetKilometraje { get; set; }
     
         public virtual facturas facturas { get; set; }

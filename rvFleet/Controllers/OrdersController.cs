@@ -11,9 +11,9 @@ using System.Web.UI.WebControls;
 using PagedList;
 using System.IO;
 using rvFleet.App_Code;
-using System.Data.OleDb;
 using System.Data;
 using ClosedXML.Excel;
+using OfficeOpenXml;
 
 namespace rvFleet.Controllers
 {
@@ -28,12 +28,89 @@ namespace rvFleet.Controllers
             viewModel = new OrdersViewModel();
         }
 
-        // GET: Orders
-        public ActionResult Index(string searchString, int? page, string VehPlaca, string sortOrder = "fecha_desc", string type = "1")
+        public void DownloadExcel_Facturas(string searchString, string VehPlaca, string type = "1")
         {
             try
             {
-                int pageSize = 5;
+                List<facturas> model = new List<facturas>();
+            
+                switch (type)
+                {
+                    case "1":
+                        model = viewModel.GetOrdenesFacturas();
+                        break;
+                    case "2":
+                        model = viewModel.GetFacturas();
+                        break;
+                    case "3":
+                        model = viewModel.GetOrdenes();
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(searchString))
+                    model = model.Where(x => x.proveedor.ProNombre.ToLower().Contains(searchString.ToLower()) || x.detallefactura.Any(y => y.DetDescripcion.ToLower().Contains(searchString.ToLower())) /*|| x.facNumeroFactura.Contains(searchString)*/).ToList();
+
+                if (!string.IsNullOrEmpty(VehPlaca))
+                    model = model.Where(x => x.detallefactura.Any(y => y.DetPlacaVehiculo.Equals(VehPlaca))).ToList();
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                ExcelPackage Ep = new ExcelPackage();
+
+                ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("Facturas");
+                Sheet.Cells["A1:I1"].Style.Font.Bold = true;
+                Sheet.Cells["A1"].Value = "# Orden";
+                Sheet.Cells["B1"].Value = "Factura";
+                Sheet.Cells["C1"].Value = "Fecha Orden";
+                Sheet.Cells["D1"].Value = "Fecha Factura";
+                Sheet.Cells["E1"].Value = "Proveedor";
+                Sheet.Cells["F1"].Value = "Detalle";
+                Sheet.Cells["G1"].Value = "Vehículos";
+                Sheet.Cells["H1"].Value = "Total";
+                Sheet.Cells["I1"].Value = "Facturado";
+
+                int row = 2;
+                foreach (var item in model)
+                {
+                    Sheet.Cells[string.Format("A{0}", row)].Value = item.FacCodigoOrden;
+                    Sheet.Cells[string.Format("B{0}", row)].Value = item.FacNumeroFactura;
+                    Sheet.Cells[string.Format("C{0}", row)].Value = item.FacFechaOrden;
+                    Sheet.Cells[string.Format("C{0}", row)].Style.Numberformat.Format = "yyyy-MM-dd";
+                    if (item.FacFechaFactura.HasValue)
+                    {
+                        Sheet.Cells[string.Format("D{0}", row)].Value = item.FacFechaFactura;
+                        Sheet.Cells[string.Format("D{0}", row)].Style.Numberformat.Format = "yyyy-MM-dd";
+                    }
+                    else
+                        Sheet.Cells[string.Format("D{0}", row)].Value = "SIN FECHA DE FACTURA";
+                    Sheet.Cells[string.Format("E{0}", row)].Value = item.proveedor.ProNombre;
+                    Sheet.Cells[string.Format("F{0}", row)].Value = string.Join(", ", item.detallefactura.Select(x => x.DetDescripcion).ToList());
+                    Sheet.Cells[string.Format("G{0}", row)].Value = string.Join(", ", item.detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList());
+                    Sheet.Cells[string.Format("H{0}", row)].Value = item.FacValorFactura;
+                    Sheet.Cells[string.Format("H{0}", row)].Style.Numberformat.Format = "L#,##0.00";
+                    if(string.IsNullOrEmpty(item.FacNumeroFactura))
+                        Sheet.Cells[string.Format("I{0}", row)].Value = "NO";
+                    else
+                        Sheet.Cells[string.Format("I{0}", row)].Value = "SI";
+
+                    row++;
+                }
+
+                Sheet.Cells["A:AZ"].AutoFitColumns();
+                Response.Clear();
+                Response.ContentType = "Application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment: filename=" + $"Facturas_{DateTime.Now.ToString("yyyyMMddHHmmssffff")}.xlsx");
+                Response.BinaryWrite(Ep.GetAsByteArray());
+                Response.End();
+            }
+            catch { }
+        }
+
+        // GET: Orders
+        public ActionResult Index(string searchString, int? page, string VehPlaca, string sortOrder = "orden_desc", string type = "1", int pageSize = 5)
+        {
+            try
+            {
+                //int pageSize = 5;
                 int pageNumber = (page ?? 1);
 
                 List<facturas> model = new List<facturas>();
@@ -55,7 +132,7 @@ namespace rvFleet.Controllers
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     ViewBag.searchString = searchString;
-                    model = model.Where(x => x.proveedor.ProNombre.ToLower().Contains(searchString.ToLower()) || x.detallefactura.Any(y => y.DetDescripcion.ToLower().Contains(searchString.ToLower()))).ToList();
+                    model = model.Where(x => x.proveedor.ProNombre.ToLower().Contains(searchString.ToLower()) || x.detallefactura.Any(y => y.DetDescripcion.ToLower().Contains(searchString.ToLower())) /*|| x.facNumeroFactura.Contains(searchString)*/).ToList();
                 }
 
                 ViewBag.VehPlaca = new SelectList(new VehiclesViewModel().GetVehiculos(), "VehPlaca", "VehPlaca", VehPlaca);
@@ -92,20 +169,25 @@ namespace rvFleet.Controllers
                     case "total_desc":
                         model = model.OrderByDescending(x => x.FacValorFactura).ToList();
                         break;
+                    case "orden":
+                        model = model.OrderBy(x => x.FacCodigoOrden).ToList();
+                        break;
+                    case "orden_desc":
+                        model = model.OrderByDescending(x => x.FacCodigoOrden).ToList();
+                        break;
                     default:
-                        model = model.OrderByDescending(x => x.FacFechaOrden).ToList();
                         break;
                 }
 
                 ViewBag.SortOrder = sortOrder; //Para saber que icono mostrar
+                ViewBag.SortFacCodigoOrden = sortOrder == "orden" ? "orden_desc" : "orden";
                 ViewBag.SortDate = sortOrder == "fecha" ? "fecha_desc" : "fecha";
                 ViewBag.SortFacNumeroFactura = sortOrder == "factura" ? "factura_desc" : "factura";
                 ViewBag.SortProveedor = sortOrder == "proveedor" ? "proveedor_desc" : "proveedor";
-                //ViewBag.SortDetalle = sortOrder == "detalle" ? "detalle_desc" : "detalle";
-                //ViewBag.SortVehiculos = sortOrder == "vehiculos" ? "vehiculos_desc" : "vehiculos";
                 ViewBag.SortTotal = sortOrder == "total" ? "total_desc" : "total";
 
                 ViewBag.Type = new SelectList(GetTypes(), "Value", "Text", type);
+                ViewBag.PageSize = pageSize;
                 return View(model.ToPagedList(pageNumber, pageSize));
             }
             catch (Exception exc)
@@ -448,7 +530,7 @@ namespace rvFleet.Controllers
                             {
                                 DetValor = Convert.ToDouble(row.Cell(7).Value.ToString()),
                                 DetCantidad = 1,
-                                DetCodigoRubro = row.Cell(13).Value.ToString(),
+                                DetCodigoRubro = Convert.ToInt32(row.Cell(13).Value),
                                 DetKilometraje = !string.IsNullOrEmpty(row.Cell(9).Value.ToString()) ? Convert.ToInt32(row.Cell(9).Value.ToString().Replace(",", "")) : 0,
                                 DetPlacaVehiculo = row.Cell(8).Value.ToString(),
                                 DetDescripcion = row.Cell(6).Value.ToString()

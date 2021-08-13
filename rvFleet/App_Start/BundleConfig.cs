@@ -22,6 +22,10 @@ namespace rvFleet
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquerySorter").Include(
+                      "~/Scripts/jquerySorter/jquery.tablesorter.js",
+                      "~/Scripts/jquerySorter/jquery.tablesorter.widgets.js"));                      
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
@@ -33,6 +37,9 @@ namespace rvFleet
             //css  
             bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
                    "~/Content/jquery-ui.css"));
+
+            bundles.Add(new StyleBundle("~/Content/jquerySorter").Include(
+                   "~/Content/jquerySorter/theme.bootstrap_4.css"));
         }
     }
 }

@@ -159,7 +159,14 @@ function AddDetail() {
 
 function editDetail(vehicle, kilometraje, rubro, detail, detailID, amount, price, e) {
     detailId = detailID;
-    $('#DetPlacaVehiculo').val(vehicle).trigger('change.select2');
+
+    if (isNaN(vehicle)) {
+        //seleccionarlo por placa
+        $('#DetPlacaVehiculo option:contains(' + vehicle + ')').attr('selected', true).trigger('change.select2');
+    } else {
+        //seleccionarlo por codigo de vehiculo
+        $('#DetPlacaVehiculo').val(vehicle).trigger('change.select2');
+    }
     $('#select-rubro').val(rubro).trigger('change.select2');
     $('#DetKilometraje').val(returnFormatThousands(kilometraje));
     $('#DetCantidad').val(amount);
@@ -243,6 +250,7 @@ function createRequest(source, urlNew, urlEdit) {
     }
 
     if (flag) {
+        console.log(json_factura);
         $('#div-alert-message-factura').addClass('d-none');
         if (json_factura.detallefactura.length == 0) {
             isLoading(false);

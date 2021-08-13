@@ -1,45 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="rvfleetModelStoreContainer" CdmEntityContainer="rvfleetEntities">
-    <FunctionImportMapping FunctionImportName="GetPartsCost" FunctionName="rvfleetModel.Store.GetPartsCost">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="rvfleetModel.GetPartsCost_Result">
-          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
-          <ScalarProperty Name="Total" ColumnName="Total" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="GetVehicleAnualCostsGraphData" FunctionName="rvfleetModel.Store.GetVehicleAnualCostsGraphData">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleAnualCostsGraphData_Result">
-          <ScalarProperty Name="DetCodigoRubro" ColumnName="DetCodigoRubro" />
-          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
-          <ScalarProperty Name="FacValorFactura" ColumnName="FacValorFactura" />
-          <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="GetVehicleCosts" FunctionName="rvfleetModel.Store.GetVehicleCosts">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleCosts_Result">
-          <ScalarProperty Name="DETPLACAVEHICULO" ColumnName="DETPLACAVEHICULO" />
-          <ScalarProperty Name="VALOR" ColumnName="VALOR" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="GetVehicleGraphData" FunctionName="rvfleetModel.Store.GetVehicleGraphData">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleGraphData_Result">
-          <ScalarProperty Name="Orden" ColumnName="Orden" />
-          <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
-          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
-          <ScalarProperty Name="KilometrajeFacturado" ColumnName="KilometrajeFacturado" />
-          <ScalarProperty Name="KilometrajeActual" ColumnName="KilometrajeActual" />
-          <ScalarProperty Name="Diferencia" ColumnName="Diferencia" />
-          <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
     <EntitySetMapping Name="archivofactura">
       <EntityTypeMapping TypeName="rvfleetModel.archivofactura">
         <MappingFragment StoreEntitySet="archivofactura">
@@ -136,6 +97,7 @@
     <EntitySetMapping Name="rubros">
       <EntityTypeMapping TypeName="rvfleetModel.rubros">
         <MappingFragment StoreEntitySet="rubros">
+          <ScalarProperty Name="Prioridad" ColumnName="Prioridad" />
           <ScalarProperty Name="ColorIdentificador" ColumnName="ColorIdentificador" />
           <ScalarProperty Name="DistanciaCambio" ColumnName="DistanciaCambio" />
           <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
@@ -206,36 +168,28 @@
     <EntitySetMapping Name="recommendedmaintenance">
       <EntityTypeMapping TypeName="rvfleetModel.recommendedmaintenance">
         <MappingFragment StoreEntitySet="recommendedmaintenance">
+          <ScalarProperty Name="Prioridad" ColumnName="Prioridad" />
+          <ScalarProperty Name="FacFechaOrden" ColumnName="FacFechaOrden" />
+          <ScalarProperty Name="DetCodigoOrden" ColumnName="DetCodigoOrden" />
           <ScalarProperty Name="VidaRestante" ColumnName="VidaRestante" />
-          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
-          <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
+          <ScalarProperty Name="DistanciaRecorrida" ColumnName="DistanciaRecorrida" />
+          <ScalarProperty Name="KilometrajeActual" ColumnName="KilometrajeActual" />
+          <ScalarProperty Name="KilometrajeFacturado" ColumnName="KilometrajeFacturado" />
+          <ScalarProperty Name="DistanciaCambio" ColumnName="DistanciaCambio" />
           <ScalarProperty Name="VehCodigoVehiculo" ColumnName="VehCodigoVehiculo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="usuarios">
-      <EntityTypeMapping TypeName="rvfleetModel.usuarios">
-        <MappingFragment StoreEntitySet="usuarios">
-          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-          <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
-          <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
-          <ScalarProperty Name="Correo" ColumnName="Correo" />
-          <ScalarProperty Name="Jefe" ColumnName="Jefe" />
-          <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
-          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
-          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
-          <ScalarProperty Name="Estado" ColumnName="Estado" />
-          <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
-          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-          <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
+          <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
+          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+          <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="vehiclecosts">
       <EntityTypeMapping TypeName="rvfleetModel.vehiclecosts">
         <MappingFragment StoreEntitySet="vehiclecosts">
-          <ScalarProperty Name="VALOR" ColumnName="VALOR" />
-          <ScalarProperty Name="DETPLACAVEHICULO" ColumnName="DETPLACAVEHICULO" />
+          <ScalarProperty Name="PromedioAnual" ColumnName="PromedioAnual" />
+          <ScalarProperty Name="PromedioMensual" ColumnName="PromedioMensual" />
+          <ScalarProperty Name="DetPlacaVehiculo" ColumnName="DetPlacaVehiculo" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -263,5 +217,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="bitacoravehiculo">
+      <EntityTypeMapping TypeName="rvfleetModel.bitacoravehiculo">
+        <MappingFragment StoreEntitySet="bitacoravehiculo">
+          <ScalarProperty Name="bitacoraTipo" ColumnName="bitacoraTipo" />
+          <ScalarProperty Name="bitacoraPlaca" ColumnName="bitacoraPlaca" />
+          <ScalarProperty Name="bitacoraFecha" ColumnName="bitacoraFecha" />
+          <ScalarProperty Name="bitacoraUsuario" ColumnName="bitacoraUsuario" />
+          <ScalarProperty Name="bitacoraComentario" ColumnName="bitacoraComentario" />
+          <ScalarProperty Name="bitacoraId" ColumnName="bitacoraId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="bitacoracomentario">
+      <EntityTypeMapping TypeName="rvfleetModel.bitacoracomentario">
+        <MappingFragment StoreEntitySet="bitacoracomentario">
+          <ScalarProperty Name="bitacoraComFecha" ColumnName="bitacoraComFecha" />
+          <ScalarProperty Name="bitacoraComUsuario" ColumnName="bitacoraComUsuario" />
+          <ScalarProperty Name="bitacoraComRespuesta" ColumnName="bitacoraComRespuesta" />
+          <ScalarProperty Name="bitacoraComId" ColumnName="bitacoraComId" />
+          <ScalarProperty Name="bitacoraId" ColumnName="bitacoraId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spGetRubrosNoFacturadosVehiculo" FunctionName="rvfleetModel.Store.spGetRubrosNoFacturadosVehiculo" />
   </EntityContainerMapping>
 </Mapping>

@@ -127,3 +127,8 @@ D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Release\rvFleet.csproj.CoreCompileI
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Release\rvFleet.csproj.CopyComplete
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Release\rvFleet.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Release\rvFleet.pdb
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\EPPlus.dll
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Microsoft.IO.RecyclableMemoryStream.dll
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\System.ComponentModel.Annotations.dll
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\EPPlus.xml
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Microsoft.IO.RecyclableMemoryStream.xml

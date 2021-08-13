@@ -1,0 +1,110 @@
+﻿@using System.Globalization;
+@model List<rvFleet.Models.bitacoravehiculo>
+@{
+    ViewBag.Title = "Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string FormatedDateToText(DateTime date)
+    {
+        return date.ToString("dd") + " de " + date.ToString("MMMM", new System.Globalization.CultureInfo("es")) + ", " + date.ToString("yyyy");
+    }
+}
+
+<h4>Bitacora vehiculo @ViewBag.VehPlaca</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Bitacora</li>
+    </ol>
+</nav>
+
+<div class="w-100 mb-2 text-right">
+    <button class="btn btn-sm btn-info">
+        <i class="fa fa-plus"></i>
+        Nueva entrada
+    </button>
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="card border-danger">
+        <div class="card-header">
+            <label>Tipo de comentario <b>@item.bitacoraTipoDescripcion</b></label>
+            <label class="text-muted float-right">@FormatedDateToText(item.bitacoraFecha.Value)</label>
+        </div>
+        <div class="card-body">
+            <label><i class="fa fa-user"></i> @item.bitacoraUsuario</label>
+            <p>&mdash; @item.bitacoraComentario</p>
+
+            @if (item.bitacoracomentario1.Count > 0)
+            {
+                <div class="p-2">
+                    <b><i class="fa fa-comments-o"></i> Comentarios</b>
+                    <hr class="mt-2" />
+                    <ul class="list-group list-group-flush">
+                        @foreach (var comment in item.bitacoracomentario1)
+                        {
+                            <li class="list-group-item">
+                                <div class="">
+                                    <label><i class="fa fa-user"></i> @comment.bitacoraComUsuario</label>
+                                    <br />
+                                    <label>@comment.bitacoraComRespuesta</label>
+                                    <br />
+                                    <label class="text-muted">@FormatedDateToText(comment.bitacoraComFecha.Value)</label>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <label>Sin comentarios adicionales</label>
+            }
+
+            <div class="form-group mt-4">
+                <textarea placeholder="Ingrese un comentario aqui..." class="form-control col-12" rows="2"></textarea>
+                <br />
+                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Agregar comentario</button>
+            </div>
+
+        </div>
+    </div>
+}
+
+@*<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Placa</th>
+                <th>Comentario</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.bitacoraId</td>
+                    <td>@item.bitacoraPlaca</td>
+                    <td>@item.bitacoraComentario</td>
+                    <td>@item.bitacoraUsuario</td>
+                    <td>@item.bitacoraFecha.Value.ToString("yyyy-MM-dd")</td>
+                    <td>@item.bitacoraTipo</td>
+                    <td>
+                        <button class="btn btn-sm btn-info">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>*@

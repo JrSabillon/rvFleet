@@ -13,7 +13,6 @@ namespace rvFleet.Models
     
     public partial class GetVehicleGraphData_Result
     {
-        public int Orden { get; set; }
         public int CodigoRubro { get; set; }
         public string NombreRubro { get; set; }
         public int KilometrajeFacturado { get; set; }

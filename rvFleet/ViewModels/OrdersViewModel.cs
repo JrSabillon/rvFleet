@@ -128,7 +128,7 @@ namespace rvFleet.ViewModels
         /// Obtener todas las ordenes y facturas.
         /// </summary>
         /// <returns></returns>
-        [OutputCache(Duration = 60)]
+        ///[OutputCache(Duration = 60)]
         public List<facturas> GetOrdenesFacturas()
         {
             try
@@ -206,10 +206,13 @@ namespace rvFleet.ViewModels
             {
                 using (var context = new rvfleetEntities())
                 {
-                    if(context.facturas.Where(x => x.FacNumeroFactura.Equals(factura.FacNumeroFactura) && x.FacCodigoOrden != factura.FacCodigoOrden).Count() > 0)
-                    {
-                        throw new Exception("Ya existe un registro con este número de factura.");
-                    }
+                    //if (!string.IsNullOrEmpty(factura.FacNumeroFactura))
+                    //{
+                    //    if(context.facturas.Where(x => x.FacNumeroFactura.Equals(factura.FacNumeroFactura) && x.FacCodigoOrden != factura.FacCodigoOrden).Count() > 0)
+                    //    {
+                    //        throw new Exception("Ya existe un registro con este número de factura.");
+                    //    }
+                    //}
 
                     var CurrentFactura = context.facturas.Find(factura.FacCodigoOrden);
                     var total = factura.detallefactura.Sum(x => x.DetValor);

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Vehicles";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.RecommendedMaintenance = Model.RecommendedMaintenances;
 }
 
 <style>
@@ -54,7 +55,7 @@
                 <div class="card shadow" style="height: 515px">
                     <div class="card-header">
                         <i class="fa fa-money"></i>
-                        Costos mensuales por vehículo
+                        Costos totales por vehículo
                     </div>
                     <div class="card-body">
                         @{
@@ -82,9 +83,9 @@
                                 }
                             </div>
                             <div class="card-footer text-center">
-                                <button class="btn btn-info btn-sm">
+                                <a class="btn btn-info btn-sm" href="@Url.Action("NextMaintenance", "Reports")">
                                     Mas detalles <i class="fa fa-arrow-circle-right"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -147,6 +148,24 @@
             </div>
         </div>
     </div>
+    @*<div class="col-12 form-group">
+        <div class="card shadow">
+            <div class="card-header">
+                <i class="fa fa-bar-chart-o"></i>
+                Vida útil - Rubros
+            </div>
+            <div class="card-body p-0 d-flex">
+                @{ 
+                    Html.RenderPartial("_GraficoVidaUtil", Model.VidaUtilData);
+                }
+            </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-info btn-sm">
+                    Mas detalles <i class="fa fa-arrow-circle-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>*@
 </div>
 
 <script>

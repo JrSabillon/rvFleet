@@ -13,37 +13,14 @@ namespace rvFleet.ViewModels
 {
     public class ReportsViewModel
     {
-        MySqlConnection sqlConnection;
         public ReportsViewModel()
-        {
-            var connectionString = ConfigurationManager.ConnectionStrings["rvFleetStaticConnection"].ConnectionString;
-            sqlConnection = new MySqlConnection(connectionString);
-        }
+        { }
 
         public List<vehiclecosts> GetVehicleCosts()
         {
             try
             {
                 List<vehiclecosts> vehicleCosts = new List<vehiclecosts>();
-
-                //string query = "SELECT A.DETPLACAVEHICULO, SUM(A.DETVALOR) VALOR FROM DETALLEFACTURA A INNER JOIN FACTURAS B ON A.DETCODIGOORDEN = B.FACCODIGOORDEN " +
-                //    "WHERE YEAR(FacFechaFactura) = YEAR(NOW()) AND MONTH(facfechafactura) = MONTH(NOW()) " +
-                //    "GROUP BY A.DETPLACAVEHICULO " +
-                //    "ORDER BY VALOR DESC;";
-                //MySqlCommand cmd = new MySqlCommand(query, sqlConnection);
-                //sqlConnection.Open();
-
-                //using (MySqlDataReader reader = cmd.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        vehicleCosts.Add(new VehicleCosts
-                //        {
-                //            VehPlaca = reader.GetString(0),
-                //            VehValor = reader.GetInt32(1)
-                //        });
-                //    }
-                //}
 
                 using (var context = new rvfleetEntities())
                 {
@@ -60,50 +37,20 @@ namespace rvFleet.ViewModels
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
-            finally
-            {
-                sqlConnection.Close();
-            }
         }
 
         public List<recommendedmaintenance> GetRecommendedMaintenance()
         {
             try
             {
-                //List<RecommendenMaintenance> recommendenMaintenances = new List<RecommendenMaintenance>();
-
-                //string query = "SELECT a.DetPlacaVehiculo, d.NombreRubro, d.DistanciaCambio - (c.VehKilometraje - a.DetKilometraje) VidaRestante FROM detallefactura a INNER JOIN facturas b " +
-                //    "ON a.detcodigoorden = b.faccodigoorden " +
-                //    "INNER JOIN vehiculos c " +
-                //    "ON a.detplacavehiculo = c.VehPlaca " +
-                //    "INNER JOIN rubros d " +
-                //    "ON a.DetCodigoRubro = d.CodigoRubro " +
-                //    "WHERE DETPLACAVEHICULO = VehPlaca AND ROUND(100 - ((IFNULL(c.VehKilometraje, A.DetKilometraje) - a.DetKilometraje) / d.DistanciaCambio * 100), 2) < 30 " +
-                //    "GROUP BY detcodigorubro " +
-                //    "ORDER BY detcodigorubro, DetKilometraje Desc; ";
-
-                //MySqlCommand cmd = new MySqlCommand(query, sqlConnection);
-                //sqlConnection.Open();
-
-                //using (MySqlDataReader reader = cmd.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        recommendenMaintenances.Add(new RecommendenMaintenance
-                //        {
-                //            VehPlaca = reader.GetString(0),
-                //            NombreRubro = reader.GetString(1),
-                //            VidaRestante = reader.GetInt32(2)
-                //        });
-                //    }
-                //}
-
                 List<recommendedmaintenance> recommendedmaintenances = new List<recommendedmaintenance>();
 
                 using (var context = new rvfleetEntities())
                 {
                     recommendedmaintenances = context.recommendedmaintenance.ToList();
                 }
+
+                this.RecommendedMaintenanceNotRegistered(recommendedmaintenances);
 
                 return recommendedmaintenances;
             }
@@ -115,9 +62,29 @@ namespace rvFleet.ViewModels
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
-            finally
+        }
+
+        public void RecommendedMaintenanceNotRegistered(List<recommendedmaintenance> model)
+        {
+            try
             {
-                sqlConnection.Close();
+                using (var context = new rvfleetEntities())
+                {
+                    var data = context.spGetRubrosNoFacturadosVehiculo().ToList();
+
+                    foreach (var item in data)
+                    {
+                        model.Add(item);
+                    }
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
         }
 
@@ -142,10 +109,6 @@ namespace rvFleet.ViewModels
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
-            finally
-            {
-                sqlConnection.Close();
-            }
         }
 
         public List<GetVehicleAnualCostsGraphData_Result> VehicleAnualCosts(int YearFilter)
@@ -169,10 +132,6 @@ namespace rvFleet.ViewModels
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
-            finally
-            {
-                sqlConnection.Close();
-            }
         }
 
         public List<kilometrajeporvehiculoanoactual> GetKilometrajePorVehiculoAnoActual()
@@ -195,10 +154,6 @@ namespace rvFleet.ViewModels
             catch (Exception exc)
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
-            }
-            finally
-            {
-                sqlConnection.Close();
             }
         }
 

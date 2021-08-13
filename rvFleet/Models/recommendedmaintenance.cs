@@ -14,9 +14,17 @@ namespace rvFleet.Models
     
     public partial class recommendedmaintenance
     {
-        public int VehCodigoVehiculo { get; set; }
-        public string DetPlacaVehiculo { get; set; }
+        public int CodigoRubro { get; set; }
         public string NombreRubro { get; set; }
+        public string DetPlacaVehiculo { get; set; }
+        public int VehCodigoVehiculo { get; set; }
+        public Nullable<int> DistanciaCambio { get; set; }
+        public Nullable<int> KilometrajeFacturado { get; set; }
+        public Nullable<int> KilometrajeActual { get; set; }
+        public Nullable<long> DistanciaRecorrida { get; set; }
         public Nullable<long> VidaRestante { get; set; }
+        public int DetCodigoOrden { get; set; }
+        public Nullable<System.DateTime> FacFechaOrden { get; set; }
+        public Nullable<int> Prioridad { get; set; }
     }
 }
