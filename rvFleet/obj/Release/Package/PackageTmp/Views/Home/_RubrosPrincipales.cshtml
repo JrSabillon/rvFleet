@@ -1,0 +1,65 @@
+﻿@using Newtonsoft.Json;
+@model List<rvFleet.Models.GetVehicleGraphData_Result>
+@{
+    var jsonString = JsonConvert.SerializeObject(Model);
+    var jsonRaw = Html.Raw(jsonString);
+}
+
+<style>
+    .canvas-fixed {
+        max-height: 300px;
+        max-width: 300px;
+        min-height: 300px;
+        min-width: 300px;
+    }
+</style>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="form-group col">
+            <div class="card">
+                <div class="card-header">
+                    <label class="h5">@item.NombreRubro @item.Porcentaje %</label>
+                </div>
+                <div class="card-body text-center">
+                    <canvas id="chart-@item.CodigoRubro" class="canvas-fixed m-auto"></canvas>
+                    <hr />
+                    <div class="form-group">
+                        <label class="font-weight-bold">Kilometraje de ultimo cambio: </label> <span>@item.KilometrajeFacturado.ToString("N0") KM</span>
+                        <br />
+                        <label class="font-weight-bold">Kilometraje actual: </label> <span>@item.KilometrajeActual.ToString("N0") KM</span>
+                        <br />
+                        <label class="font-weight-bold">Kilometros recorridos: </label> <span>@item.Diferencia.ToString("N0") KM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        var JsonData = JSON.parse('@jsonRaw');
+        $(JsonData).each(function (index, item) {
+            new Chart(document.getElementById('chart-' + item.CodigoRubro), {
+                type: 'doughnut',
+                data: {
+                    labels: [item.NombreRubro],
+                    datasets: [{
+                        label: item.NombreRubro,
+                        data: [item.Porcentaje, item.Porcentaje - 100],
+                        backgroundColor: [
+                            item.backgroundColor,
+                            'rgba(192, 0, 0, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    events: []
+                }
+            });
+        });
+    });
+</script>

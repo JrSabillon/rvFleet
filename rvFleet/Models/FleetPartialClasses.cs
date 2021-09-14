@@ -40,6 +40,7 @@ namespace rvFleet.Models
         public HttpPostedFileBase ImgTrasera { get; set; }
         public HttpPostedFileBase ImgMotor { get; set; }
         public HttpPostedFileBase ImgInterior { get; set; }
+        //public List<spGetVehiclesCostTableValues_Result> Costs { get; set; } = new List<spGetVehiclesCostTableValues_Result>();
     }
 
     [MetadataType(typeof(vehiclesMetadata))]
@@ -105,7 +106,7 @@ namespace rvFleet.Models
             }
         }
 
-        public int porcentaje
+        public double porcentaje
         {
             get
             {
@@ -114,7 +115,7 @@ namespace rvFleet.Models
                     return 0;
                 }
 
-                return (int)(100 - (((float)DistanciaRecorrida / (float)DistanciaCambio) * 100));
+                return Math.Round((float)(100 - (((float)DistanciaRecorrida / (float)DistanciaCambio) * 100)), 2);
             }
         }
     }

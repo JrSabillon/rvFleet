@@ -95,6 +95,14 @@
     <Property Name="IdRol" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="systemsettings">
+          <Property Name="SysId" Type="int" />
+          <Property Name="SysConfName" Type="varchar" MaxLength="50" />
+          <Property Name="SysConfOperator" Type="varchar" MaxLength="50" />
+          <Property Name="SysConfValue" Type="varchar" MaxLength="50" />
+        </EntityType>-->
   <EntityType Name="ubicacion">
     <Key>
       <PropertyRef Name="IdUbicacion" />
@@ -106,7 +114,7 @@
     <Key>
       <PropertyRef Name="IdUsuario" />
     </Key>
-    <Property Name="CodigoRRHH" Type="int" Nullable="false" />
+    <Property Name="CodigoRRHH" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Contrasena" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Estado" Type="varchar" MaxLength="25" Nullable="false" />
@@ -118,16 +126,6 @@
     <Property Name="IdentidadUsuario" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="FechaIngreso" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
-  </EntityType>
-  <EntityType Name="usuariodepartamentoposicion">
-    <Key>
-      <PropertyRef Name="IdUsuario" />
-      <PropertyRef Name="IdDepartamento" />
-      <PropertyRef Name="IdPosicion" />
-    </Key>
-    <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="IdDepartamento" Type="int" Nullable="false" />
-    <Property Name="IdPosicion" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK__empresa">
     <End Role="empresa" Type="Self.empresa" Multiplicity="1" />
@@ -273,42 +271,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_usuariodepartamentoposicion_departamento">
-    <End Role="departamento" Type="Self.departamento" Multiplicity="1" />
-    <End Role="usuariodepartamentoposicion" Type="Self.usuariodepartamentoposicion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="departamento">
-        <PropertyRef Name="IdDepartamento" />
-      </Principal>
-      <Dependent Role="usuariodepartamentoposicion">
-        <PropertyRef Name="IdDepartamento" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_usuariodepartamentoposicion_posicion">
-    <End Role="posicion" Type="Self.posicion" Multiplicity="1" />
-    <End Role="usuariodepartamentoposicion" Type="Self.usuariodepartamentoposicion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="posicion">
-        <PropertyRef Name="IdPosicion" />
-      </Principal>
-      <Dependent Role="usuariodepartamentoposicion">
-        <PropertyRef Name="IdPosicion" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_usuariodepartamentoposicion_usuario">
-    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
-    <End Role="usuariodepartamentoposicion" Type="Self.usuariodepartamentoposicion" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="usuario">
-        <PropertyRef Name="IdUsuario" />
-      </Principal>
-      <Dependent Role="usuariodepartamentoposicion">
-        <PropertyRef Name="IdUsuario" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="rvseguridadModelStoreContainer">
     <EntitySet Name="departamento" EntityType="Self.departamento" Schema="" store:Type="Tables" />
     <EntitySet Name="departamentoposicion" EntityType="Self.departamentoposicion" Schema="" store:Type="Tables" />
@@ -323,7 +285,6 @@
     <EntitySet Name="rolusuario" EntityType="Self.rolusuario" Schema="" store:Type="Tables" />
     <EntitySet Name="ubicacion" EntityType="Self.ubicacion" Schema="" store:Type="Tables" />
     <EntitySet Name="usuario" EntityType="Self.usuario" Schema="" store:Type="Tables" />
-    <EntitySet Name="usuariodepartamentoposicion" EntityType="Self.usuariodepartamentoposicion" Schema="" store:Type="Tables" />
     <AssociationSet Name="FK__empresa" Association="Self.FK__empresa">
       <End Role="empresa" EntitySet="empresa" />
       <End Role="rol" EntitySet="rol" />
@@ -371,18 +332,6 @@
     <AssociationSet Name="FK_usuario_ubicacion" Association="Self.FK_usuario_ubicacion">
       <End Role="ubicacion" EntitySet="ubicacion" />
       <End Role="usuario" EntitySet="usuario" />
-    </AssociationSet>
-    <AssociationSet Name="FK_usuariodepartamentoposicion_departamento" Association="Self.FK_usuariodepartamentoposicion_departamento">
-      <End Role="departamento" EntitySet="departamento" />
-      <End Role="usuariodepartamentoposicion" EntitySet="usuariodepartamentoposicion" />
-    </AssociationSet>
-    <AssociationSet Name="FK_usuariodepartamentoposicion_posicion" Association="Self.FK_usuariodepartamentoposicion_posicion">
-      <End Role="posicion" EntitySet="posicion" />
-      <End Role="usuariodepartamentoposicion" EntitySet="usuariodepartamentoposicion" />
-    </AssociationSet>
-    <AssociationSet Name="FK_usuariodepartamentoposicion_usuario" Association="Self.FK_usuariodepartamentoposicion_usuario">
-      <End Role="usuario" EntitySet="usuario" />
-      <End Role="usuariodepartamentoposicion" EntitySet="usuariodepartamentoposicion" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

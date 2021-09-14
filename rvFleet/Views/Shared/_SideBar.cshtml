@@ -18,7 +18,7 @@
         @foreach (var item in Model)
         {
             string action = string.Empty, controller = string.Empty;
-            if (item.EstadoPrivilegio)
+            if (item.EstadoPrivilegio.Value)
             {
                 //Mostraremos el elemento solo si se encuentra activo
                 if (!HasChilds(item.IdPrivilegio) && item.NivelPrivilegio.Equals(1))

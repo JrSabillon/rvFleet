@@ -103,10 +103,10 @@ else
                                 @Html.TextBoxFor(x => x.FacKilometraje, new { @class = "form-control col-12", @readonly = "readonly", placeholder = "0" })
                             </div>*@
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         @Html.LabelFor(x => x.FacComentario)
                         @Html.TextAreaFor(x => x.FacComentario, new { rows = "3", @class = "form-control col-12", @readonly = "readonly", placeholder = "Ingrese una observación (opcional)..." })
-                    </div>
+                    </div>*@
                 </div>
                 <div id="div-tab-files" class="tab-pane fade">
                     <label class="h4">Archivos adjuntos</label>
@@ -167,6 +167,7 @@ else
                     <thead class="thead-light">
                         <tr>
                             <th>Vehículo</th>
+                            <th>Kilometraje</th>
                             <th>Rubro</th>
                             <th>Detalle</th>
                             <th>Cantidad</th>
@@ -178,6 +179,7 @@ else
                         {
                             <tr>
                                 <td>@item.DetPlacaVehiculo</td>
+                                <td>@item.DetKilometraje.ToString("N0")</td>
                                 <td>@item.NombreRubro</td>
                                 <td>@item.DetDescripcion</td>
                                 <td>@item.DetCantidad</td>

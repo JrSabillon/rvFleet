@@ -16,10 +16,23 @@
     <script src="~/Scripts/select2.js"></script>
     <link href="~/Content/css/select2.css" rel="stylesheet" />
     <link href="~/Content/select2_bootstrap4.css" rel="stylesheet" />
-    <script src="~/Scripts/Chart.js"></script>
+    <!--<script src="~/Scripts/Chart.js"></script>-->
+    <script src="~/Scripts/dist/ChartJS_3.5.0.js"></script>
+    <script src="~/Scripts/dist/ChartJS.Labels.Plugins.js"></script>
+    <script src="~/Scripts/dist/dompurify.js"></script>
+    <script src="~/Scripts/dist/html2canvas.js"></script>
+    <script src="~/Scripts/dist/jsPDF.js"></script>
     <style>
         .select2-search__field {
             max-width: 100% !important;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
         }
     </style>
 </head>
@@ -28,11 +41,12 @@
     @Html.Action("SideBar", "Nav")
     <div class="my-container" id="div-content">
         @Html.Partial("_NavBar")
-        <div class="body-content pt-4" id="div-content">
+        <div class="body-content pt-4">
             @RenderBody()
-            <footer>
-                @*<hr />
-                    <p>&copy; @DateTime.Now.Year - Recarga Veloz</p>*@
+            <footer class="mt-5">
+                <hr />
+                <p>&copy; @DateTime.Now.Year - Recarga Veloz</p>
+                <br />
             </footer>
         </div>
     </div>

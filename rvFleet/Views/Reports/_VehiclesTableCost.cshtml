@@ -1,0 +1,99 @@
+﻿@model List<rvFleet.Models.spGetVehicleCostsFiltered_Result>
+
+@{
+    var startDate = Convert.ToDateTime(ViewBag.startDate);
+    var endDate = Convert.ToDateTime(ViewBag.endDate);
+    var months = Model.Select(x => x.FacFechaOrden.ToString("yyyy-MMM", new System.Globalization.CultureInfo("es-HN"))).Distinct();
+    var years = Model.Select(x => x.FacFechaOrden.ToString("yyyy")).Distinct();
+    var vehicles = Model.Select(x => x.Nombre).Distinct();
+
+    string FormatedDateToText(DateTime date)
+    {
+        return date.ToString("dd") + " de " + date.ToString("MMMM", new System.Globalization.CultureInfo("es")) + ", " + date.ToString("yyyy");
+    }
+}
+
+<div class="mb-3">
+    <label class="col-form-label">@FormatedDateToText(startDate) - @FormatedDateToText(endDate).</label>
+    <div class="row">
+        <select class="form-control col-12" id="select-vehicle" multiple onchange="filterTable();">
+            @foreach (var vehicle in vehicles)
+            {
+                <option>@vehicle</option>
+            }
+        </select>
+    </div>
+</div>
+    @*@Html.DropDownList("select-vehicle", new SelectList(vehicles), new { @class = "form-control col-12", multiple = "multiple" })*@
+    @*<input type="text" class="form-control col-12" placeholder="Buscar placa..." id="input-filter">
+    <div class="input-group-append">
+        <span class="input-group-text"><i class="fa fa-search"></i></span>
+    </div>*@
+@foreach (var year in years)
+{
+    <div class="form-group">
+        <div class="w-100" style="cursor: pointer;" data-toggle="collapse" data-target="#div-@year">
+            <label class="h6"><i class="fa fa-chevron-down"></i> @year</label>
+            <label class="float-right">@Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year).Sum(x => x.CostoTotal).ToString("N2")</label>
+            <hr />
+        </div>
+        <div class="table-responsive collapse show dynamic-table" id="div-@year">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Vehículo</th>
+                        @foreach (var mes in Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year).Select(x => x.FacFechaOrden.ToString("MMM", new System.Globalization.CultureInfo("es-HN"))).Distinct())
+                        {
+                            <th>@mes</th>
+                        }
+                        <th>Total</th>
+                        <th>Total general</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var placa in Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year).Select(x => x.Nombre).Distinct())
+                    {
+                        <tr>
+                            <td>@placa</td>
+                            @foreach (var cost in Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year && x.Nombre == placa))
+                            {
+                                <td>@cost.CostoTotal.ToString("N2")</td>
+                            }
+                            <td style="background-color: #efefef">
+                                @Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year && x.Nombre == placa).Sum(x => x.CostoTotal).ToString("N2")
+                            </td>
+                            <td style="background-color: #efefef">
+                                @Model.Where(x => x.Nombre == placa).Sum(x => x.CostoTotal).ToString("N2")
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#select-vehicle').select2({
+            theme: 'bootstrap4'
+        });
+    });
+
+    function filterTable() {
+        var selectedVehicles = $('#select-vehicle').val();
+
+        if (selectedVehicles == '') {
+            $('.dynamic-table tbody tr').removeClass('d-none');
+        } else {
+            $('.dynamic-table tbody tr').each(function (index, item) {
+                if (selectedVehicles.indexOf($(item).find('td').first().text()) > -1) {
+                    $(item).removeClass('d-none');
+                } else {
+                    $(item).addClass('d-none');
+                }
+            });
+        }
+    }
+</script>

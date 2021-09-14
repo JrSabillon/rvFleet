@@ -31,10 +31,25 @@ namespace rvFleet.Controllers
                 if(vehicle != null)
                 {
                     //el usuario tiene un vehiculo asignado, verificar que ya ingreso el kilometraje de hoy.
-                    //TODO: Descomentar para que muestre la alerta de subir el kilometraje.
-                    ViewBag.KilometrajeUploaded = kilometrajeHistoricoViewModel.KilometrajeUploaded(vehicle.VehCodigoVehiculo);
+                    var DailyCheckCompleted = kilometrajeHistoricoViewModel.KilometrajeUploaded(vehicle.VehCodigoVehiculo);
+                   
+                    if (!DailyCheckCompleted)
+                    {
+                        return RedirectToAction("Inspection", "Vehicles", new { VehCodigo = vehicle.VehCodigoVehiculo });
+                    }
+
                     //ViewBag.KilometrajeUploaded = true;
+                    ViewBag.HasVehicle = true;
+                    ViewBag.VehPlaca = vehicle.VehPlaca;
+                    ViewBag.LogsCount = new LogsViewModel().GetBitacoravehiculos(vehicle.VehPlaca).Count;
+                    ViewBag.RubrosPrincipalesModel = new VehiclesViewModel().GetGraphData(vehicle.VehPlaca)
+                            .Where(x => x.CodigoRubro == 42 || x.CodigoRubro == 35 || x.CodigoRubro == 36 || x.CodigoRubro == 10).ToList();
                 }
+                else
+                {
+                    ViewBag.HasVehicle = false;
+                }
+
 
                 return View(model);
             }
@@ -57,6 +72,15 @@ namespace rvFleet.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public ActionResult InspectionResults(string VehPlaca)
+        {
+            var model = new VehiclesViewModel().GetGraphData(VehPlaca)
+                .Where(x => x.CodigoRubro == 42 || x.CodigoRubro == 35 || x.CodigoRubro == 36 || x.CodigoRubro == 10).ToList();
+            ViewBag.VehPlaca = VehPlaca;
+
+            return View(model);
         }
     }
 }

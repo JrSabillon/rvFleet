@@ -48,31 +48,9 @@ namespace rvFleet.Controllers
             }
             catch(Exception exc)
             {
-                ViewBag.Message = exc.Message;
-                return View("Error");
-            }
-        }
-
-        public ActionResult VehiclesCosts(string startDate, string endDate)
-        {
-            try
-            {
-                if(string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
-                {
-                    startDate = DateTime.Now.Year + "-" + DateTime.Now.Date.ToString("MM") + "-01";//La fecha inicial de este mes.
-                    endDate = DateTime.Now.Date.ToString("yyyy-MM-dd"); //La fecha de hoy
-                }
-
-                ViewBag.startDate = startDate;
-                ViewBag.endDate = endDate;
-                var model = ReportsViewModel.GetVehicleCosts_Filtered(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
-
-                return View(model);
-            }
-            catch(Exception exc)
-            {
-                ViewBag.Message = exc.Message;
-                return View("Error");
+                throw exc;
+                //ViewBag.Message = exc.Message;
+                //return View("Error");
             }
         }
 
@@ -145,6 +123,98 @@ namespace rvFleet.Controllers
             catch (Exception exc)
             {
                 throw exc;
+            }
+        }
+
+        public ActionResult VehiclesCosts(string startDate, string endDate)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+                {
+                    startDate = DateTime.Now.Year + "-" + DateTime.Now.Date.ToString("MM") + "-01";//La fecha inicial de este mes.
+                    endDate = DateTime.Now.Date.ToString("yyyy-MM-dd"); //La fecha de hoy
+                }
+
+                ViewBag.startDate = startDate;
+                ViewBag.endDate = endDate;
+                var model = ReportsViewModel.GetVehicleCostsFiltered(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
+
+                return View(model);
+            }
+            catch (Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
+        }
+
+        public ActionResult _VehiclesTableCost(string startDate, string endDate)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+                {
+                    startDate = DateTime.Now.Year + "-" + DateTime.Now.Date.ToString("MM") + "-01";//La fecha inicial de este mes.
+                    endDate = DateTime.Now.Date.ToString("yyyy-MM-dd"); //La fecha de hoy
+                }
+
+                ViewBag.startDate = startDate;
+                ViewBag.endDate = endDate;
+                var model = ReportsViewModel.GetVehicleCostsFiltered(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
+
+                return PartialView("_VehiclesTableCost", model);
+            }
+            catch (Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return PartialView("Error");
+            }
+        }
+
+        public ActionResult _RubrosTableCost(string startDate, string endDate)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+                {
+                    startDate = DateTime.Now.Year + "-" + DateTime.Now.Date.ToString("MM") + "-01";//La fecha inicial de este mes.
+                    endDate = DateTime.Now.Date.ToString("yyyy-MM-dd"); //La fecha de hoy
+                }
+
+                ViewBag.startDate = startDate;
+                ViewBag.endDate = endDate;
+                var model = ReportsViewModel.GetRubrosTableCost(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
+
+                return PartialView("_RubrosTableCost", model);
+            }
+            catch (Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return PartialView("Error");
+            }
+        }
+
+        public ActionResult _ProveedoresTableCost(string startDate, string endDate)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+                {
+                    startDate = DateTime.Now.Year + "-" + DateTime.Now.Date.ToString("MM") + "-01";//La fecha inicial de este mes.
+                    endDate = DateTime.Now.Date.ToString("yyyy-MM-dd"); //La fecha de hoy
+                }
+
+                ViewBag.startDate = startDate;
+                ViewBag.endDate = endDate;
+                var model = ReportsViewModel.GetProveedoresTableCost(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
+
+                return PartialView("_ProveedoresTableCost", model);
+            }
+            catch (Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return PartialView("Error");
             }
         }
     }

@@ -21,11 +21,14 @@
         <h4><i class="fa fa-book"></i> Facturas</h4>
     </div>
     <div class="col text-right">
-        <a class="btn btn-sm btn-primary form-group" 
-           href="@Url.Action("DownloadExcel_Facturas", "Orders", new { searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca })" target="_blank">
-            <i class="fa fa-cloud-download"></i>
-            Exportar a excel
-        </a>
+        @if (ViewBag.SelectedType != "4")
+        {
+            <a class="btn btn-sm btn-primary form-group"
+                href="@Url.Action("DownloadExcel_Facturas", "Orders", new { searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca })" target="_blank">
+                <i class="fa fa-cloud-download"></i>
+                Exportar a excel
+            </a>
+        }
         <a href="@Url.Action("New", "Orders")" class="btn btn-success btn-sm form-group" role="button">
             <i class="fa fa-plus"></i>
             Nuevo
@@ -60,10 +63,22 @@
     </div>
 
     <div class="row mb-4">
-        <div class="col-4 col-lg-2">
-            <label>Mostrar</label>
-            <input type="number" class="form-control d-inline" step="5" value="@ViewBag.PageSize" name="pageSize" onchange="isLoading(true); $('#order-form').submit();" />
-        </div>
+        @if (ViewBag.SelectedType == "4")
+        {
+            <div class="col-4 col-lg-2">
+                <button class="btn btn-primary" type="button" onclick="ExportTableToPDF();">
+                    <i class="fa fa-print"></i>
+                    Imprimir
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="col-4 col-lg-2">
+                <label>Mostrar</label>
+                <input type="number" class="form-control d-inline" step="5" value="@ViewBag.PageSize" name="pageSize" onchange="isLoading(true); $('#order-form').submit();" />
+            </div>
+        }
         <div class="col-8 col-lg-10 align-self-end">
             <div class="input-group">
                 <input type="text" class="form-control col-12" placeholder="Buscar proveedor/detalle..." name="searchString" value="@ViewBag.searchString">
@@ -79,7 +94,12 @@
     <table class="table table-hover table-bordered bg-white" id="orders-table">
         <thead>
             <tr>
-                @*<th>#</th>*@
+                @if(ViewBag.SelectedType == "4")
+                {
+                    <th>
+                        <input type="checkbox" onclick="CheckAll(event);" />
+                    </th>
+                }
                 <th>
                     <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacCodigoOrden, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
                         #
@@ -178,20 +198,38 @@
                 foreach (var item in Model)
                 {
             <tr>
+                @if (ViewBag.SelectedType == "4")
+                {
+                    <td>
+                        <input type="checkbox" onclick="handleCheck(event);" />
+                    </td>
+                }
                 <td>@item.FacCodigoOrden</td>
                 <td>@(string.IsNullOrEmpty(item.FacNumeroFactura) ? "Sin Factura" : item.FacNumeroFactura)</td>
                 <td>@item.FacFechaOrden.Value.ToString("yyyy-MM-dd")</td>
                 <td>@item.proveedor.ProNombre</td>
                 <td>@string.Join(", ", item.detallefactura.Select(x => x.DetDescripcion).ToList())</td>
-                @{ 
+                @{
                     var placas = item.detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList();
+                    int position = 0;
                 }
                 <td>
-                    @foreach (var placa in placas) 
+                    @for (int i = 0; i < placas.Count; i++)
                     {
-                        <a href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placa })">
-                            @placa,
-                        </a>
+                        if (position == placas.Count - 1)
+                        {
+                            <a target="_blank" href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placas[i] })">
+                                @placas[i]
+                            </a>
+                        }
+                        else
+                        {
+                            <a target="_blank" href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placas[i] })">
+                                @placas[i],
+                            </a>
+                        }
+
+                        position++;
                     }
                 </td>
                 <td>@item.FacValorFactura.ToString("N2")</td>
@@ -241,11 +279,58 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
             theme: 'bootstrap4',
             width: '100%',
         });
-
-        //$('#orders-table').DataTable({
-        //    language: {
-        //        "url": "~/Scripts/i18n/es.js"
-        //    }
-        //});
     });
+
+    function CheckAll(e) {
+        var isChecked = e.target.checked;
+
+        $.each($('#orders-table tbody tr'), (index, item) => {
+            $(item).find('input[type=checkbox]').prop('checked', isChecked);
+        });
+    }
+
+    function handleCheck(e) {
+        var allChecked = true;
+
+        $.each($('#orders-table tbody tr'), (index, item) => {
+            if (!$(item).find('input[type=checkbox]')[0].checked) {
+                allChecked = false;
+
+                return;
+            }
+        });
+
+        $('thead tr input[type=checkbox]').prop("checked", allChecked);
+    }
+
+    function ExportTableToPDF() {
+        var htmlTable = "<table class='table table-bordered' style='font-size: 10px; width: 775px'>";
+        var doc = new jspdf.jsPDF('l', 'pt', 'a4');
+
+        $.each($('#orders-table tbody tr'), (index, item) => {
+            if ($(item).find('input[type=checkbox]')[0].checked) {
+                var tdsCollection = $(item).find('td');
+
+                htmlTable += `<tr>
+                                <td>${tdsCollection[1].innerText}</td>
+                                <td>${tdsCollection[2].innerText}</td>
+                                <td>${tdsCollection[3].innerText}</td>
+                                <td>${tdsCollection[4].innerText}</td>
+                                <td>${tdsCollection[5].innerText}</td>
+                                <td>${tdsCollection[6].innerText}</td>
+                                <td>${tdsCollection[7].innerText}</td>
+                              </tr>`;
+            }
+        });
+
+        htmlTable += "</table>"
+        doc.html(htmlTable, {
+            callback: function (doc) {
+                doc.save('prueba');
+            },
+            margin: [60, 60, 60, 60],
+            x: 32,
+            y: 32,
+        });
+    }
 </script>

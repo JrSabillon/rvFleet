@@ -6,6 +6,7 @@ using System.Web;
 using MySql.Data.MySqlClient;
 using rvFleet.App_Code;
 using rvFleet.POCO;
+using System.Data.Entity;
 
 namespace rvFleet.ViewModels
 {
@@ -41,6 +42,33 @@ namespace rvFleet.ViewModels
                 using (var context = new rvfleetEntities())
                 {
                     var vehicle = context.vehiculos.Where(x => x.VehPlaca.Equals(VehPlaca))
+                        .FirstOrDefault();
+
+                    return vehicle;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Obtener los datos completos del vehiculo por su codigo
+        /// </summary>
+        /// <param name="VehCodigo">Codigo del vehiculo</param>
+        /// <returns></returns>
+        public vehiculos GetVehiculoById(int VehCodigo)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var vehicle = context.vehiculos.Where(x => x.VehCodigoVehiculo.Equals(VehCodigo))
                         .FirstOrDefault();
 
                     return vehicle;
@@ -201,6 +229,9 @@ namespace rvFleet.ViewModels
                     CurrentVehicle.VehFotoTrasera = vehicle.VehFotoTrasera ?? CurrentVehicle.VehFotoTrasera;
                     CurrentVehicle.VehFotoMotor = vehicle.VehFotoMotor ?? CurrentVehicle.VehFotoMotor;
                     CurrentVehicle.VehFotoInterior = vehicle.VehFotoInterior ?? CurrentVehicle.VehFotoInterior;
+                    CurrentVehicle.VehKilometrajeActualizado = CurrentVehicle.VehKilometraje != vehicle.VehKilometraje ? DateTime.Now : CurrentVehicle.VehKilometrajeActualizado;
+                    CurrentVehicle.VehKilometraje = vehicle.VehKilometraje;
+
                     context.SaveChanges();
 
                     return CurrentVehicle;
@@ -252,6 +283,109 @@ namespace rvFleet.ViewModels
             catch (Exception exc)
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public List<controlvehiculospregunta> GetPreguntas()
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var preguntas = context.controlvehiculospregunta.Where(x => x.Estado.Value).OrderBy(x => x.Orden).ToList();
+
+                    return preguntas;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public void SaveInspectionAnswer(controlvehiculosrespuesta respuesta, DateTime Fecha)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    respuesta.Fecha = Fecha;
+                    respuesta.CodigoUsuario = BaseViewModel.GetUserData().IdUsuario;
+
+                    context.controlvehiculosrespuesta.Add(respuesta);
+                    context.SaveChanges();
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public List<controlvehiculosrespuesta> GetRespuestasInspeccion(int CodigoVehiculo, DateTime Fecha)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var data = context.controlvehiculosrespuesta.Include(x => x.controlvehiculospregunta)
+                        .Where(x => x.CodigoVehiculo == CodigoVehiculo && x.Fecha == Fecha).ToList();
+
+                    return data;
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public List<InspectionsTable> GetRespuestasGrouped(string VehPlaca)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var data = new List<InspectionsTable>();
+
+                    if (!string.IsNullOrEmpty(VehPlaca))
+                    {
+                        data = context.controlvehiculosrespuesta
+                            .Join(context.vehiculos, 
+                                c => c.CodigoVehiculo, 
+                                v => v.VehCodigoVehiculo, 
+                                (c, v) => new InspectionsTable { VehPlaca = v.VehPlaca, Fecha = c.Fecha, VehCodigoVehiculo = v.VehCodigoVehiculo, CodigoUsuario = c.CodigoUsuario })
+                            .Where(x => x.VehPlaca == VehPlaca)
+                            .GroupBy(x => new { x.VehCodigoVehiculo, x.Fecha, x.VehPlaca, x.CodigoUsuario })
+                            .Select(x => new InspectionsTable { VehPlaca = x.Key.VehPlaca, Fecha = x.Key.Fecha, VehCodigoVehiculo = x.Key.VehCodigoVehiculo, CodigoUsuario = x.Key.CodigoUsuario })
+                            .ToList();
+                    }
+                    else
+                    {
+                        data = context.controlvehiculosrespuesta
+                            .Join(context.vehiculos,
+                                c => c.CodigoVehiculo,
+                                v => v.VehCodigoVehiculo,
+                                (c, v) => new InspectionsTable { VehPlaca = v.VehPlaca, Fecha = c.Fecha, VehCodigoVehiculo = v.VehCodigoVehiculo, CodigoUsuario = c.CodigoUsuario })
+                            .GroupBy(x => new { x.VehCodigoVehiculo, x.Fecha, x.VehPlaca, x.CodigoUsuario })
+                            .Select(x => new InspectionsTable { VehPlaca = x.Key.VehPlaca, Fecha = x.Key.Fecha, VehCodigoVehiculo = x.Key.VehCodigoVehiculo, CodigoUsuario = x.Key.CodigoUsuario })
+                            .ToList();
+                    }
+
+                    return data;
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
             }
         }
     }

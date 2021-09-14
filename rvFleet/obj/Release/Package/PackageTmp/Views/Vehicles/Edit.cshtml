@@ -99,6 +99,15 @@
                     @Html.TextBoxFor(x => x.VehFechaMatricula, "{0:yyyy-MM-dd}", new { @class = "form-control col-12", type = "date" })
                     @Html.ValidationMessageFor(x => x.VehFechaMatricula, "", new { @class = "text-danger" })
                 </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehKilometraje)
+                    @Html.TextBoxFor(x => x.VehKilometraje, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehKilometraje, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehKilometrajeActualizado)
+                    @Html.TextBoxFor(x => x.VehKilometrajeActualizado, null, new { @class = "form-control-plaintext col-12", @readonly = "readonly" })
+                </div>
             </div>
             <hr />
             <fieldset>

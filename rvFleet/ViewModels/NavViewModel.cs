@@ -45,7 +45,7 @@ namespace rvFleet.ViewModels
                     }
                 }
 
-                return privilegios;
+                return privilegios.Where(x => x.EstadoPrivilegio.Value).ToList();
             }
             catch(Exception exc)
             {

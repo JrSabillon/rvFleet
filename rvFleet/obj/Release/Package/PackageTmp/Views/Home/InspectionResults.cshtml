@@ -1,0 +1,24 @@
+﻿@model List<rvFleet.Models.GetVehicleGraphData_Result>
+@{
+    ViewBag.Title = "InspectionResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Rubros principales del vehículo - @ViewBag.VehPlaca</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Resultados de inspección</li>
+    </ol>
+</nav>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary mb-3">
+    <i class="fa fa-angle-double-left"></i> Ir a inicio
+</a>
+
+@{
+    Html.RenderPartial("_RubrosPrincipales", Model);
+}

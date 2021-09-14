@@ -28,7 +28,11 @@ namespace rvFleet.Models
         }
     
         public virtual DbSet<archivofactura> archivofactura { get; set; }
+        public virtual DbSet<bitacoracomentario> bitacoracomentario { get; set; }
+        public virtual DbSet<bitacoravehiculo> bitacoravehiculo { get; set; }
         public virtual DbSet<conductorhistorico> conductorhistorico { get; set; }
+        public virtual DbSet<controlvehiculospregunta> controlvehiculospregunta { get; set; }
+        public virtual DbSet<controlvehiculosrespuesta> controlvehiculosrespuesta { get; set; }
         public virtual DbSet<detallefactura> detallefactura { get; set; }
         public virtual DbSet<facturas> facturas { get; set; }
         public virtual DbSet<kilometrajehistorico> kilometrajehistorico { get; set; }
@@ -38,12 +42,11 @@ namespace rvFleet.Models
         public virtual DbSet<sucursales> sucursales { get; set; }
         public virtual DbSet<ubicacionhistorica> ubicacionhistorica { get; set; }
         public virtual DbSet<vehiculos> vehiculos { get; set; }
+        public virtual DbSet<resumencostosvehiculos> resumencostosvehiculos { get; set; }
         public virtual DbSet<kilometrajeporvehiculoanoactual> kilometrajeporvehiculoanoactual { get; set; }
         public virtual DbSet<recommendedmaintenance> recommendedmaintenance { get; set; }
         public virtual DbSet<vehiclecosts> vehiclecosts { get; set; }
         public virtual DbSet<vehiclefulldata> vehiclefulldata { get; set; }
-        public virtual DbSet<bitacoravehiculo> bitacoravehiculo { get; set; }
-        public virtual DbSet<bitacoracomentario> bitacoracomentario { get; set; }
     
         public virtual ObjectResult<GetPartsCost_Result> GetPartsCost(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
@@ -97,6 +100,45 @@ namespace rvFleet.Models
         public virtual ObjectResult<recommendedmaintenance> spGetRubrosNoFacturadosVehiculo(MergeOption mergeOption)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<recommendedmaintenance>("spGetRubrosNoFacturadosVehiculo", mergeOption);
+        }
+    
+        public virtual ObjectResult<spGetVehicleCostsFiltered_Result> spGetRubrosTableCost(Nullable<System.DateTime> startDate_IN, Nullable<System.DateTime> endDate_IN)
+        {
+            var startDate_INParameter = startDate_IN.HasValue ?
+                new ObjectParameter("startDate_IN", startDate_IN) :
+                new ObjectParameter("startDate_IN", typeof(System.DateTime));
+    
+            var endDate_INParameter = endDate_IN.HasValue ?
+                new ObjectParameter("endDate_IN", endDate_IN) :
+                new ObjectParameter("endDate_IN", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleCostsFiltered_Result>("spGetRubrosTableCost", startDate_INParameter, endDate_INParameter);
+        }
+    
+        public virtual ObjectResult<spGetVehicleCostsFiltered_Result> spGetVehicleCostsFiltered(Nullable<System.DateTime> startDate_IN, Nullable<System.DateTime> endDate_IN)
+        {
+            var startDate_INParameter = startDate_IN.HasValue ?
+                new ObjectParameter("StartDate_IN", startDate_IN) :
+                new ObjectParameter("StartDate_IN", typeof(System.DateTime));
+    
+            var endDate_INParameter = endDate_IN.HasValue ?
+                new ObjectParameter("EndDate_IN", endDate_IN) :
+                new ObjectParameter("EndDate_IN", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleCostsFiltered_Result>("spGetVehicleCostsFiltered", startDate_INParameter, endDate_INParameter);
+        }
+    
+        public virtual ObjectResult<spGetVehicleCostsFiltered_Result> spGetProveedoresTableCost(Nullable<System.DateTime> startDate_IN, Nullable<System.DateTime> endDate_IN)
+        {
+            var startDate_INParameter = startDate_IN.HasValue ?
+                new ObjectParameter("startDate_IN", startDate_IN) :
+                new ObjectParameter("startDate_IN", typeof(System.DateTime));
+    
+            var endDate_INParameter = endDate_IN.HasValue ?
+                new ObjectParameter("endDate_IN", endDate_IN) :
+                new ObjectParameter("endDate_IN", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleCostsFiltered_Result>("spGetProveedoresTableCost", startDate_INParameter, endDate_INParameter);
         }
     }
 }

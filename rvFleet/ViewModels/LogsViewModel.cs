@@ -5,6 +5,7 @@ using System.Web;
 using rvFleet.Models;
 using rvFleet.App_Code;
 using System.Data.Entity;
+using MySql.Data.MySqlClient;
 
 namespace rvFleet.ViewModels
 {
@@ -15,7 +16,7 @@ namespace rvFleet.ViewModels
 
         }
 
-        public List<bitacoravehiculo> GetBitacoravehiculos()
+        public List<bitacoravehiculo> GetBitacoravehiculos(string VehPlaca)
         {
             try
             {
@@ -23,8 +24,10 @@ namespace rvFleet.ViewModels
 
                 using (var context = new rvfleetEntities())
                 {
-                    data = context.bitacoravehiculo.Include(x => x.bitacoracomentario1).ToList();
-
+                    if (!string.IsNullOrEmpty(VehPlaca))
+                        data = context.bitacoravehiculo.Where(x => x.bitacoraPlaca == VehPlaca).Include(x => x.bitacoracomentario1).ToList();
+                    else
+                        data = context.bitacoravehiculo.Include(x => x.bitacoracomentario1).ToList();
                 }
 
                 using (var context = new rvseguridadEntities1())
@@ -42,6 +45,84 @@ namespace rvFleet.ViewModels
             catch(Exception exc)
             {
                 throw new ApplicationException(string.Format("{0} - {1}", Constants.App_Error, exc.Message));
+            }
+        }
+
+        public List<opcionrecurso> getTipoBitacoras()
+        {
+            try
+            {
+                using (var context = new rvseguridadEntities1())
+                {
+                    var data = context.opcionrecurso.Where(x => x.IdGrupoRecurso.Equals("VEHIC_BIT_TIP")).ToList();
+                    
+                    return data;
+                }
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException(string.Format("{0} - {1}", Constants.App_Error, exc.Message));
+            }
+        }
+
+        public void AddLog(bitacoravehiculo data)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    context.bitacoravehiculo.Add(data);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException(string.Format("{0} - {1}", Constants.App_Error, exc.Message));
+            }
+        }
+
+        public void AddLogComment(bitacoracomentario data)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var comments = context.bitacoracomentario.Where(x => x.bitacoraId == data.bitacoraId).ToList();
+                    data.bitacoraComId = comments.Count + 1;
+                    context.bitacoracomentario.Add(data);
+
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException(string.Format("{0} - {1}", Constants.App_Error, exc.Message));
+            }
+        }
+
+        public bool UserCanSeeLogs(string UserId)
+        {
+            MySqlConnection conn = new MySqlConnection(Constants.SecurityStaticConnection);
+            
+            try
+            {
+                string query = $"SELECT Count(*) FROM rolusuario INNER JOIN rolprivilegio " +
+                    $"ON rolusuario.IdRol = rolprivilegio.IdRol " +
+                    $"WHERE rolusuario.IdUsuario = '{UserId}' AND IdPrivilegio = 'VEHIC_LOG'";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                conn.Open();
+
+                var result = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return result > 0;
+            }
+            catch(Exception exc)
+            {
+                throw new ApplicationException(string.Format("{0} - {1}", Constants.App_Error, exc.Message));
+            }
+            finally
+            {
+                conn.Close();
             }
         }
     }

@@ -4,30 +4,34 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0993b476b0324aad8aa83cf21fc5bbbd" Name="Diagram1" ZoomLevel="71">
+      <Diagram DiagramId="0993b476b0324aad8aa83cf21fc5bbbd" Name="Diagram1" ZoomLevel="64">
         <EntityTypeShape EntityType="rvfleetModel.archivofactura" Width="1.5" PointX="5.25" PointY="5" />
-        <EntityTypeShape EntityType="rvfleetModel.conductorhistorico" Width="1.5" PointX="5.75" PointY="8.75" />
+        <EntityTypeShape EntityType="rvfleetModel.bitacoracomentario" Width="1.5" PointX="8" PointY="9" />
+        <EntityTypeShape EntityType="rvfleetModel.bitacoravehiculo" Width="1.5" PointX="5.75" PointY="9" />
+        <EntityTypeShape EntityType="rvfleetModel.conductorhistorico" Width="1.5" PointX="10.75" PointY="8.75" />
+        <EntityTypeShape EntityType="rvfleetModel.controlvehiculospregunta" Width="1.5" PointX="7.75" PointY="5" />
+        <EntityTypeShape EntityType="rvfleetModel.controlvehiculosrespuesta" Width="1.5" PointX="10" PointY="5" />
         <EntityTypeShape EntityType="rvfleetModel.detallefactura" Width="1.5" PointX="5.25" PointY="1.5" />
         <EntityTypeShape EntityType="rvfleetModel.facturas" Width="1.5" PointX="3" PointY="2.25" />
-        <EntityTypeShape EntityType="rvfleetModel.kilometrajehistorico" Width="1.5" PointX="7.75" PointY="8.75" />
-        <EntityTypeShape EntityType="rvfleetModel.proveedor" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="rvfleetModel.kilometrajehistorico" Width="1.5" PointX="10.75" PointY="11.75" />
+        <EntityTypeShape EntityType="rvfleetModel.proveedor" Width="1.5" PointX="0.75" PointY="6.25" />
+        <EntityTypeShape EntityType="rvfleetModel.resumencostosvehiculos" Width="1.5" PointX="12.75" PointY="0.75" />
         <EntityTypeShape EntityType="rvfleetModel.rubrodetalle" Width="1.5" PointX="10" PointY="1.125" />
         <EntityTypeShape EntityType="rvfleetModel.rubros" Width="1.5" PointX="7.75" PointY="0.875" />
-        <EntityTypeShape EntityType="rvfleetModel.sucursales" Width="1.5" PointX="9.75" PointY="8.75" />
-        <EntityTypeShape EntityType="rvfleetModel.ubicacionhistorica" Width="1.5" PointX="5.75" PointY="11.75" />
-        <EntityTypeShape EntityType="rvfleetModel.vehiculos" Width="1.5" PointX="3" PointY="8" />
-        <EntityTypeShape EntityType="rvfleetModel.kilometrajeporvehiculoanoactual" Width="1.5" PointX="7.75" PointY="11.75" />
-        <EntityTypeShape EntityType="rvfleetModel.recommendedmaintenance" Width="1.5" PointX="11.75" PointY="8.75" />
-        <EntityTypeShape EntityType="rvfleetModel.vehiclecosts" Width="1.5" PointX="12.75" PointY="0.75" />
-        <EntityTypeShape EntityType="rvfleetModel.vehiclefulldata" Width="1.5" PointX="13.75" PointY="3.75" />
+        <EntityTypeShape EntityType="rvfleetModel.sucursales" Width="1.5" PointX="12.75" PointY="3.75" />
+        <EntityTypeShape EntityType="rvfleetModel.ubicacionhistorica" Width="1.5" PointX="5.75" PointY="12.75" />
+        <EntityTypeShape EntityType="rvfleetModel.vehiculos" Width="1.5" PointX="3" PointY="8.125" />
+        <EntityTypeShape EntityType="rvfleetModel.kilometrajeporvehiculoanoactual" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="rvfleetModel.recommendedmaintenance" Width="1.5" PointX="7.75" PointY="12.75" />
+        <EntityTypeShape EntityType="rvfleetModel.vehiclecosts" Width="1.5" PointX="12.75" PointY="9.75" />
+        <EntityTypeShape EntityType="rvfleetModel.vehiclefulldata" Width="1.5" PointX="12.75" PointY="12.75" />
         <AssociationConnector Association="rvfleetModel.FK__facturas" />
+        <AssociationConnector Association="rvfleetModel.FK__bitacoravehiculo" />
+        <AssociationConnector Association="rvfleetModel.FK_controlvehiculosrespuesta_controlvehiculospregunta" />
         <AssociationConnector Association="rvfleetModel.FK_detallefactura_facturas" />
         <AssociationConnector Association="rvfleetModel.FK_facturas_proveedor" />
         <AssociationConnector Association="rvfleetModel.FK_vehiculos_proveedor" />
         <AssociationConnector Association="rvfleetModel.FK__rubros" />
-        <EntityTypeShape EntityType="rvfleetModel.bitacoravehiculo" Width="1.875" PointX="7.375" PointY="5" />
-        <EntityTypeShape EntityType="rvfleetModel.bitacoracomentario" Width="2.125" PointX="10" PointY="5.125" />
-        <AssociationConnector Association="rvfleetModel.FK__bitacoravehiculo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

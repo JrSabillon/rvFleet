@@ -6,19 +6,6 @@
 }
 
 <style>
-    table.scroll thead, tbody tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    table.scroll tbody {
-        display: block;
-        height: 225px !important;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
     .card-footer,
     .card-header {
         background-color: white;
@@ -49,10 +36,10 @@
 </nav>
 
 <div class="row">
-    <div class="col-12 col-xl-6">
+    <div class="col-12">
         <div class="row">
-            <div class="col-12 form-group">
-                <div class="card shadow" style="height: 515px">
+            <div class="col-12 col-xl-6 form-group">
+                <div class="card shadow">
                     <div class="card-header">
                         <i class="fa fa-money"></i>
                         Costos totales por vehículo
@@ -69,10 +56,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 form-group">
+            <div class="col-12 col-xl-6 form-group">
                 <div class="row">
-                    <div class="col-12 col-xl-6 form-group">
-                        <div class="card shadow" style="height: 285px;">
+                    <div class="col-12 form-group mb-xl-5 mb-3">
+                        <div class="card shadow" style="height: 310px;">
                             <div class="card-header">
                                 <i class="fa fa-wrench"></i>
                                 Mantenimientos próximos
@@ -89,8 +76,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-xl-6">
-                        <div class="card shadow" style="height: 285px">
+                    <div class="col-12">
+                        <div class="card shadow" style="height: 305px">
                             <div class="card-header">
                                 <i class="fa fa-truck"></i>
                                 Vehículos
@@ -112,18 +99,18 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-xl-6 form-group">
+    <div class="col-12 form-group">
         <div class="card shadow" style="height: 815px">
             <div class="card-header">
                 <i class="fa fa-bar-chart-o"></i>
-                Costo anual por rubro - @DateTime.Now.Year
+                Costos totales por rubro
             </div>
             <div class="card-body p-0 d-flex">
                 @{
                     Html.RenderPartial("_AnualCostsGraph", Model.VehicleAnualCostGraphData);
                 }
             </div>
-            <div class="card-footer text-center">
+            <div class="card-footer text-center d-none">
                 <a class="btn btn-info btn-sm" href="@Url.Action("PartsCost", "Reports")">
                     Mas detalles <i class="fa fa-arrow-circle-right"></i>
                 </a>
@@ -131,7 +118,7 @@
         </div>
     </div>
     <div class="col-12 form-group">
-        <div class="card shadow" style="height: 515px">
+        <div class="card shadow" style="height: 815px">
             <div class="card-header">
                 <i class="fa fa-bar-chart-o"></i>
                 Kilometraje por vehículo
@@ -141,7 +128,7 @@
                     Html.RenderPartial("_CarKMs", Model.KilometrajesPorVehiculoAnoActual);
                 }
             </div>
-            <div class="card-footer text-center">
+            <div class="card-footer text-center d-none">
                 <button class="btn btn-info btn-sm">
                     Mas detalles <i class="fa fa-arrow-circle-right"></i>
                 </button>

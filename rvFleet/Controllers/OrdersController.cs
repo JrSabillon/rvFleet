@@ -14,6 +14,7 @@ using rvFleet.App_Code;
 using System.Data;
 using ClosedXML.Excel;
 using OfficeOpenXml;
+using System.Configuration;
 
 namespace rvFleet.Controllers
 {
@@ -106,11 +107,11 @@ namespace rvFleet.Controllers
         }
 
         // GET: Orders
-        public ActionResult Index(string searchString, int? page, string VehPlaca, string sortOrder = "orden_desc", string type = "1", int pageSize = 5)
+        public ActionResult Index(string searchString, int? page, string VehPlaca, int? pageSize, string sortOrder = "orden_desc", string type = "1")
         {
             try
             {
-                //int pageSize = 5;
+                pageSize = pageSize.HasValue ? pageSize : Convert.ToInt32(ConfigurationManager.AppSettings["PaginationSize"].ToString());
                 int pageNumber = (page ?? 1);
 
                 List<facturas> model = new List<facturas>();
@@ -126,6 +127,10 @@ namespace rvFleet.Controllers
                         break;
                     case "3":
                         model = viewModel.GetOrdenes();
+                        break;
+                    case "4":
+                        model = viewModel.GetFacturasNoEntregadas();
+                        pageSize = model.Count;
                         break;
                 }
 
@@ -188,7 +193,7 @@ namespace rvFleet.Controllers
 
                 ViewBag.Type = new SelectList(GetTypes(), "Value", "Text", type);
                 ViewBag.PageSize = pageSize;
-                return View(model.ToPagedList(pageNumber, pageSize));
+                return View(model.ToPagedList(pageNumber, pageSize.Value));
             }
             catch (Exception exc)
             {
@@ -204,6 +209,7 @@ namespace rvFleet.Controllers
                 new ItemModel { Text = "Todas", Value = "1" },
                 new ItemModel { Text = "Facturas", Value = "2" },
                 new ItemModel { Text = "Órdenes", Value = "3" },
+                new ItemModel { Text = "Pendiente entrega", Value = "4" }
             };
 
             return Types.ToList();

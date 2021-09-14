@@ -21,21 +21,21 @@ namespace rvFleet.Controllers
         }
         
         // GET: Vehicles
-        public ActionResult Control(int? page, string searchString)
+        public ActionResult Control(/*int? page, string searchString*/)
         {
             try
             {
                 var model = VehiclesViewModel.GetVehiclesCompleteData();
 
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    ViewBag.searchString = searchString;
-                    model = model.Where(x => x.VehPlaca.ToUpper().Contains(searchString.ToUpper()) || x.NombreUsuario.ToUpper().Contains(searchString.ToUpper())).ToList();
-                }
+                //if (!string.IsNullOrEmpty(searchString))
+                //{
+                //    ViewBag.searchString = searchString;
+                //    model = model.Where(x => x.VehPlaca.ToUpper().Contains(searchString.ToUpper()) || x.NombreUsuario.ToUpper().Contains(searchString.ToUpper())).ToList();
+                //}
 
-                int pageSize = 5;
-                int pageNumber = (page ?? 1);
-                return View(model.ToPagedList(pageNumber, pageSize));
+                //int pageSize = 25;
+                //int pageNumber = (page ?? 1);
+                return View(model);
             }
             catch(Exception exc)
             {
@@ -200,12 +200,112 @@ namespace rvFleet.Controllers
             throw new NotImplementedException();
         }
 
-        public ActionResult Logs(string VehPlaca)
+        public ActionResult Logs(string VehPlaca, string Option = "Comentarios")
         {
-            ViewBag.VehPlaca = VehPlaca;
-            var model = new LogsViewModel().GetBitacoravehiculos().Where(x => x.bitacoraPlaca.Equals(VehPlaca)).ToList();
+            try
+            {
+                LogsViewModel logsViewModel = new LogsViewModel();
+                var canSeeAllVehics = logsViewModel.UserCanSeeLogs(BaseViewModel.GetUserData().IdUsuario);
 
-            return View(model);
+                if (string.IsNullOrEmpty(VehPlaca) && !canSeeAllVehics)
+                    return RedirectToAction("Index", "Home");
+
+                var vehicles = VehiclesViewModel.GetVehiculos().ToList();
+                ViewBag.SelectedPlaca = VehPlaca;
+                ViewBag.VehPlaca = new SelectList(vehicles, "VehPlaca", "VehPlaca", VehPlaca);
+                ViewBag.CanChange = canSeeAllVehics;
+                ViewBag.Option = new SelectList(new string[] { "Comentarios", "Inspecciones" }, Option);
+                ViewBag.SelectedOption = Option;
+
+                if (Option.Equals("Comentarios"))
+                {
+                    //VehPlaca = string.IsNullOrEmpty(VehPlaca) ? vehicles.FirstOrDefault().VehPlaca : VehPlaca;
+                    var logTypes = logsViewModel.getTipoBitacoras();
+                    ViewBag.bitacoraTipo = new SelectList(logTypes, "IdOpcionRecurso", "NombreOpcionRecurso");
+                    ViewBag.ComentariosModel = logsViewModel.GetBitacoravehiculos(VehPlaca).OrderByDescending(x => x.bitacoraId).ToList();
+                }
+                else
+                {
+                    ViewBag.InspectionModel = VehiclesViewModel.GetRespuestasGrouped(VehPlaca).OrderByDescending(x => x.Fecha).ToList();
+                    ViewBag.Preguntas = VehiclesViewModel.GetPreguntas();
+                }
+
+                return View();
+            }
+            catch(Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
+        }
+
+        public ActionResult AddLog(bitacoravehiculo data)
+        {
+            try
+            {
+                data.bitacoraUsuario = BaseViewModel.GetUserData().IdUsuario;
+                data.bitacoraFecha = DateTime.Now;
+                new LogsViewModel().AddLog(data);
+
+                return RedirectToAction("Logs", new { VehPlaca = data.bitacoraPlaca });
+            }
+            catch(Exception exc) 
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
+        }
+
+        public ActionResult AddLogComment(bitacoracomentario data, string VehPlaca)
+        {
+            try
+            {
+                data.bitacoraComUsuario = BaseViewModel.GetUserData().IdUsuario;
+                data.bitacoraComFecha = DateTime.Now;
+                new LogsViewModel().AddLogComment(data);
+
+                return RedirectToAction("Logs", new { VehPlaca });
+            }
+            catch(Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
+        }
+
+        public ActionResult Inspection(string VehCodigo)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(VehCodigo))
+                    return RedirectToAction("Index", "Home");
+
+                var model = VehiclesViewModel.GetPreguntas();
+                var vehicle = VehiclesViewModel.GetVehiculoById(Convert.ToInt32(VehCodigo));
+                ViewBag.CodigoVehiculo = VehCodigo;
+                ViewBag.VehPlaca = vehicle.VehPlaca;
+                ViewBag.KilometrajeActual = vehicle.VehKilometraje ?? 0;
+
+                return View(model);
+            }
+            catch(Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
+        }
+
+        public ActionResult Inspections()
+        {
+            try
+            {
+                return View();
+            }
+            catch(Exception exc)
+            {
+                ViewBag.Message = exc.Message;
+                return View("Error");
+            }
         }
     }
 }

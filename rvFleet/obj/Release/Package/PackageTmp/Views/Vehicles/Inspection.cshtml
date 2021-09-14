@@ -1,0 +1,98 @@
+﻿@model IList<rvFleet.Models.controlvehiculospregunta>
+@{
+    ViewBag.Title = "Inspection";
+    Layout = "~/Views/Shared/_LayoutLimited.cshtml";
+
+    string CodigoVehiculo = ViewBag.CodigoVehiculo;
+}
+
+<h4>Inspección rápida - @ViewBag.VehPlaca</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Inspección</li>
+    </ol>
+</nav>
+
+@using (Html.BeginForm("Upload", "Kilometraje", FormMethod.Post, new { enctype = "multipart/form-data", id = "form-uploadKilometraje" }))
+{
+    @Html.Hidden("VehPlaca", ViewBag.VehPlaca as string)
+    <label class="h5">Adjuntar kilometraje diario.</label>
+    <hr />
+    @Html.TextBox("KilometrajeImg", null, new { @class = "form-control-file d-md-inline", type = "file" })
+    @Html.TextBox("KilKilometraje", null, new { @class = "form-control d-md-inline ml-md-3 mt-3 mt-md-0", placeholder = "Kilometraje...", onchange = "formatThousands(this);", required = "required" })
+
+    <br />
+    <label class="h5 mt-5">Revisión del vehículo</label>
+    <hr />
+    <div class="row">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            @Html.Hidden($"[{i}].CodigoVehiculo", CodigoVehiculo)
+            @Html.HiddenFor(m => Model[i].Id, new { Name = $"[{i}].CodigoPregunta" })
+            <div class="col-12">
+                <div class="form-group row">
+                    <div class="col-6 col-sm-4 align-self-center">
+                        <label>@Model[i].Pregunta @(Model[i].Requerido.Value ? "*" : "")</label>
+                    </div>
+                    <div class="col-6 col-sm-4 align-self-center">
+                        <div class="form-check form-check-inline">
+                            @if (Model[i].Requerido.Value)
+                            {
+                                <input class="form-check-input" type="radio" name="[@i].Respuesta" value="Bueno" required />
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="radio" name="[@i].Respuesta" value="Bueno" />
+                            }
+                            <label class="form-check-label">Bueno</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="[@i].Respuesta" value="Malo" />
+                            <label class="form-check-label">Malo</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4 mt-sm-0 mt-3">
+                        <textarea class="form-control col-12" rows="2" name="[@i].Observacion" placeholder="Observaciones..."></textarea>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <button class="btn btn-success" onclick="isLoading(true);"><i class="fa fa-save"></i> Guardar</button>
+}
+
+@*@foreach (var item in Model)
+    {
+        <div class="col-12">
+            <div class="form-group row">
+                <div class="col-6 col-sm-4 align-self-center">
+                    <label>@item.Pregunta @(item.Requerido.Value ? "*" : "")</label>
+                </div>
+                <div class="col-6 col-sm-4 align-self-center">
+                    <div class="form-check form-check-inline">
+                        @if (item.Requerido.Value)
+                        {
+                            <input class="form-check-input" type="radio" name="@item.Id" required />
+                        }
+                        else
+                        {
+                            <input class="form-check-input" type="radio" name="@item.Id" />
+                        }
+                        <label class="form-check-label">Bueno</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="@item.Id" />
+                        <label class="form-check-label">Malo</label>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 mt-sm-0 mt-3">
+                    <textarea class="form-control col-12" rows="2" placeholder="Observaciones..."></textarea>
+                </div>
+            </div>
+        </div>
+    }*@

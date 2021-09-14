@@ -1,10 +1,14 @@
-﻿@model List<rvFleet.Models.GetVehicleCosts_Result>
+﻿@*@model List<rvFleet.Models.GetVehicleCosts_Result>*@
+@model List<rvFleet.Models.spGetVehicleCostsFiltered_Result>
 @{
     ViewBag.Title = "CostosVehiculares";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var startDate = Convert.ToDateTime(ViewBag.startDate);
     var endDate = Convert.ToDateTime(ViewBag.endDate);
+    var months = Model.Select(x => x.FacFechaOrden.ToString("yyyy-MMM", new System.Globalization.CultureInfo("es-HN"))).Distinct();
+    var years = Model.Select(x => x.FacFechaOrden.ToString("yyyy")).Distinct();
+    var vehicles = Model.Select(x => x.DetPlacaVehiculo).Distinct();
 
     string FormatedDateToText(DateTime date)
     {
@@ -18,6 +22,7 @@
         position: sticky;
         top: 0; /* Don't forget this, required for the stickiness */
         box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        white-space: nowrap;
     }
 </style>
 
@@ -62,68 +67,125 @@
                 <ul class="nav nav-tabs" role="tablist" id="nav-tab-vehicles-cost">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#div-tab-vehicles-cost-table" role="tab" aria-selected="true">
-                            Tabla de costos
+                            Vehículos
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#div-tab-vehicles-cost-graph" role="tab" aria-selected="true">
-                            Gráfico
+                            Rubros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#div-tab-vehicles-cost-graph" role="tab" aria-selected="true">
+                            Proveedores
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content mt-4">
                     <div id="div-tab-vehicles-cost-table" class="tab-pane fade show active">
-                        <label>A continuación se presentan los costos vehiculares comprendidos entre las fechas "@FormatedDateToText(startDate)" y "@FormatedDateToText(endDate)".</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Buscar placa..." id="input-filter">
+                        <label>@FormatedDateToText(startDate) - @FormatedDateToText(endDate).</label>
+                        <div class="input-group mb-5">
+                            <input type="text" class="form-control col-12" placeholder="Buscar placa..." id="input-filter">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
-                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        @foreach (var year in years)
+                        {
+                            <div class="form-group">
+                                <div class="w-100" style="cursor: pointer;" data-toggle="collapse" data-target="#div-@year">
+                                    <label class="h6"><i class="fa fa-chevron-down"></i> @year</label>
+                                    <label class="float-right">@Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year).Sum(x => x.CostoTotal).ToString("N2")</label>
+                                    <hr />
+                                </div>
+                                <div class="table-responsive collapse show" id="div-@year">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Vehículo</th>
+                                                @foreach (var mes in Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year).Select(x => x.FacFechaOrden.ToString("MMM", new System.Globalization.CultureInfo("es-HN"))).Distinct())
+                                                {
+                                                    <th>@mes</th>
+                                                }
+                                                <th>Total</th>
+                                                <th>Total general</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var placa in Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year).Select(x => x.DetPlacaVehiculo).Distinct())
+                                            {
+                                                <tr>
+                                                    <td>@placa</td>
+                                                    @foreach (var cost in Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year && x.DetPlacaVehiculo == placa))
+                                                    {
+                                                        <td>@cost.CostoTotal.ToString("N2")</td>
+                                                    }
+                                                    <td style="background-color: #efefef">
+                                                        @Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year && x.DetPlacaVehiculo == placa).Sum(x => x.CostoTotal).ToString("N2")
+                                                    </td>
+                                                    <td style="background-color: #efefef">
+                                                        @Model.Where(x => x.DetPlacaVehiculo == placa).Sum(x => x.CostoTotal).ToString("N2")
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                        @*<div class="table-responsive" style="max-height: 700px">
                             <table class="table table-hover table-bordered tablesorter" id="table-vehicleCosts">
-                                <thead>
+                                <thead class="sticky-top thead-light">
                                     <tr>
-                                        <th>Vehículo</th>
-                                        <th>Costo</th>
+                                        <th>Vehículo <i class="fa fa-sort"></i></th>
+                                        @for (int i = 0; i < months.Count(); i++)
+                                        {
+                                            <th>@months.ElementAt(i) <i class="fa fa-sort"></i></th>
+                                        }
+                                        @foreach (var year in years)
+                                        {
+                                            <th style="position: absolute;">@year <i class="fa fa-sort"></i></th>
+                                        }
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.Count > 0)
-                                    {
-                                        foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>@item.DETPLACAVEHICULO</td>
-                                                <td>@item.VALOR.ToString("N")</td>
-                                                <td>
-                                                    <a href="@Url.Action("OrdersDetails", new { VehPlaca = item.DETPLACAVEHICULO, startDate = startDate, endDate = endDate })"
-                                                       title="Ver facturas" class="btn btn-sm btn-info">
-                                                        <i class="fa fa-book"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                    else
+                                    @foreach (var vehicle in vehicles)
                                     {
                                         <tr>
-                                            <td colspan="3">No hay datos que coincidan con el criterio de búsqueda.</td>
+                                            <td>@vehicle</td>
+                                            @foreach(var cost in Model.Where(x => x.DetPlacaVehiculo == vehicle))
+                                            {
+                                                <td>@cost.CostoTotal.ToString("N2")</td>
+                                            }
+                                            @foreach (var year in years)
+                                            {
+                                                <td style="background-color: #efefef; position: absolute;">
+                                                    @Model.Where(x => x.FacFechaOrden.ToString("yyyy") == year && x.DetPlacaVehiculo == vehicle).Sum(x => x.CostoTotal).ToString("N2")
+                                                </td>
+                                            }
+                                            <td>
+                                                <a href="@Url.Action("OrdersDetails", new { VehPlaca = vehicle, startDate = startDate, endDate = endDate })"
+                                                   title="Ver facturas" class="btn btn-sm btn-info">
+                                                    <i class="fa fa-book"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
-                        </div>
+                        </div>*@
                     </div>
                     <div id="div-tab-vehicles-cost-graph" class="tab-pane fade">
                         <div>
-                            @{
+                            @*@{
                                 Html.RenderPartial("_VehiclesCostGraph", Model);
-                            }
+                            }*@
                         </div>
                     </div>
                 </div>
+                <hr />
             </div>
         </div>
     </div>
