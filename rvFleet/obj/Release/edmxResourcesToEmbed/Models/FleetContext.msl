@@ -1,6 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="rvfleetModelStoreContainer" CdmEntityContainer="rvfleetEntities">
+    <FunctionImportMapping FunctionImportName="GetPartsCost" FunctionName="rvfleetModel.Store.GetPartsCost">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.GetPartsCost_Result">
+          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+          <ScalarProperty Name="Total" ColumnName="Total" />
+          <ScalarProperty Name="ColorIdentificador" ColumnName="ColorIdentificador" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetVehicleAnualCostsGraphData" FunctionName="rvfleetModel.Store.GetVehicleAnualCostsGraphData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleAnualCostsGraphData_Result">
+          <ScalarProperty Name="DetCodigoRubro" ColumnName="DetCodigoRubro" />
+          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+          <ScalarProperty Name="FacValorFactura" ColumnName="FacValorFactura" />
+          <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
+          <ScalarProperty Name="ColorIdentificador" ColumnName="ColorIdentificador" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetVehicleCosts" FunctionName="rvfleetModel.Store.GetVehicleCosts">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleCosts_Result">
+          <ScalarProperty Name="DETPLACAVEHICULO" ColumnName="DETPLACAVEHICULO" />
+          <ScalarProperty Name="VALOR" ColumnName="VALOR" />
+          <ScalarProperty Name="VehColorIdentificador" ColumnName="VehColorIdentificador" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetVehicleGraphData" FunctionName="rvfleetModel.Store.GetVehicleGraphData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.GetVehicleGraphData_Result">
+          <ScalarProperty Name="CodigoRubro" ColumnName="CodigoRubro" />
+          <ScalarProperty Name="NombreRubro" ColumnName="NombreRubro" />
+          <ScalarProperty Name="KilometrajeFacturado" ColumnName="KilometrajeFacturado" />
+          <ScalarProperty Name="KilometrajeActual" ColumnName="KilometrajeActual" />
+          <ScalarProperty Name="Diferencia" ColumnName="Diferencia" />
+          <ScalarProperty Name="Porcentaje" ColumnName="Porcentaje" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetVehiclesCostTableValues" FunctionName="rvfleetModel.Store.spGetVehiclesCostTableValues">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.spGetVehiclesCostTableValues_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
     <EntitySetMapping Name="archivofactura">
       <EntityTypeMapping TypeName="rvfleetModel.archivofactura">
         <MappingFragment StoreEntitySet="archivofactura">
@@ -72,6 +118,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+<<<<<<< HEAD
     <EntitySetMapping Name="controlvehiculosrespuestadetalle">
       <EntityTypeMapping TypeName="rvfleetModel.controlvehiculosrespuestadetalle">
         <MappingFragment StoreEntitySet="controlvehiculosrespuestadetalle">
@@ -82,6 +129,8 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <EntitySetMapping Name="detallefactura">
       <EntityTypeMapping TypeName="rvfleetModel.detallefactura">
         <MappingFragment StoreEntitySet="detallefactura">
@@ -140,6 +189,15 @@
           <ScalarProperty Name="ProNumeroContacto" ColumnName="ProNumeroContacto" />
           <ScalarProperty Name="ProNombre" ColumnName="ProNombre" />
           <ScalarProperty Name="ProCodigoProveedor" ColumnName="ProCodigoProveedor" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="resumencostosvehiculos">
+      <EntityTypeMapping TypeName="rvfleetModel.resumencostosvehiculos">
+        <MappingFragment StoreEntitySet="resumencostosvehiculos">
+          <ScalarProperty Name="Costo" ColumnName="Costo" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="VehPlaca" ColumnName="VehPlaca" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -262,7 +320,10 @@
     <EntitySetMapping Name="vehiclefulldata">
       <EntityTypeMapping TypeName="rvfleetModel.vehiclefulldata">
         <MappingFragment StoreEntitySet="vehiclefulldata">
+<<<<<<< HEAD
           <ScalarProperty Name="ProNombre" ColumnName="ProNombre" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
           <ScalarProperty Name="VehKilometraje" ColumnName="VehKilometraje" />
           <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
           <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
@@ -285,6 +346,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+<<<<<<< HEAD
     <FunctionImportMapping FunctionImportName="GetPartsCost" FunctionName="rvfleetModel.Store.GetPartsCost">
       <ResultMapping>
         <ComplexTypeMapping TypeName="rvfleetModel.GetPartsCost_Result">
@@ -356,5 +418,13 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="spGetVehiculosVisibles" FunctionName="rvfleetModel.Store.spGetVehiculosVisibles" />
+=======
+    <FunctionImportMapping FunctionImportName="spGetRubrosNoFacturadosVehiculo" FunctionName="rvfleetModel.Store.spGetRubrosNoFacturadosVehiculo" />
+    <FunctionImportMapping FunctionImportName="spGetVehicleCostsFiltered" FunctionName="rvfleetModel.Store.spGetVehicleCostsFiltered">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="rvfleetModel.spGetVehicleCostsFiltered_Result" />
+      </ResultMapping>
+    </FunctionImportMapping>
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
   </EntityContainerMapping>
 </Mapping>

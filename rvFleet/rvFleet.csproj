@@ -238,6 +238,12 @@
     <Compile Include="Models\controlvehiculosrespuestadetalle.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\controlvehiculospregunta.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\controlvehiculosrespuesta.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\departamento.cs">
       <DependentUpon>SecurityContext.tt</DependentUpon>
     </Compile>
@@ -334,7 +340,10 @@
       <DependentUpon>SecurityContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\usuariovehiculo.cs">
-      <DependentUpon>FleetContext.tt</DependentUpon>
+	  <DependentUpon>FleetContext.tt</DependentUpon>
+	</Compile>
+    <Compile Include="Models\usuario.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vehiclecosts.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>

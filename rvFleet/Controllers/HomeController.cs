@@ -44,6 +44,7 @@ namespace rvFleet.Controllers
                     ViewBag.HasVehicle = false;
                 }
 
+
                 return View(model);
             }
             catch(Exception exc)

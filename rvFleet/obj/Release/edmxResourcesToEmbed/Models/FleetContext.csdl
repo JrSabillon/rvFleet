@@ -1,17 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="rvfleetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="rvfleetEntities" annotation:LazyLoadingEnabled="true">
+<<<<<<< HEAD
+=======
+    <FunctionImport Name="GetPartsCost" ReturnType="Collection(rvfleetModel.GetPartsCost_Result)">
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="GetVehicleAnualCostsGraphData" ReturnType="Collection(rvfleetModel.GetVehicleAnualCostsGraphData_Result)">
+      <Parameter Name="YearFilter" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetVehicleCosts" ReturnType="Collection(rvfleetModel.GetVehicleCosts_Result)">
+      <Parameter Name="startDate" Mode="In" Type="DateTime" />
+      <Parameter Name="endDate" Mode="In" Type="DateTime" />
+    </FunctionImport>
+    <FunctionImport Name="GetVehicleGraphData" ReturnType="Collection(rvfleetModel.GetVehicleGraphData_Result)">
+      <Parameter Name="VehPlaca_IN" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spGetVehiclesCostTableValues" ReturnType="Collection(rvfleetModel.spGetVehiclesCostTableValues_Result)">
+      <Parameter Name="VehPlaca_IN" Mode="In" Type="String" />
+      <Parameter Name="StartDate_IN" Mode="In" Type="DateTime" />
+      <Parameter Name="EndDate_IN" Mode="In" Type="DateTime" />
+    </FunctionImport>
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <EntitySet Name="archivofactura" EntityType="rvfleetModel.archivofactura" />
     <EntitySet Name="bitacoracomentario" EntityType="rvfleetModel.bitacoracomentario" />
     <EntitySet Name="bitacoravehiculo" EntityType="rvfleetModel.bitacoravehiculo" />
     <EntitySet Name="conductorhistorico" EntityType="rvfleetModel.conductorhistorico" />
     <EntitySet Name="controlvehiculospregunta" EntityType="rvfleetModel.controlvehiculospregunta" />
     <EntitySet Name="controlvehiculosrespuesta" EntityType="rvfleetModel.controlvehiculosrespuesta" />
+<<<<<<< HEAD
     <EntitySet Name="controlvehiculosrespuestadetalle" EntityType="rvfleetModel.controlvehiculosrespuestadetalle" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <EntitySet Name="detallefactura" EntityType="rvfleetModel.detallefactura" />
     <EntitySet Name="facturas" EntityType="rvfleetModel.facturas" />
     <EntitySet Name="kilometrajehistorico" EntityType="rvfleetModel.kilometrajehistorico" />
     <EntitySet Name="proveedor" EntityType="rvfleetModel.proveedor" />
+    <EntitySet Name="resumencostosvehiculos" EntityType="rvfleetModel.resumencostosvehiculos" />
     <EntitySet Name="rubrodetalle" EntityType="rvfleetModel.rubrodetalle" />
     <EntitySet Name="rubros" EntityType="rvfleetModel.rubros" />
     <EntitySet Name="sucursales" EntityType="rvfleetModel.sucursales" />
@@ -50,6 +76,7 @@
       <End Role="rubros" EntitySet="rubros" />
       <End Role="rubrodetalle" EntitySet="rubrodetalle" />
     </AssociationSet>
+<<<<<<< HEAD
     <FunctionImport Name="GetPartsCost" ReturnType="Collection(rvfleetModel.GetPartsCost_Result)">
       <Parameter Name="startDate" Mode="In" Type="DateTime" />
       <Parameter Name="endDate" Mode="In" Type="DateTime" />
@@ -73,13 +100,19 @@
       <Parameter Name="startDate_IN" Mode="In" Type="DateTime" />
       <Parameter Name="endDate_IN" Mode="In" Type="DateTime" />
     </FunctionImport>
+=======
+    <FunctionImport Name="spGetRubrosNoFacturadosVehiculo" EntitySet="recommendedmaintenance" ReturnType="Collection(rvfleetModel.recommendedmaintenance)" />
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <FunctionImport Name="spGetVehicleCostsFiltered" ReturnType="Collection(rvfleetModel.spGetVehicleCostsFiltered_Result)">
       <Parameter Name="StartDate_IN" Mode="In" Type="DateTime" />
       <Parameter Name="EndDate_IN" Mode="In" Type="DateTime" />
     </FunctionImport>
+<<<<<<< HEAD
     <FunctionImport Name="spGetVehiculosVisibles" EntitySet="vehiclefulldata" ReturnType="Collection(rvfleetModel.vehiclefulldata)">
       <Parameter Name="IdUsuario_IN" Mode="In" Type="String" />
     </FunctionImport>
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
   </EntityContainer>
   <ComplexType Name="GetVehicleGraphData_Result">
     <Property Type="Int32" Name="CodigoRubro" Nullable="false" />
@@ -107,11 +140,15 @@
     <Property Type="Double" Name="Total" Nullable="false" />
     <Property Type="String" Name="ColorIdentificador" Nullable="false" />
   </ComplexType>
+<<<<<<< HEAD
   <ComplexType Name="spGetVehicleCostsFiltered_Result">
     <Property Type="Double" Name="CostoTotal" Nullable="false" />
     <Property Type="String" Name="Nombre" Nullable="false" />
     <Property Type="DateTime" Name="FacFechaOrden" Nullable="false" />
   </ComplexType>
+=======
+  <ComplexType Name="spGetVehiclesCostTableValues_Result" />
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
   <EntityType Name="archivofactura">
     <Key>
       <PropertyRef Name="FacArchivoCodigo" />
@@ -176,18 +213,26 @@
   <EntityType Name="controlvehiculosrespuesta">
     <Key>
       <PropertyRef Name="Id" />
+<<<<<<< HEAD
       <PropertyRef Name="CodigoVehiculo" />
       <PropertyRef Name="CodigoPregunta" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" />
     <Property Name="CodigoVehiculo" Type="Int32" Nullable="false" />
     <Property Name="CodigoPregunta" Type="Int32" Nullable="false" />
+=======
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CodigoVehiculo" Type="Int32" />
+    <Property Name="CodigoPregunta" Type="Int32" />
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <Property Name="Fecha" Type="DateTime" Nullable="false" />
     <Property Name="CodigoUsuario" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
     <Property Name="Respuesta" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="Observacion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="controlvehiculospregunta" Relationship="rvfleetModel.FK_controlvehiculosrespuesta_controlvehiculospregunta" FromRole="controlvehiculosrespuesta" ToRole="controlvehiculospregunta" />
   </EntityType>
+<<<<<<< HEAD
   <EntityType Name="controlvehiculosrespuestadetalle">
     <Key>
       <PropertyRef Name="IdControl" />
@@ -198,6 +243,8 @@
     <Property Name="Kilometraje" Type="Int32" Nullable="false" />
     <Property Name="Observacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
   <EntityType Name="detallefactura">
     <Key>
       <PropertyRef Name="DetCodigoDetalle" />
@@ -262,6 +309,15 @@
     <Property Name="ProTipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="facturas" Relationship="rvfleetModel.FK_facturas_proveedor" FromRole="proveedor" ToRole="facturas" />
     <NavigationProperty Name="vehiculos" Relationship="rvfleetModel.FK_vehiculos_proveedor" FromRole="proveedor" ToRole="vehiculos" />
+  </EntityType>
+  <EntityType Name="resumencostosvehiculos">
+    <Key>
+      <PropertyRef Name="VehPlaca" />
+      <PropertyRef Name="Fecha" />
+    </Key>
+    <Property Name="VehPlaca" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Fecha" Type="DateTime" Nullable="false" />
+    <Property Name="Costo" Type="Double" />
   </EntityType>
   <EntityType Name="rubrodetalle">
     <Key>
@@ -416,7 +472,10 @@
     <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="NombreEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="VehKilometraje" Type="Int32" />
+<<<<<<< HEAD
     <Property Name="ProNombre" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
   </EntityType>
   <Association Name="FK__facturas">
     <End Type="rvfleetModel.facturas" Role="facturas" Multiplicity="1" />
@@ -443,7 +502,11 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_controlvehiculosrespuesta_controlvehiculospregunta">
+<<<<<<< HEAD
     <End Type="rvfleetModel.controlvehiculospregunta" Role="controlvehiculospregunta" Multiplicity="1" />
+=======
+    <End Type="rvfleetModel.controlvehiculospregunta" Role="controlvehiculospregunta" Multiplicity="0..1" />
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <End Type="rvfleetModel.controlvehiculosrespuesta" Role="controlvehiculosrespuesta" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="controlvehiculospregunta">
@@ -502,4 +565,12 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+<<<<<<< HEAD
+=======
+  <ComplexType Name="spGetVehicleCostsFiltered_Result">
+    <Property Type="Double" Name="CostoTotal" Nullable="false" />
+    <Property Type="String" Name="DetPlacaVehiculo" Nullable="false" />
+    <Property Type="DateTime" Name="FacFechaOrden" Nullable="false" />
+  </ComplexType>
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
 </Schema>

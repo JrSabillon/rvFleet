@@ -5,6 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d5365d9c20054df894089d0bd496c8ba" Name="Diagram1" ZoomLevel="57">
+<<<<<<< HEAD
         <EntityTypeShape EntityType="rvseguridadModel.departamento" Width="1.5" PointX="3" PointY="3.875" />
         <EntityTypeShape EntityType="rvseguridadModel.empresa" Width="1.5" PointX="0.75" PointY="5.75" />
         <EntityTypeShape EntityType="rvseguridadModel.gruporecurso" Width="1.5" PointX="7.75" PointY="10.5" />
@@ -15,17 +16,35 @@
         <EntityTypeShape EntityType="rvseguridadModel.rol" Width="1.5" PointX="3" PointY="7.125" />
         <EntityTypeShape EntityType="rvseguridadModel.ubicacion" Width="1.5" PointX="5.25" PointY="0.75" />
         <EntityTypeShape EntityType="rvseguridadModel.usuario" Width="1.5" PointX="7.5" PointY="1.375" />
+=======
+        <EntityTypeShape EntityType="rvseguridadModel.departamento" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="rvseguridadModel.empresa" Width="1.5" PointX="0.75" PointY="5.5" />
+        <EntityTypeShape EntityType="rvseguridadModel.gruporecurso" Width="1.5" PointX="7.75" PointY="1" />
+        <EntityTypeShape EntityType="rvseguridadModel.opcionrecurso" Width="1.5" PointX="10" PointY="0.875" />
+        <EntityTypeShape EntityType="rvseguridadModel.posicion" Width="1.5" PointX="5.25" PointY="3.875" />
+        <EntityTypeShape EntityType="rvseguridadModel.privilegio" Width="1.5" PointX="5.25" PointY="11" />
+        <EntityTypeShape EntityType="rvseguridadModel.privilegiopermiso" Width="1.5" PointX="7.5" PointY="11.875" />
+        <EntityTypeShape EntityType="rvseguridadModel.rol" Width="1.5" PointX="3" PointY="6.875" />
+        <EntityTypeShape EntityType="rvseguridadModel.ubicacion" Width="1.5" PointX="3" PointY="10.5" />
+        <EntityTypeShape EntityType="rvseguridadModel.usuario" Width="1.5" PointX="5.25" PointY="6.375" />
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
         <AssociationConnector Association="rvseguridadModel.FK_departamento_empresa" />
         <AssociationConnector Association="rvseguridadModel.FK__empresa" />
         <AssociationConnector Association="rvseguridadModel.FK_usuario_empresa" />
         <AssociationConnector Association="rvseguridadModel.FK_opcionrecurso_gruporecurso" />
+<<<<<<< HEAD
         <AssociationConnector Association="rvseguridadModel.FK_usuario_posicion" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
         <AssociationConnector Association="rvseguridadModel.FK__privilegio" />
         <AssociationConnector Association="rvseguridadModel.FK_usuario_ubicacion" />
         <AssociationConnector Association="rvseguridadModel.departamentoposicion" />
         <AssociationConnector Association="rvseguridadModel.rolprivilegio" />
         <AssociationConnector Association="rvseguridadModel.rolusuario" />
+<<<<<<< HEAD
         <AssociationConnector Association="rvseguridadModel.usuarioubicacion" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -207,18 +207,12 @@ namespace rvFleet.Controllers
             try
             {
                 LogsViewModel logsViewModel = new LogsViewModel();
-                string UserId = BaseViewModel.GetUserData().IdUsuario;
-                var canSeeAllVehics = logsViewModel.UserCanSeeLogs(UserId);
+                var canSeeAllVehics = logsViewModel.UserCanSeeLogs(BaseViewModel.GetUserData().IdUsuario);
 
-                //if (string.IsNullOrEmpty(VehPlaca))
-                    //return RedirectToAction("Index", "Home");
+                if (string.IsNullOrEmpty(VehPlaca) && !canSeeAllVehics)
+                    return RedirectToAction("Index", "Home");
 
                 var vehicles = VehiclesViewModel.GetVehiculos().ToList();
-
-                if (!canSeeAllVehics)
-                    VehPlaca = vehicles.Where(x => x.VehCodigoUsuario == UserId).FirstOrDefault().VehPlaca;
-                
-                
                 ViewBag.SelectedPlaca = VehPlaca;
                 ViewBag.VehPlaca = new SelectList(vehicles, "VehPlaca", "VehPlaca", VehPlaca);
                 ViewBag.CanChange = canSeeAllVehics;

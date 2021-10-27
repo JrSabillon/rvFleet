@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="rvfleetModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="archivofactura">
+       <EntityType Name="archivofactura">
           <Key>
             <PropertyRef Name="FacArchivoCodigo" />
             <PropertyRef Name="FacCodigoOrden" />
@@ -392,18 +392,18 @@ warning 6035: The relationship 'FK_usuariovehiculo_vehiculos' has columns that a
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetPartsCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+        <Function Name="GetPartsCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
           <Parameter Name="startDate" Type="date" Mode="In" />
           <Parameter Name="endDate" Type="date" Mode="In" />
         </Function>
-        <Function Name="GetVehicleAnualCostsGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+        <Function Name="GetVehicleAnualCostsGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
           <Parameter Name="YearFilter" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetVehicleCosts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+        <Function Name="GetVehicleCosts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
           <Parameter Name="startDate" Type="date" Mode="In" />
           <Parameter Name="endDate" Type="date" Mode="In" />
         </Function>
-        <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+        <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
           <Parameter Name="VehPlaca_IN" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetProveedoresTableCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
@@ -461,7 +461,7 @@ FROM `rvfleet.resumencostosvehiculos` AS `resumencostosvehiculos`</DefiningQuery
 `kilometrajeporvehiculoanoactual`.`VehColorIdentificador`
 FROM `rvfleet.kilometrajeporvehiculoanoactual` AS `kilometrajeporvehiculoanoactual`</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="recommendedmaintenance" EntityType="Self.recommendedmaintenance" store:Type="Views" store:Schema="">
+          <EntitySet Name="recommendedmaintenance" EntityType="Self.recommendedmaintenance" store:Type="Views" store:Schema="rvfleet">
             <DefiningQuery>SELECT
 `recommendedmaintenance`.`CodigoRubro`, 
 `recommendedmaintenance`.`NombreRubro`, 
@@ -477,14 +477,14 @@ FROM `rvfleet.kilometrajeporvehiculoanoactual` AS `kilometrajeporvehiculoanoactu
 `recommendedmaintenance`.`Prioridad`
 FROM `rvfleet.recommendedmaintenance` AS `recommendedmaintenance`</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vehiclecosts" EntityType="Self.vehiclecosts" store:Type="Views" store:Schema="">
+          <EntitySet Name="vehiclecosts" EntityType="Self.vehiclecosts" store:Type="Views" store:Schema="rvfleet">
             <DefiningQuery>SELECT
 `vehiclecosts`.`Total`, 
 `vehiclecosts`.`DetPlacaVehiculo`, 
 `vehiclecosts`.`PromedioMensual`
 FROM `rvfleet.vehiclecosts` AS `vehiclecosts`</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
+          <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="rvfleet">
             <DefiningQuery>SELECT
 `vehiclefulldata`.`VehCodigoVehiculo`, 
 `vehiclefulldata`.`VehPlaca`, 
@@ -1109,6 +1109,31 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
                 <ScalarProperty Name="Kilometraje" ColumnName="Kilometraje" />
                 <ScalarProperty Name="CodigoVehiculo" ColumnName="CodigoVehiculo" />
                 <ScalarProperty Name="IdControl" ColumnName="IdControl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="controlvehiculospregunta">
+            <EntityTypeMapping TypeName="rvfleetModel.controlvehiculospregunta">
+              <MappingFragment StoreEntitySet="controlvehiculospregunta">
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="Requerido" ColumnName="Requerido" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Pregunta" ColumnName="Pregunta" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="controlvehiculosrespuesta">
+            <EntityTypeMapping TypeName="rvfleetModel.controlvehiculosrespuesta">
+              <MappingFragment StoreEntitySet="controlvehiculosrespuesta">
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="Respuesta" ColumnName="Respuesta" />
+                <ScalarProperty Name="CodigoUsuario" ColumnName="CodigoUsuario" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="CodigoPregunta" ColumnName="CodigoPregunta" />
+                <ScalarProperty Name="CodigoVehiculo" ColumnName="CodigoVehiculo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

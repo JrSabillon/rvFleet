@@ -127,7 +127,6 @@ D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.Razor.resources.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.resources.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.Deployment.resources.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.Razor.resources.dll
-D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.AssemblyReference.cache
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.Labels.resources
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.GenerateResource.cache
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.CoreCompileInputs.cache

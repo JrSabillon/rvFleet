@@ -374,11 +374,11 @@ namespace rvFleet.ViewModels
             }
             catch (MySqlException dbExc)
             {
-                throw new ApplicationException($"{Constants.DB_Error} / SaveInspectionAnswer - {dbExc.Message}");
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
             }
             catch (Exception exc)
             {
-                throw new ApplicationException($"{Constants.App_Error} / SaveInspectionAnswer - {exc.Message}");
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
             }
         }
 

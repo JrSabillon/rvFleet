@@ -15,22 +15,34 @@
         <table class="table table-hover table-bordered bg-white tablesorter" id="table-inspections">
             <thead class="thead-light">
                 <tr>
+<<<<<<< HEAD
                     <th></th>
                     <th class="text-nowrap">Vehículo <i class="fa fa-sort"></i></th>
                     <th class="text-nowrap">Fecha <i class="fa fa-sort"></i></th>
                     <th class="text-nowrap">Usuario <i class="fa fa-sort"></i></th>
                     <th class="text-nowrap">Kilometraje <i class="fa fa-sort"></i></th>
+=======
+                    <th class="text-nowrap">Vehículo <i class="fa fa-sort"></i></th>
+                    <th class="text-nowrap">Kilometraje <i class="fa fa-sort"></i></th>
+                    <th class="text-nowrap">Fecha <i class="fa fa-sort"></i></th>
+                    <th class="text-nowrap">Usuario <i class="fa fa-sort"></i></th>
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
                     @foreach (rvFleet.Models.controlvehiculospregunta item in ViewBag.Preguntas)
                     {
                         <th>@item.Pregunta</th>
                     }
+<<<<<<< HEAD
                     <th>Acciones</th>
+=======
+                    @*<th>Acciones</th>*@
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     var answers = ViewModel.GetRespuestasInspeccion(item.VehCodigoVehiculo, item.Fecha);
+<<<<<<< HEAD
                     <tr>
                         <td><i class="fa fa-info-circle" title="@item.Observacion" data-toggle="tooltip"></i></td>
                         <td>@item.VehPlaca</td>
@@ -41,13 +53,32 @@
                         {
                             var answer = answers.Where(x => x.CodigoPregunta == question.Id).FirstOrDefault();
                     
+=======
+                    
+                    <tr>
+                        <td>@item.VehPlaca</td>
+                        <td>@item.Fecha.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@item.CodigoUsuario</td>
+                        @foreach (rvFleet.Models.controlvehiculospregunta question in ViewBag.Preguntas)
+                        {
+                            var answer = answers.Where(x => x.CodigoPregunta == question.Id).FirstOrDefault();
+
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
                             if (answer != null)
                             {
                                 <td align="center">
                                     @(answer.Respuesta == "Bueno" ?
+<<<<<<< HEAD
                                         Html.Raw($"<i class='fa fa-check text-success'></i>")
                                         :
                                         Html.Raw($"<i class='fa fa-times text-danger'></i>")
+=======
+                                        Html.Raw($"<i class='fa fa-check text-success' data-toggle='tooltip' data-placement='bottom' " +
+                                        $"title='{ (string.IsNullOrEmpty(answer.Observacion) ? "Sin observaciones" : answer.Observacion) }'></i>")
+                                        :
+                                        Html.Raw($"<i class='fa fa-times text-danger' data-toggle='tooltip' data-placement='bottom' " +
+                                        $"title='{ (string.IsNullOrEmpty(answer.Observacion) ? "Sin observaciones" : answer.Observacion) }'></i>")
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
                                     )
                                 </td>
                             }
@@ -57,9 +88,15 @@
                             }
                         }
                         <td valign="middle" class="text-center">
+<<<<<<< HEAD
                             <a class="btn btn-sm btn-info" title="Ver rubros principales" data-toggle="tooltip" data-placement="left" 
                                href="@Url.Action("LogReview", "Vehicles", new { VehCodigo = item.VehCodigoVehiculo })">
                                 <i class="fa fa-bar-chart-o"></i>
+=======
+                            <a class="btn btn-sm btn-info" title="Ver inspección" data-toggle="tooltip" data-placement="bottom" 
+                               href="@Url.Action("InspectionDetail", "Vehicles", new { Fecha = item.Fecha, CodigoVehiculo = item.VehCodigoVehiculo })">
+                                <i class="fa fa-eye"></i>
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
                             </a>
                         </td>
                     </tr>

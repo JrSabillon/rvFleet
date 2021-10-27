@@ -128,6 +128,7 @@ warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a pr
     <Property Name="IdEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="IdPosicion" Type="int" />
   </EntityType>
+<<<<<<< HEAD
   <EntityType Name="usuarioubicacion">
     <Key>
       <PropertyRef Name="IdUsuario" />
@@ -136,6 +137,8 @@ warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a pr
     <Property Name="IdUsuario" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="IdUbicacion" Type="int" Nullable="false" />
   </EntityType>
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
   <Association Name="FK__empresa">
     <End Role="empresa" Type="Self.empresa" Multiplicity="1" />
     <End Role="rol" Type="Self.rol" Multiplicity="*" />
@@ -296,6 +299,7 @@ warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a pr
     <End Role="posicion" Type="Self.posicion" Multiplicity="0..1" />
     <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
     <ReferentialConstraint>
+<<<<<<< HEAD
       <Principal Role="posicion">
         <PropertyRef Name="IdPosicion" />
       </Principal>
@@ -308,6 +312,8 @@ warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a pr
     <End Role="ubicacion" Type="Self.ubicacion" Multiplicity="1" />
     <End Role="usuario" Type="Self.usuario" Multiplicity="*" />
     <ReferentialConstraint>
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
       <Principal Role="ubicacion">
         <PropertyRef Name="IdUbicacion" />
       </Principal>
@@ -330,7 +336,10 @@ warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a pr
     <EntitySet Name="rolusuario" EntityType="Self.rolusuario" Schema="" store:Type="Tables" />
     <EntitySet Name="ubicacion" EntityType="Self.ubicacion" Schema="" store:Type="Tables" />
     <EntitySet Name="usuario" EntityType="Self.usuario" Schema="" store:Type="Tables" />
+<<<<<<< HEAD
     <EntitySet Name="usuarioubicacion" EntityType="Self.usuarioubicacion" Schema="" store:Type="Tables" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <AssociationSet Name="FK__empresa" Association="Self.FK__empresa">
       <End Role="empresa" EntitySet="empresa" />
       <End Role="rol" EntitySet="rol" />
@@ -383,10 +392,13 @@ warning 6013: The table/view 'def.rvseguridad.systemsettings' does not have a pr
       <End Role="empresa" EntitySet="empresa" />
       <End Role="usuario" EntitySet="usuario" />
     </AssociationSet>
+<<<<<<< HEAD
     <AssociationSet Name="FK_usuario_posicion" Association="Self.FK_usuario_posicion">
       <End Role="posicion" EntitySet="posicion" />
       <End Role="usuario" EntitySet="usuario" />
     </AssociationSet>
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
     <AssociationSet Name="FK_usuario_ubicacion" Association="Self.FK_usuario_ubicacion">
       <End Role="ubicacion" EntitySet="ubicacion" />
       <End Role="usuario" EntitySet="usuario" />

@@ -1,17 +1,26 @@
-﻿@{
+﻿@model IList<rvFleet.Models.controlvehiculospregunta>
+@{
     ViewBag.Title = "Inspection";
     Layout = "~/Views/Shared/_LayoutLimited.cshtml";
+
+    string CodigoVehiculo = ViewBag.CodigoVehiculo;
+    int KilometrajeActual = Convert.ToInt32(ViewBag.KilometrajeActual);
 }
+<style>
+    input[type=radio]{
+        transform: scale(1.5);
+    }
+</style>
 
 <div>
     <h4 class="d-inline">Inspección rápida - </h4>
     @Html.DropDownList("VehPlaca", null, "Seleccione un vehiculo", new { @class = "form-control d-inline" })
 </div>
-<hr />
+    <hr />
 
 <div id="div-inspection-container">
 
-</div>
+                    </div>
 
 
 <script type="text/javascript">
@@ -35,3 +44,34 @@
         $('#div-inspection-container').load(`@Url.Action("_Inspection", "Vehicles")?VehCodigo=${vehiculoSeleccionado.val()}`);
     }
 </script>
+
+@*@foreach (var item in Model)
+    {
+        <div class="col-12">
+            <div class="form-group row">
+                <div class="col-6 col-sm-4 align-self-center">
+                    <label>@item.Pregunta @(item.Requerido.Value ? "*" : "")</label>
+                </div>
+                <div class="col-6 col-sm-4 align-self-center">
+                    <div class="form-check form-check-inline">
+                        @if (item.Requerido.Value)
+                        {
+                            <input class="form-check-input" type="radio" name="@item.Id" required />
+                        }
+                        else
+                        {
+                            <input class="form-check-input" type="radio" name="@item.Id" />
+                        }
+                        <label class="form-check-label">Bueno</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="@item.Id" />
+                        <label class="form-check-label">Malo</label>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 mt-sm-0 mt-3">
+                    <textarea class="form-control col-12" rows="2" placeholder="Observaciones..."></textarea>
+                </div>
+            </div>
+        </div>
+    }*@

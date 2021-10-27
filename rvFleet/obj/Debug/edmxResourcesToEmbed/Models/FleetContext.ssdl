@@ -387,18 +387,18 @@ warning 6035: The relationship 'FK_usuariovehiculo_vehiculos' has columns that a
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="GetPartsCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+  <Function Name="GetPartsCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
     <Parameter Name="startDate" Type="date" Mode="In" />
     <Parameter Name="endDate" Type="date" Mode="In" />
   </Function>
-  <Function Name="GetVehicleAnualCostsGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+  <Function Name="GetVehicleAnualCostsGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
     <Parameter Name="YearFilter" Type="int" Mode="In" />
   </Function>
-  <Function Name="GetVehicleCosts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+  <Function Name="GetVehicleCosts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
     <Parameter Name="startDate" Type="date" Mode="In" />
     <Parameter Name="endDate" Type="date" Mode="In" />
   </Function>
-  <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+  <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="rvfleet">
     <Parameter Name="VehPlaca_IN" Type="varchar" Mode="In" />
   </Function>
   <Function Name="spGetProveedoresTableCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
@@ -456,7 +456,7 @@ FROM `rvfleet.resumencostosvehiculos` AS `resumencostosvehiculos`</DefiningQuery
 `kilometrajeporvehiculoanoactual`.`VehColorIdentificador`
 FROM `rvfleet.kilometrajeporvehiculoanoactual` AS `kilometrajeporvehiculoanoactual`</DefiningQuery>
     </EntitySet>
-    <EntitySet Name="recommendedmaintenance" EntityType="Self.recommendedmaintenance" store:Type="Views" store:Schema="">
+    <EntitySet Name="recommendedmaintenance" EntityType="Self.recommendedmaintenance" store:Type="Views" store:Schema="rvfleet">
       <DefiningQuery>SELECT
 `recommendedmaintenance`.`CodigoRubro`, 
 `recommendedmaintenance`.`NombreRubro`, 
@@ -472,14 +472,14 @@ FROM `rvfleet.kilometrajeporvehiculoanoactual` AS `kilometrajeporvehiculoanoactu
 `recommendedmaintenance`.`Prioridad`
 FROM `rvfleet.recommendedmaintenance` AS `recommendedmaintenance`</DefiningQuery>
     </EntitySet>
-    <EntitySet Name="vehiclecosts" EntityType="Self.vehiclecosts" store:Type="Views" store:Schema="">
+    <EntitySet Name="vehiclecosts" EntityType="Self.vehiclecosts" store:Type="Views" store:Schema="rvfleet">
       <DefiningQuery>SELECT
 `vehiclecosts`.`Total`, 
 `vehiclecosts`.`DetPlacaVehiculo`, 
 `vehiclecosts`.`PromedioMensual`
 FROM `rvfleet.vehiclecosts` AS `vehiclecosts`</DefiningQuery>
     </EntitySet>
-    <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
+    <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="rvfleet">
       <DefiningQuery>SELECT
 `vehiclefulldata`.`VehCodigoVehiculo`, 
 `vehiclefulldata`.`VehPlaca`, 

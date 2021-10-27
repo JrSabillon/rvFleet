@@ -17,6 +17,7 @@
                 <tr>
                     <th></th>
                     <th class="text-nowrap">Vehículo <i class="fa fa-sort"></i></th>
+                    <th class="text-nowrap">Kilometraje <i class="fa fa-sort"></i></th>
                     <th class="text-nowrap">Fecha <i class="fa fa-sort"></i></th>
                     <th class="text-nowrap">Usuario <i class="fa fa-sort"></i></th>
                     <th class="text-nowrap">Kilometraje <i class="fa fa-sort"></i></th>
@@ -31,6 +32,7 @@
                 @foreach (var item in Model)
                 {
                     var answers = ViewModel.GetRespuestasInspeccion(item.VehCodigoVehiculo, item.Fecha);
+                    
                     <tr>
                         <td><i class="fa fa-info-circle" title="@item.Observacion" data-toggle="tooltip"></i></td>
                         <td>@item.VehPlaca</td>
@@ -40,7 +42,7 @@
                         @foreach (rvFleet.Models.controlvehiculospregunta question in ViewBag.Preguntas)
                         {
                             var answer = answers.Where(x => x.CodigoPregunta == question.Id).FirstOrDefault();
-                    
+
                             if (answer != null)
                             {
                                 <td align="center">

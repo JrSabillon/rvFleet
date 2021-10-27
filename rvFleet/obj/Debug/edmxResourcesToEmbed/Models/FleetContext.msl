@@ -71,6 +71,31 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="controlvehiculospregunta">
+      <EntityTypeMapping TypeName="rvfleetModel.controlvehiculospregunta">
+        <MappingFragment StoreEntitySet="controlvehiculospregunta">
+          <ScalarProperty Name="Orden" ColumnName="Orden" />
+          <ScalarProperty Name="Requerido" ColumnName="Requerido" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Pregunta" ColumnName="Pregunta" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="controlvehiculosrespuesta">
+      <EntityTypeMapping TypeName="rvfleetModel.controlvehiculosrespuesta">
+        <MappingFragment StoreEntitySet="controlvehiculosrespuesta">
+          <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+          <ScalarProperty Name="Respuesta" ColumnName="Respuesta" />
+          <ScalarProperty Name="CodigoUsuario" ColumnName="CodigoUsuario" />
+          <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+          <ScalarProperty Name="CodigoPregunta" ColumnName="CodigoPregunta" />
+          <ScalarProperty Name="CodigoVehiculo" ColumnName="CodigoVehiculo" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="detallefactura">
       <EntityTypeMapping TypeName="rvfleetModel.detallefactura">
         <MappingFragment StoreEntitySet="detallefactura">

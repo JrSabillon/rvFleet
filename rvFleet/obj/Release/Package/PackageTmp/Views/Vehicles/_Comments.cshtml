@@ -86,7 +86,11 @@ else
     </div>
 }
 
+<<<<<<< HEAD
 @using (Html.BeginForm("AddLog", "Vehicles", FormMethod.Post, new { onsubmit = "$('#bitacoraPlaca').val($('#new-comment-vehplaca').val()); $('#button-nueva-entrada').attr('disabled', 'disabled');" }))
+=======
+@using (Html.BeginForm("AddLog", "Vehicles", FormMethod.Post, new { onsubmit = "$('#bitacoraPlaca').val($('#VehPlaca').val()); $('#button-nueva-entrada').attr('disabled', 'disabled');" }))
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
 {
     @Html.Hidden("bitacoraPlaca", (string)ViewBag.SelectedPlaca)
     <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal-nueva-entrada">

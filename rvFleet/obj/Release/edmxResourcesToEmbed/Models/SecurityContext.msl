@@ -91,7 +91,10 @@
     <EntitySetMapping Name="usuario">
       <EntityTypeMapping TypeName="rvseguridadModel.usuario">
         <MappingFragment StoreEntitySet="usuario">
+<<<<<<< HEAD
           <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
           <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
           <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
           <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
@@ -129,6 +132,7 @@
       </EndProperty>
       <EndProperty Name="rol">
         <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+<<<<<<< HEAD
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="usuarioubicacion" TypeName="rvseguridadModel.usuarioubicacion" StoreEntitySet="usuarioubicacion">
@@ -137,6 +141,8 @@
       </EndProperty>
       <EndProperty Name="ubicacion">
         <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
+=======
+>>>>>>> 539552b5ec0f2e3dc6af4338077db191cac35bd5
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
