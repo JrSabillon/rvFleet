@@ -1,0 +1,23 @@
+﻿@model rvFleet.Models.vehiculos
+@{
+    ViewBag.Title = "QuickInspection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h4>Revisión rápida - @Model.VehPlaca</h4>
+    <hr class="m-0" />
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent pl-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")">Inicio</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("MyVehicles", "Vehicles")">Mis vehículos</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Revisión rápida</li>
+        </ol>
+    </nav>
+
+    @Html.Action("_Inspection", new { VehCodigo = ViewBag.VehCodigoVehiculo });
+</div>

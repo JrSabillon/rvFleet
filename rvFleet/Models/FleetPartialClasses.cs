@@ -11,7 +11,10 @@ namespace rvFleet.Models
     public partial class facturas
     {
         public string Detalles { get; set; }
+        public string Placas { get; set; }
         public string NombreProveedor { get; set; }
+        public bool IsChecked { get; set; }
+        public string ValorDetalle { get; set; }
         //public string facNumeroFactura 
         //{
         //    get => FacNumeroFactura != null ? FacNumeroFactura : string.Empty;
@@ -32,6 +35,8 @@ namespace rvFleet.Models
     public partial class vehiculos
     {
         public string NombreEmpresa { get; set; }
+        public string NombreUsuario { get; set; }
+        public string ProNombre { get; set; }
         public string NombreEncargado { get; set; }
         public HttpPostedFileBase ImgRevision { get; set; }
         public HttpPostedFileBase ImgDelantera { get; set; }
@@ -40,10 +45,17 @@ namespace rvFleet.Models
         public HttpPostedFileBase ImgTrasera { get; set; }
         public HttpPostedFileBase ImgMotor { get; set; }
         public HttpPostedFileBase ImgInterior { get; set; }
+        //public List<spGetVehiclesCostTableValues_Result> Costs { get; set; } = new List<spGetVehiclesCostTableValues_Result>();
+        [Display(Name = "Ubicación actual")]
+        public string UbicacionActual { get; set; }
     }
 
     [MetadataType(typeof(vehiclesMetadata))]
-    public partial class vehiclefulldata { }
+    public partial class vehiclefulldata { 
+        public string DisplayText {
+            get => string.Concat(VehPlaca, " - ", NombreUsuario);
+        }
+    }
 
     public partial class GetVehicleGraphData_Result
     {
@@ -105,7 +117,26 @@ namespace rvFleet.Models
             }
         }
 
-        public int porcentaje
+        public string HexBackgroundColor
+        {
+            get
+            {
+                if (porcentaje <= 1)
+                    return "#C00000";
+                else if (porcentaje > 0 && porcentaje <= 20)
+                    return "#FF0000";
+                else if (porcentaje > 20 && porcentaje <= 40)
+                    return "#FFC000";
+                else if (porcentaje > 40 && porcentaje <= 60)
+                    return "#A9D08E";
+                else if (porcentaje > 60 && porcentaje <= 80)
+                    return "#92D050";
+                else
+                    return "#00B050";
+            }
+        }
+
+        public double porcentaje
         {
             get
             {
@@ -114,7 +145,7 @@ namespace rvFleet.Models
                     return 0;
                 }
 
-                return (int)(100 - (((float)DistanciaRecorrida / (float)DistanciaCambio) * 100));
+                return Math.Round((float)(100 - (((float)DistanciaRecorrida / (float)DistanciaCambio) * 100)), 2);
             }
         }
     }

@@ -50,6 +50,7 @@ namespace rvFleet.ViewModels
                         var NewKilometraje = context.kilometrajehistorico.Add(Kilometraje);
                         var vehicle = context.vehiculos.Where(x => x.VehCodigoVehiculo.Equals(Kilometraje.KilCodigoVehiculo)).FirstOrDefault();
                         vehicle.VehKilometraje = Kilometraje.KilKilometraje;
+                        vehicle.VehKilometrajeActualizado = DateTime.Now;
                         context.SaveChanges();
 
                         return NewKilometraje;
@@ -64,7 +65,7 @@ namespace rvFleet.ViewModels
             }
             catch (Exception exc)
             {
-                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+                throw new ApplicationException($"{Constants.App_Error} / UploadKilometraje - {exc.Message}");
             }
         }
     }

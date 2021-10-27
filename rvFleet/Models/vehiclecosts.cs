@@ -17,6 +17,5 @@ namespace rvFleet.Models
         public Nullable<double> Total { get; set; }
         public string DetPlacaVehiculo { get; set; }
         public Nullable<double> PromedioMensual { get; set; }
-        public Nullable<double> PromedioAnual { get; set; }
     }
 }

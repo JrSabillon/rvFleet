@@ -59,6 +59,7 @@ D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\EntityFramework.SqlServer.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\EPPlus.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\ExcelNumberFormat.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Google.Protobuf.dll
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\itextsharp.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\K4os.Compression.LZ4.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\K4os.Compression.LZ4.Streams.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\K4os.Hash.xxHash.dll
@@ -96,6 +97,7 @@ D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\EPPlus.xml
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\ExcelNumberFormat.xml
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Google.Protobuf.pdb
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Google.Protobuf.xml
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\itextsharp.xml
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\K4os.Compression.LZ4.xml
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\K4os.Compression.LZ4.Streams.xml
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\K4os.Hash.xxHash.xml
@@ -125,10 +127,10 @@ D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.Razor.resources.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.resources.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.Deployment.resources.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\es\System.Web.WebPages.Razor.resources.dll
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.AssemblyReference.cache
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.Labels.resources
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.GenerateResource.cache
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.CoreCompileInputs.cache
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.CopyComplete
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.pdb
-D:\RecargaVeloz\Projects\rvFleet\rvFleet\obj\Debug\rvFleet.csproj.AssemblyReference.cache

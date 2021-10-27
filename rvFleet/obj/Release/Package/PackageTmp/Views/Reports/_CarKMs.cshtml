@@ -6,7 +6,7 @@
     var JsonData = JsonConvert.SerializeObject(Model);
 }
 
-<canvas id="canvas-line-chart-km" class="m-auto" style="width: 100%; height: 100%"></canvas>
+<canvas id="canvas-line-chart-km" style="max-height: 700px;"></canvas>
 
 <script type="text/javascript">
     var JsonArrayKMs = JSON.parse('@Html.Raw(JsonData)');
@@ -40,28 +40,14 @@
                 backgroundColor: item[0].VehColorIdentificador,
                 borderColor: item[0].VehColorIdentificador,
                 fill: false,
-                tension: 0
+                tension: 0,
+                hidden: true
             };
 
             $.each(item, function (index, subitem) {
                 monthsRegistered.push(subitem.KilFechaIngreso_Mes);
                 data.data.push(subitem.KilKilometraje);
             });
-
-            console.log(item[0].VehPlaca);
-            console.log(monthsRegistered);
-            console.log(
-                monthsIndex.filter(function (v) {
-                    return monthsRegistered.indexOf(v) == -1;
-                })
-            );
-
-            for (var i = 0; i < monthsRegistered.length; i++) {
-                if (i + 1 < monthsRegistered.length) {
-                    console.log(i);
-                }
-            }
-
             monthsRegistered = [];
 
             KMsdata.datasets.push(data);
@@ -73,9 +59,6 @@
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        position: 'end',
-                    },
                     title: {
                         display: true,
                         text: 'Kilometraje por vehículo'

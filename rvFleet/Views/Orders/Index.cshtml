@@ -9,7 +9,8 @@
     thead th {
         white-space: nowrap;
     }
-    thead th a i{
+
+    thead th a i {
         text-align: right;
     }
 </style>
@@ -21,7 +22,24 @@
         <h4><i class="fa fa-book"></i> Facturas</h4>
     </div>
     <div class="col text-right">
-        <a class="btn btn-sm btn-primary form-group" 
+        @*@if (ViewBag.SelectedType != "4")
+        {
+        }*@
+        <div class="dropdown d-inline">
+            <button class="btn btn-primary btn-sm dropdown-toggle form-group" type="button" data-toggle="dropdown">
+                <i class="fa fa-print"></i>
+                Imprimir
+            </button>
+            <div class="dropdown-menu">
+                <button class="dropdown-item" target="_blank" onclick="GeneratePDF('report');">
+                    Generar reporte
+                </button>
+                <button class="dropdown-item" target="_blank" href="#" onclick="GeneratePDF('admon');">
+                    Entregar a admon.
+                </button>
+            </div>
+        </div>
+        <a class="btn btn-sm btn-primary form-group"
            href="@Url.Action("DownloadExcel_Facturas", "Orders", new { searchString = ViewBag.searchString, type = ViewBag.SelectedType, VehPlaca = ViewBag.SelectedVehPlaca })" target="_blank">
             <i class="fa fa-cloud-download"></i>
             Exportar a excel
@@ -60,6 +78,13 @@
     </div>
 
     <div class="row mb-4">
+        @*@if (ViewBag.SelectedType == "4")
+        {
+            
+        }
+        else
+        {
+        }*@
         <div class="col-4 col-lg-2">
             <label>Mostrar</label>
             <input type="number" class="form-control d-inline" step="5" value="@ViewBag.PageSize" name="pageSize" onchange="isLoading(true); $('#order-form').submit();" />
@@ -75,160 +100,209 @@
     </div>
 }
 
-<div class="table-responsive">
-    <table class="table table-hover table-bordered bg-white" id="orders-table">
-        <thead>
-            <tr>
-                @*<th>#</th>*@
-                <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacCodigoOrden, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
-                        #
-                        @if (ViewBag.SortOrder == "orden_desc")
-                        {
-                            <i class="fa fa-sort-asc text-right"></i>
-                        }
-                        else if (ViewBag.SortOrder == "orden")
-                        {
-                            <i class="fa fa-sort-desc text-right"></i>
-                        }
-                        else
-                        {
-                            <i class="fa fa-sort text-right"></i>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacNumeroFactura, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
-                        Factura
-                        @if (ViewBag.SortOrder == "factura_desc")
-                        {
-                            <i class="fa fa-sort-asc text-right"></i>
-                        }
-                        else if (ViewBag.SortOrder == "factura")
-                        {
-                            <i class="fa fa-sort-desc text-right"></i>
-                        }
-                        else
-                        {
-                            <i class="fa fa-sort text-right"></i>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortDate, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
-                        Fecha
-                        @if (ViewBag.SortOrder == "fecha_desc")
-                        {
-                            <i class="fa fa-sort-asc text-right"></i>
-                        }
-                        else if (ViewBag.SortOrder == "fecha")
-                        {
-                            <i class="fa fa-sort-desc text-right"></i>
-                        }
-                        else
-                        {
-                            <i class="fa fa-sort text-right"></i>
-                        }
-                    </a>
-                </th>
-                <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortProveedor, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
-                        Proveedor
-                        @if (ViewBag.SortOrder == "proveedor_desc")
-                        {
-                            <i class="fa fa-sort-asc text-right"></i>
-                        }
-                        else if (ViewBag.SortOrder == "proveedor")
-                        {
-                            <i class="fa fa-sort-desc text-right"></i>
-                        }
-                        else
-                        {
-                            <i class="fa fa-sort text-right"></i>
-                        }
-                    </a>
-                </th>
-                <th>Detalle</th>
-                <th>Vehículos</th>
-                <th>
-                    <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortTotal, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
-                        Total
-                        @if (ViewBag.SortOrder == "total_desc")
-                        {
-                            <i class="fa fa-sort-asc text-right"></i>
-                        }
-                        else if (ViewBag.SortOrder == "total")
-                        {
-                            <i class="fa fa-sort-desc text-right"></i>
-                        }
-                        else
-                        {
-                            <i class="fa fa-sort text-right"></i>
-                        }
-                    </a>
-                </th>
-                <th>Facturado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Count > 0)
-            {
-
-                foreach (var item in Model)
-                {
-            <tr>
-                <td>@item.FacCodigoOrden</td>
-                <td>@(string.IsNullOrEmpty(item.FacNumeroFactura) ? "Sin Factura" : item.FacNumeroFactura)</td>
-                <td>@item.FacFechaOrden.Value.ToString("yyyy-MM-dd")</td>
-                <td>@item.proveedor.ProNombre</td>
-                <td>@string.Join(", ", item.detallefactura.Select(x => x.DetDescripcion).ToList())</td>
-                @{ 
-                    var placas = item.detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList();
-                }
-                <td>
-                    @foreach (var placa in placas) 
+@using (Html.BeginForm("GenerateOrdersPDF", "Orders", FormMethod.Post, new { id = "form-pdf", target = "_blank" }))
+{
+    @Html.Hidden("Source")
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered bg-white" id="orders-table">
+            <thead>
+                <tr>
+                    @*@if (ViewBag.SelectedType == "4")
                     {
-                        <a href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placa })">
-                            @placa,
+                    }*@
+                    <th>
+                        <input type="checkbox" onclick="CheckAll(event);" />
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacCodigoOrden, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
+                            #
+                            @if (ViewBag.SortOrder == "orden_desc")
+                            {
+                                <i class="fa fa-sort-asc text-right"></i>
+                            }
+                            else if (ViewBag.SortOrder == "orden")
+                            {
+                                <i class="fa fa-sort-desc text-right"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-sort text-right"></i>
+                            }
                         </a>
-                    }
-                </td>
-                <td>@item.FacValorFactura.ToString("N2")</td>
-                @if (string.IsNullOrEmpty(item.FacNumeroFactura))
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortFacNumeroFactura, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
+                            Factura
+                            @if (ViewBag.SortOrder == "factura_desc")
+                            {
+                                <i class="fa fa-sort-asc text-right"></i>
+                            }
+                            else if (ViewBag.SortOrder == "factura")
+                            {
+                                <i class="fa fa-sort-desc text-right"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-sort text-right"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortDate, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
+                            Fecha
+                            @if (ViewBag.SortOrder == "fecha_desc")
+                            {
+                                <i class="fa fa-sort-asc text-right"></i>
+                            }
+                            else if (ViewBag.SortOrder == "fecha")
+                            {
+                                <i class="fa fa-sort-desc text-right"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-sort text-right"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortProveedor, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
+                            Proveedor
+                            @if (ViewBag.SortOrder == "proveedor_desc")
+                            {
+                                <i class="fa fa-sort-asc text-right"></i>
+                            }
+                            else if (ViewBag.SortOrder == "proveedor")
+                            {
+                                <i class="fa fa-sort-desc text-right"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-sort text-right"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>Detalle</th>
+                    <th>Vehículos</th>
+                    <th>
+                        <a href="@Url.Action("Index", new { sortOrder = ViewBag.SortTotal, type = ViewBag.SelectedType, pageSize = ViewBag.PageSize })">
+                            Total
+                            @if (ViewBag.SortOrder == "total_desc")
+                            {
+                                <i class="fa fa-sort-asc text-right"></i>
+                            }
+                            else if (ViewBag.SortOrder == "total")
+                            {
+                                <i class="fa fa-sort-desc text-right"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-sort text-right"></i>
+                            }
+                        </a>
+                    </th>
+                    <th>Facturado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count > 0)
                 {
-                    <td class="text-center">
-                        <i class="fa fa-times text-danger"></i>
-                    </td>
+                    for (int i = 0; i < Model.Count; i++)
+                    //foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.CheckBoxFor(x => Model[i].IsChecked, new { onclick = "handleCheck(event);" })
+                                @*<input type="checkbox" onclick="handleCheck(event);" />*@
+                            </td>
+                            @*@if (ViewBag.SelectedType == "4")
+                            {
+                            }*@
+                            <td>
+                                @Html.HiddenFor(x => Model[i].FacCodigoOrden)
+                                @Model[i].FacCodigoOrden
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => Model[i].FacNumeroFactura)
+                                @(string.IsNullOrEmpty(Model[i].FacNumeroFactura) ? "Sin Factura" : Model[i].FacNumeroFactura)
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => Model[i].FacFechaOrden)
+                                @Model[i].FacFechaOrden.Value.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => Model[i].proveedor.ProNombre)
+                                @Model[i].proveedor.ProNombre
+                            </td>
+                            <td>
+                                @Html.Hidden($"[{i}].Detalles", string.Join(", ", Model[i].detallefactura.Select(x => x.DetDescripcion).ToList()))
+                                @string.Join(", ", Model[i].detallefactura.Select(x => x.DetDescripcion).ToList())
+                            </td>
+                            @{
+                                var placas = Model[i].detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList();
+                                int position = 0;
+                            }
+                            <td>
+                                @Html.Hidden($"[{i}].Placas", string.Join(", ", Model[i].detallefactura.Select(x => x.DetPlacaVehiculo).Distinct().ToList()))
+                                @for (int j = 0; j < placas.Count; j++)
+                                {
+                                    if (position == placas.Count - 1)
+                                    {
+                                        <a target="_blank" href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placas[j] })">
+                                            @placas[j]
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="@Url.Action("Logs", "Vehicles", new { Vehplaca = placas[j] })">
+                                            @placas[j],
+                                        </a>
+                                    }
+
+                                    position++;
+                                }
+                            </td>
+                            <td>
+                                @Html.HiddenFor(x => Model[i].FacAplicaImpuesto)
+                                @Html.HiddenFor(x => Model[i].FacValorFactura)
+                                @Html.Hidden($"[{i}].ValorDetalle", string.Join("|", Model[i].detallefactura.Select(x => x.DetValor).ToList()))
+                                @Model[i].FacValorFactura.ToString("N2")
+                            </td>
+                            @if (string.IsNullOrEmpty(Model[i].FacNumeroFactura))
+                            {
+                                <td class="text-center">
+                                    <i class="fa fa-times text-danger"></i>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-center">
+                                    <i class="fa fa-check text-success"></i>
+                                </td>
+                            }
+                            <td class="text-center" style="white-space: nowrap;">
+                                <a href="@Url.Action("Edit", "Orders", new { Model[i].FacCodigoOrden })" class="btn btn-warning btn-sm">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href="@Url.Action("Details", "Orders", new { Model[i].FacCodigoOrden })" class="btn btn-info btn-sm">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 }
                 else
                 {
-                    <td class="text-center">
-                        <i class="fa fa-check text-success"></i>
-                    </td>
+                    <tr>
+                        <td colspan="9" class="text-center">
+                            <label class="h6">No hay registros por mostrar.</label>
+                        </td>
+                    </tr>
                 }
-                <td class="text-center" style="white-space: nowrap;">
-                    <a href="@Url.Action("Edit", "Orders", new { item.FacCodigoOrden })" class="btn btn-warning btn-sm">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                    <a href="@Url.Action("Details", "Orders", new { item.FacCodigoOrden })" class="btn btn-info btn-sm">
-                        <i class="fa fa-eye"></i>
-                    </a>
-                </td>
-            </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="9" class="text-center">
-                        <label class="h6">No hay registros por mostrar.</label>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
+}
 
 <br />
 
@@ -241,11 +315,69 @@ Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.P
             theme: 'bootstrap4',
             width: '100%',
         });
-
-        //$('#orders-table').DataTable({
-        //    language: {
-        //        "url": "~/Scripts/i18n/es.js"
-        //    }
-        //});
     });
+
+    function CheckAll(e) {
+        var isChecked = e.target.checked;
+
+        $.each($('#orders-table tbody tr'), (index, item) => {
+            $(item).find('input[type=checkbox]').prop('checked', isChecked);
+        });
+    }
+
+    function handleCheck(e) {
+        var allChecked = true;
+
+        $.each($('#orders-table tbody tr'), (index, item) => {
+            if (!$(item).find('input[type=checkbox]')[0].checked) {
+                allChecked = false;
+
+                return;
+            }
+        });
+
+        $('thead tr input[type=checkbox]').prop("checked", allChecked);
+    }
+
+    function ExportTableToPDF() {
+        var htmlTable = "<table class='table table-bordered' style='font-size: 10px; width: 775px'>";
+        var doc = new jspdf.jsPDF('l', 'pt', 'a4');
+
+        $.each($('#orders-table tbody tr'), (index, item) => {
+            if ($(item).find('input[type=checkbox]')[0].checked) {
+                var tdsCollection = $(item).find('td');
+
+                htmlTable += `<tr>
+                                <td>${tdsCollection[1].innerText}</td>
+                                <td>${tdsCollection[2].innerText}</td>
+                                <td>${tdsCollection[3].innerText}</td>
+                                <td>${tdsCollection[4].innerText}</td>
+                                <td>${tdsCollection[5].innerText}</td>
+                                <td>${tdsCollection[6].innerText}</td>
+                                <td>${tdsCollection[7].innerText}</td>
+                              </tr>`;
+            }
+        });
+
+        htmlTable += "</table>"
+        doc.html(htmlTable, {
+            callback: function (doc) {
+                doc.save('prueba');
+            },
+            margin: [60, 60, 60, 60],
+            x: 32,
+            y: 32,
+        });
+    }
+
+    function GeneratePDF(source) {
+        if ($('table tbody tr td input[type=checkbox]:checked').length === 0) {
+            alert('Primero seleccione las facturas que desea exportar.');
+
+            return;
+        }
+
+        $('#Source').val(source);
+        $('#form-pdf').submit();
+    }
 </script>

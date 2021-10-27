@@ -3,6 +3,14 @@
     ViewBag.Title = "OrdersDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
     double total = 0;
+    var ExportModel = Model.Select(x => new { x.FacNumeroFactura, x.FacFechaOrden, NombreProveedor = x.proveedor.ProNombre,
+        Detalles = string.Join(", ", x.detallefactura.Select(y => y.DetDescripcion).ToList()),
+        Placas = string.Join(", ", x.detallefactura.Select(y => y.DetPlacaVehiculo).Distinct().ToList()),
+        FacValorFactura = (x.FacAplicaImpuesto.Value) ?
+            x.detallefactura.Where(y => y.DetPlacaVehiculo.Equals(ViewBag.VehPlaca)).Select(y => (y.DetValor * 0.15) + y.DetValor).Sum()
+            :
+            x.detallefactura.Where(y => y.DetPlacaVehiculo.Equals(ViewBag.VehPlaca)).Select(y => y.DetValor).Sum()
+    });
 }
 
 <style>
@@ -11,10 +19,26 @@
         position: sticky;
         top: 0;
         box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        white-space: nowrap;
     }
 </style>
 
-<h4>Facturas del vehiculo @ViewBag.VehPlaca</h4>
+<div class="row">
+    <div class="col-6">
+        <h4>Facturas del vehiculo @ViewBag.VehPlaca</h4>
+    </div>
+    <div class="col-6 text-right">
+        @using (Html.BeginForm("ExportOrderDetails", "Reports", FormMethod.Post, new { target = "_blank" }))
+        {
+            @Html.Hidden("data", Newtonsoft.Json.JsonConvert.SerializeObject(ExportModel))
+            @Html.Hidden("VehPlaca", (string)ViewBag.VehPlaca)
+            <button class="btn btn-sm btn-primary">
+                <i class="fa fa-cloud-download"></i>
+                Exportar a excel
+            </button>
+        }
+    </div>
+</div>
 <hr class="m-0" />
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-transparent pl-0">
@@ -41,16 +65,16 @@
                 <span class="input-group-text"><i class="fa fa-search"></i></span>
             </div>
         </div>
-        <div class="table-responsive" style="max-height: 400px;">
+        <div class="table-responsive">
             <table class="table table-hover table-bordered bg-white tablesorter" id="ordersDetails-table">
                 <thead>
                     <tr>
-                        <th>Factura</th>
-                        <th>Fecha</th>
-                        <th>Proveedor</th>
-                        <th>Detalle</th>
-                        <th>Vehículos</th>
-                        <th>Total</th>
+                        <th>Factura <i class="fa fa-sort"></i></th>
+                        <th>Fecha <i class="fa fa-sort"></i></th>
+                        <th>Proveedor <i class="fa fa-sort"></i></th>
+                        <th>Detalle <i class="fa fa-sort"></i></th>
+                        <th>Vehículos <i class="fa fa-sort"></i></th>
+                        <th>Total <i class="fa fa-sort"></i></th>
                         <th>Facturado</th>
                         <th>Acciones</th>
                     </tr>

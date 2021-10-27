@@ -18,5 +18,6 @@ namespace rvFleet.POCO
         public string Contrasena { get; set; }
         public string IdEmpresa { get; set; }
         public string NombreUsuario { get; set; }
+        public bool MultipleVehicles { get; set; } = false;
     }
 }

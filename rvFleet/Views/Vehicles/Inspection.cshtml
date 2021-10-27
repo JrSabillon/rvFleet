@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Inspection";
+    Layout = "~/Views/Shared/_LayoutLimited.cshtml";
+}
+
+<div>
+    <h4 class="d-inline">Inspección rápida - </h4>
+    @Html.DropDownList("VehPlaca", null, "Seleccione un vehiculo", new { @class = "form-control d-inline" })
+</div>
+<hr />
+
+<div id="div-inspection-container">
+
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#VehPlaca").on('change', VehPlaca_Changed);
+    });
+
+    function VehPlaca_Changed(event) {
+        var vehiculoSeleccionado = $(this).find('option:selected');
+
+        //si no ha seleccionado ningun vehiculo que no haga nada.
+        if (vehiculoSeleccionado.val() == '')
+            return;
+
+        if (vehiculoSeleccionado.text().indexOf('REGISTRADO') > -1) {
+            //Ya se encuentra registrado el checklist entonces enviar a la pagina inicial.
+            window.location = '@Url.Action("Index", "Home")';
+            return;
+        }
+
+        $('#div-inspection-container').load(`@Url.Action("_Inspection", "Vehicles")?VehCodigo=${vehiculoSeleccionado.val()}`);
+    }
+</script>

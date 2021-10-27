@@ -16,6 +16,38 @@ $(document).ready(function () {
     $(window).on('resize', function () {
         ViewLayout();
     });
+
+    $('.tablesorter thead tr th').on('click', function () {
+        var icon = $(this).find('i');
+
+        $('.tablesorter thead tr th i').each((i, e) => {
+            //$(e).toggleClass('active');
+            if ($(icon).closest('th').index() != i) {
+                $(e).removeClass('active');
+                $(e).removeClass('fa-sort-asc');
+                $(e).removeClass('fa-sort-desc');
+                $(e).addClass('fa-sort');
+            }
+        });
+
+        if (icon.length != 0) {
+            //Tiene icono entonces cambiarlo
+            if ($(icon).hasClass('active')) {
+                if ($(icon).attr('class').indexOf('fa-sort-desc') != -1) {
+                    //el icono se encuentra ascendente entonces cambiarlo a descendente.
+                    $(icon).removeClass('fa-sort-desc');
+                    $(icon).addClass('fa-sort-asc');
+                } else if ($(icon).attr('class').indexOf('fa-sort-asc') != -1) {
+                    $(icon).removeClass('fa-sort-asc');
+                    $(icon).addClass('fa-sort-desc');
+                }
+            } else {
+                $(icon).removeClass('fa-sort')
+                $(icon).addClass('active');
+                $(icon).addClass('fa-sort-desc');
+            }
+        }
+    });
 });
 
 function ViewLayout() {

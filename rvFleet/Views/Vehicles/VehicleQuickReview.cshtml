@@ -1,0 +1,23 @@
+﻿@model List<rvFleet.Models.GetVehicleGraphData_Result>
+@{
+    ViewBag.Title = "VehicleQuickReview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Rubros Principales - @ViewBag.VehPlaca</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Control", "Vehicles")">Control</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Rubros principales</li>
+    </ol>
+</nav>
+
+@{
+    Html.RenderPartial("~/Views//Home/_RubrosPrincipales.cshtml", Model);
+}

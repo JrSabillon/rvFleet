@@ -28,7 +28,11 @@ namespace rvFleet.Models
         }
     
         public virtual DbSet<archivofactura> archivofactura { get; set; }
-        public virtual DbSet<conductorhistorico> conductorhistorico { get; set; }
+        public virtual DbSet<bitacoracomentario> bitacoracomentario { get; set; }
+        public virtual DbSet<bitacoravehiculo> bitacoravehiculo { get; set; }
+        public virtual DbSet<controlvehiculospregunta> controlvehiculospregunta { get; set; }
+        public virtual DbSet<controlvehiculosrespuesta> controlvehiculosrespuesta { get; set; }
+        public virtual DbSet<controlvehiculosrespuestadetalle> controlvehiculosrespuestadetalle { get; set; }
         public virtual DbSet<detallefactura> detallefactura { get; set; }
         public virtual DbSet<facturas> facturas { get; set; }
         public virtual DbSet<kilometrajehistorico> kilometrajehistorico { get; set; }
@@ -36,14 +40,13 @@ namespace rvFleet.Models
         public virtual DbSet<rubrodetalle> rubrodetalle { get; set; }
         public virtual DbSet<rubros> rubros { get; set; }
         public virtual DbSet<sucursales> sucursales { get; set; }
-        public virtual DbSet<ubicacionhistorica> ubicacionhistorica { get; set; }
+        public virtual DbSet<usuariovehiculo> usuariovehiculo { get; set; }
         public virtual DbSet<vehiculos> vehiculos { get; set; }
+        public virtual DbSet<resumencostosvehiculos> resumencostosvehiculos { get; set; }
         public virtual DbSet<kilometrajeporvehiculoanoactual> kilometrajeporvehiculoanoactual { get; set; }
         public virtual DbSet<recommendedmaintenance> recommendedmaintenance { get; set; }
         public virtual DbSet<vehiclecosts> vehiclecosts { get; set; }
         public virtual DbSet<vehiclefulldata> vehiclefulldata { get; set; }
-        public virtual DbSet<bitacoravehiculo> bitacoravehiculo { get; set; }
-        public virtual DbSet<bitacoracomentario> bitacoracomentario { get; set; }
     
         public virtual ObjectResult<GetPartsCost_Result> GetPartsCost(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
         {
@@ -80,13 +83,56 @@ namespace rvFleet.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleCosts_Result>("GetVehicleCosts", startDateParameter, endDateParameter);
         }
     
-        public virtual ObjectResult<GetVehicleGraphData_Result> GetVehicleGraphData(string vehPlaca_IN)
+        public virtual ObjectResult<spGetVehicleCostsFiltered_Result> spGetProveedoresTableCost(Nullable<System.DateTime> startDate_IN, Nullable<System.DateTime> endDate_IN)
         {
-            var vehPlaca_INParameter = vehPlaca_IN != null ?
-                new ObjectParameter("VehPlaca_IN", vehPlaca_IN) :
-                new ObjectParameter("VehPlaca_IN", typeof(string));
+            var startDate_INParameter = startDate_IN.HasValue ?
+                new ObjectParameter("startDate_IN", startDate_IN) :
+                new ObjectParameter("startDate_IN", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleGraphData_Result>("GetVehicleGraphData", vehPlaca_INParameter);
+            var endDate_INParameter = endDate_IN.HasValue ?
+                new ObjectParameter("endDate_IN", endDate_IN) :
+                new ObjectParameter("endDate_IN", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleCostsFiltered_Result>("spGetProveedoresTableCost", startDate_INParameter, endDate_INParameter);
+        }
+    
+        public virtual ObjectResult<spGetVehicleCostsFiltered_Result> spGetRubrosTableCost(Nullable<System.DateTime> startDate_IN, Nullable<System.DateTime> endDate_IN)
+        {
+            var startDate_INParameter = startDate_IN.HasValue ?
+                new ObjectParameter("startDate_IN", startDate_IN) :
+                new ObjectParameter("startDate_IN", typeof(System.DateTime));
+    
+            var endDate_INParameter = endDate_IN.HasValue ?
+                new ObjectParameter("endDate_IN", endDate_IN) :
+                new ObjectParameter("endDate_IN", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleCostsFiltered_Result>("spGetRubrosTableCost", startDate_INParameter, endDate_INParameter);
+        }
+    
+        public virtual ObjectResult<spGetVehicleCostsFiltered_Result> spGetVehicleCostsFiltered(Nullable<System.DateTime> startDate_IN, Nullable<System.DateTime> endDate_IN)
+        {
+            var startDate_INParameter = startDate_IN.HasValue ?
+                new ObjectParameter("StartDate_IN", startDate_IN) :
+                new ObjectParameter("StartDate_IN", typeof(System.DateTime));
+    
+            var endDate_INParameter = endDate_IN.HasValue ?
+                new ObjectParameter("EndDate_IN", endDate_IN) :
+                new ObjectParameter("EndDate_IN", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleCostsFiltered_Result>("spGetVehicleCostsFiltered", startDate_INParameter, endDate_INParameter);
+        }
+    
+        public virtual ObjectResult<spGetVehiculosCheckList_Result> spGetVehiculosCheckList(Nullable<System.DateTime> date_IN, string idUsuario_IN)
+        {
+            var date_INParameter = date_IN.HasValue ?
+                new ObjectParameter("Date_IN", date_IN) :
+                new ObjectParameter("Date_IN", typeof(System.DateTime));
+    
+            var idUsuario_INParameter = idUsuario_IN != null ?
+                new ObjectParameter("IdUsuario_IN", idUsuario_IN) :
+                new ObjectParameter("IdUsuario_IN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehiculosCheckList_Result>("spGetVehiculosCheckList", date_INParameter, idUsuario_INParameter);
         }
     
         public virtual ObjectResult<recommendedmaintenance> spGetRubrosNoFacturadosVehiculo()
@@ -97,6 +143,33 @@ namespace rvFleet.Models
         public virtual ObjectResult<recommendedmaintenance> spGetRubrosNoFacturadosVehiculo(MergeOption mergeOption)
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<recommendedmaintenance>("spGetRubrosNoFacturadosVehiculo", mergeOption);
+        }
+    
+        public virtual ObjectResult<vehiclefulldata> spGetVehiculosVisibles(string idUsuario_IN)
+        {
+            var idUsuario_INParameter = idUsuario_IN != null ?
+                new ObjectParameter("IdUsuario_IN", idUsuario_IN) :
+                new ObjectParameter("IdUsuario_IN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<vehiclefulldata>("spGetVehiculosVisibles", idUsuario_INParameter);
+        }
+    
+        public virtual ObjectResult<vehiclefulldata> spGetVehiculosVisibles(string idUsuario_IN, MergeOption mergeOption)
+        {
+            var idUsuario_INParameter = idUsuario_IN != null ?
+                new ObjectParameter("IdUsuario_IN", idUsuario_IN) :
+                new ObjectParameter("IdUsuario_IN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<vehiclefulldata>("spGetVehiculosVisibles", mergeOption, idUsuario_INParameter);
+        }
+    
+        public virtual ObjectResult<GetVehicleGraphData_Result> GetVehicleGraphData(string vehPlaca_IN)
+        {
+            var vehPlaca_INParameter = vehPlaca_IN != null ?
+                new ObjectParameter("VehPlaca_IN", vehPlaca_IN) :
+                new ObjectParameter("VehPlaca_IN", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetVehicleGraphData_Result>("GetVehicleGraphData", vehPlaca_INParameter);
         }
     }
 }

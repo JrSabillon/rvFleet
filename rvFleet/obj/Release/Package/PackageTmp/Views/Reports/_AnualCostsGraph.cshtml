@@ -4,7 +4,7 @@
     var JsonData = JsonConvert.SerializeObject(Model);
 }
 
-<canvas id="canvas-pie-chart-anualCosts" class="m-auto" style="width: 100%; height: 100%"></canvas>
+<canvas id="canvas-pie-chart-anualCosts" style="max-height: 700px"></canvas>
 
 <script>
     var JsonArray = JSON.parse('@Html.Raw(JsonData)');
@@ -26,13 +26,17 @@
         var labels = [];
         var formatedNumber = [];
         var backgroundColors = [];
+        var totalAmount = 0;
 
         $.each(JsonArray, function (index, item) {
             labels.push(item.NombreRubro);
             graphData.push(item.FacValorFactura);
+            totalAmount += item.FacValorFactura;
             formatedNumber.push(item.FormatedNumber);
             backgroundColors.push(item.ColorIdentificador);
         });
+
+        console.log(graphData);
 
         data.datasets[0] = {
             data: graphData,
@@ -45,14 +49,44 @@
             type: 'pie',
             data: data,
             options: {
-                tooltips: {
-                    callbacks: {
-                        label: function (t, d) {
-                            return `${d.labels[t.index]} ${d.datasets[0].fnumber[t.index]}`;
+                layout: {
+                    padding: {
+                        bottom: 20
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (t) {
+                                return `${t.label} ${t.dataset.fnumber[t.dataIndex]}`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        formatter: (value, context) => {
+                            if ((context.dataset.data[context.dataIndex] / totalAmount * 100).toFixed(2) > 1)
+                                return (context.dataset.data[context.dataIndex] / totalAmount * 100).toFixed(1) + "%";
+
+                            return "";
+                        },
+                        anchor: "end",
+                        font: {
+                            size: 17,
+                            weight: "bold"
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 14
+                            }
                         }
                     }
                 }
-            }
+            },
+            plugins: [ChartDataLabels]
+            
         };
 
         var ctx = $('#canvas-pie-chart-anualCosts');

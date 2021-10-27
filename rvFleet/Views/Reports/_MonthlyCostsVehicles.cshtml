@@ -1,14 +1,31 @@
 ﻿@model List<rvFleet.Models.vehiclecosts>
 
-<label class="h6 pb-2">Gastos vehiculares del mes de @DateTime.Now.ToString("MMMM", new System.Globalization.CultureInfo("es")), @DateTime.Now.Year</label>
-<div class="table-responsive">
-    <table class="table table-sm table-bordered table-hover scroll tablesorter" id="table-global-costs-vehicles">
-        <thead class="thead-light">
+<style>
+    th {
+        background: white;
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+
+    td {
+        white-space: nowrap;
+    }
+</style>
+
+<div class="table-responsive" style="max-height: 470px;">
+    <table class="table table-sm table-bordered table-hover tablesorter" id="table-global-costs-vehicles">
+        <thead>
             <tr>
-                <th>Vehículo</th>
-                <th>Gasto total</th>
-                <th>Promedio mensual</th>
-                <th>Promedio anual</th>
+                <th>
+                    Vehículo <i class="fa fa-sort"></i>
+                </th>
+                <th>
+                    Gasto total <i class="fa fa-sort"></i>
+                </th>
+                <th>
+                    Promedio mensual <i class="fa fa-sort"></i>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -18,27 +35,16 @@
                     <td>@item.DetPlacaVehiculo</td>
                     <td>@item.Total.Value.ToString("N")</td>
                     <td>@item.PromedioMensual.Value.ToString("N")</td>
-                    <td>@item.PromedioAnual.Value.ToString("N")</td>
                 </tr>
             }
         </tbody>
     </table>
-    <table class="table table-sm">
-        <tbody>
-            <tr>
-                <td class="text-center font-weight-bold">
-                    Total:
-                </td>
-                <td>
-                    @Model.Sum(x => x.Total).Value.ToString("N")
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>
+<label class="mt-3"><b>Total: </b> @Model.Sum(x => x.Total).Value.ToString("N")</label>
 
 <script>
     $(function () {
         $('#table-global-costs-vehicles').tablesorter();
     })
+
 </script>

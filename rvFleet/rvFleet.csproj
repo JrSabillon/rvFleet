@@ -48,8 +48,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>..\packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="ClosedXML, Version=0.95.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.95.4\lib\net46\ClosedXML.dll</HintPath>
@@ -71,6 +71,9 @@
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.14.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.14.0\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="K4os.Compression.LZ4, Version=1.1.11.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Compression.LZ4.1.1.11\lib\net46\K4os.Compression.LZ4.dll</HintPath>
@@ -226,11 +229,23 @@
     <Compile Include="Models\bitacoravehiculo.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\conductorhistorico.cs">
+    <Compile Include="Models\controlvehiculospregunta.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\controlvehiculosrespuesta.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\controlvehiculosrespuestadetalle.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\departamento.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\detallefactura.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\empresa.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\facturas.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
@@ -264,11 +279,26 @@
     <Compile Include="Models\GetVehicleGraphData_Result.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\gruporecurso.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\kilometrajehistorico.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\kilometrajeporvehiculoanoactual.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\opcionrecurso.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\posicion.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\privilegio.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\privilegiopermiso.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\proveedor.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
@@ -276,16 +306,34 @@
     <Compile Include="Models\recommendedmaintenance.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\resumencostosvehiculos.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\rol.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\rubrodetalle.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\rubros.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\spGetVehicleCostsFiltered_Result.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\spGetVehiculosCheckList_Result.cs">
+      <DependentUpon>FleetContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sucursales.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ubicacionhistorica.cs">
+    <Compile Include="Models\ubicacion.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\usuario.cs">
+      <DependentUpon>SecurityContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\usuariovehiculo.cs">
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\vehiclecosts.cs">
@@ -298,6 +346,7 @@
       <DependentUpon>FleetContext.tt</DependentUpon>
     </Compile>
     <Compile Include="POCO\FacturaHistorico.cs" />
+    <Compile Include="POCO\InspectionsTable.cs" />
     <Compile Include="POCO\ItemModel.cs" />
     <Compile Include="POCO\LoginModel.cs" />
     <Compile Include="POCO\Reports\RecommendenMaintenance.cs" />
@@ -329,30 +378,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Labels.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models\departamento.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\empresa.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\gruporecurso.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\opcionrecurso.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\posicion.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\privilegio.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\privilegiopermiso.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\rol.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SecurityContext.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -370,15 +395,6 @@
     </Compile>
     <Compile Include="Models\SecurityMetadata.cs" />
     <Compile Include="Models\SecurityPartialClasses.cs" />
-    <Compile Include="Models\ubicacion.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\usuario.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\usuariodepartamentoposicion.cs">
-      <DependentUpon>SecurityContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -562,7 +578,9 @@
     <Content Include="Content\fontawesome\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\images\login\logo.jpg" />
+    <Content Include="Content\images\logos\dms.jpg" />
     <Content Include="Content\images\logos\rv.jpg" />
+    <Content Include="Content\images\logos\rv_mini.jpg" />
     <Content Include="Content\images\logos\sompopo.png" />
     <Content Include="Content\images\others\placeholder.png" />
     <Content Include="Content\jquerySorter\dragtable.mod.css" />
@@ -762,8 +780,12 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\dist\ChartJS.Labels.Plugins.js" />
+    <Content Include="Scripts\dist\dompurify.js" />
     <Content Include="Scripts\dist\facturas.js" />
+    <Content Include="Scripts\dist\html2canvas.js" />
     <Content Include="Scripts\dist\index.js" />
+    <Content Include="Scripts\dist\jsPDF.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -875,6 +897,7 @@
     <Content Include="Content\jquerySorter\psd\metro-style.psd" />
     <Content Include="Content\jquerySorter\theme.less" />
     <Content Include="Content\jquerySorter\theme.scss" />
+    <Content Include="Scripts\dist\ChartJS_3.5.0.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1077,6 +1100,22 @@
     <Content Include="Views\Reports\OrdersDetails.cshtml" />
     <Content Include="Views\Reports\NextMaintenance.cshtml" />
     <Content Include="Views\Vehicles\Logs.cshtml" />
+    <Content Include="Views\Vehicles\Inspection.cshtml" />
+    <Content Include="Views\Vehicles\Inspections.cshtml" />
+    <Content Include="Views\Vehicles\_Comments.cshtml" />
+    <Content Include="Views\Vehicles\_Inspections.cshtml" />
+    <Content Include="Views\Shared\_NavBarLimited.cshtml" />
+    <Content Include="Views\Shared\_LayoutLimited.cshtml" />
+    <Content Include="Views\Home\InspectionResults.cshtml" />
+    <Content Include="Views\Home\_RubrosPrincipales.cshtml" />
+    <Content Include="Views\Reports\_VehiclesTableCost.cshtml" />
+    <Content Include="Views\Reports\_RubrosTableCost.cshtml" />
+    <Content Include="Views\Reports\_ProveedoresTableCost.cshtml" />
+    <Content Include="Views\Vehicles\LogReview.cshtml" />
+    <Content Include="Views\Vehicles\VehicleQuickReview.cshtml" />
+    <Content Include="Views\Vehicles\_Inspection.cshtml" />
+    <Content Include="Views\Vehicles\MyVehicles.cshtml" />
+    <Content Include="Views\Vehicles\QuickInspection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

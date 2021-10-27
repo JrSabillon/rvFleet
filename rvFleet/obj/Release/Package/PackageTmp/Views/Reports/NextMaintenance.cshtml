@@ -13,6 +13,8 @@
         position: sticky;
         top: 0; /* Don't forget this, required for the stickiness */
         box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+    td {
         white-space: nowrap;
     }
 </style>
@@ -24,11 +26,11 @@
         <li class="breadcrumb-item">
             <a href="@Url.Action("Index", "Home")">Inicio</a>
         </li>
-        <li class="breadcrumb-item">
+        @*<li class="breadcrumb-item">
             <a href="@Url.Action("Vehicles", "Reports")">
                 Reportes vehiculares
             </a>
-        </li>
+        </li>*@
         <li class="breadcrumb-item active" aria-current="page">Mantenimientos vehiculares</li>
     </ol>
 </nav>
@@ -61,7 +63,7 @@
                 Gráfico
             </div>
             <div class="card-body">
-                <canvas id="canvas-graph" height="100"></canvas>
+                <canvas id="canvas-graph" style="max-height: 600px"></canvas>
             </div>
         </div>
     </div>
@@ -72,23 +74,23 @@
             </div>
             <div class="card-body">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Buscar placa..." id="input-filter">
+                    <input type="text" class="form-control col-12" placeholder="Buscar..." id="input-filter">
                     <div class="input-group-append">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                     </div>
                 </div>
-                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;" id="table-maintenance">
+                <div class="table-responsive" id="table-maintenance" style="max-height: calc(100vh - 200px)">
                     <table class="table table-sm table-hover tablesorter table-bordered" id="table-vehicles-next-maintenance">
                         <thead class="thead-light">
                             <tr>
                                 <th>Vehículo <i class="fa fa-sort"></i></th>
                                 <th>Rubro <i class="fa fa-sort"></i></th>
+                                <th>Fecha de orden <i class="fa fa-sort"></i></th>
                                 <th>Vida útil <i class="fa fa-sort"></i></th>
                                 <th>Kilometraje facturado <i class="fa fa-sort"></i></th>
                                 <th>Kilometraje actual <i class="fa fa-sort"></i></th>
                                 <th>Distancia recorrida <i class="fa fa-sort"></i></th>
                                 <th>Kilometros restantes <i class="fa fa-sort"></i></th>
-                                <th>Fecha de orden <i class="fa fa-sort"></i></th>
                                 <th>Porcentaje <i class="fa fa-sort"></i></th> 
                             </tr>
                         </thead>
@@ -98,11 +100,6 @@
                                 <tr>
                                     <td>@item.DetPlacaVehiculo</td>
                                     <td>@item.NombreRubro</td>
-                                    <td>@string.Format(format, item.DistanciaCambio) KM</td>
-                                    <td>@string.Format(format, item.KilometrajeFacturado) KM</td>
-                                    <td>@string.Format(format, item.KilometrajeActual) KM</td>
-                                    <td>@string.Format(format, item.DistanciaRecorrida) KM</td>
-                                    <td>@string.Format(format, item.VidaRestante) KM</td>
                                     <td>
                                         @if (item.FacFechaOrden.HasValue)
                                         {
@@ -113,6 +110,11 @@
                                             <span>Sin factura</span>
                                         }
                                     </td>
+                                    <td>@string.Format(format, item.DistanciaCambio) KM</td>
+                                    <td>@string.Format(format, item.KilometrajeFacturado) KM</td>
+                                    <td>@string.Format(format, item.KilometrajeActual) KM</td>
+                                    <td>@string.Format(format, item.DistanciaRecorrida) KM</td>
+                                    <td style="background-color: @item.backgroundColor">@string.Format(format, item.VidaRestante) KM</td>
                                     <td style="background-color: @item.backgroundColor">@item.porcentaje %</td>
                                 </tr>
                             }
@@ -131,10 +133,9 @@
     var borders = [];
     var data = [];
     var labels = [];
-    var firstTime = true;
 
     var options = {
-        type: 'horizontalBar',
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
@@ -146,44 +147,33 @@
             }]
         },
         options: {
+            indexAxis: 'y',
             scales: {
-                xAxes: [{
+                /*xAxes: [{
                     ticks: {
                         min: 0,
                         max: 100,
                         stepSize: 5
                     }
-                }]
-            },
-            legend: {
-                display: false
-            },
-            responsive: true,
-            "animation": {
-                "duration": 0,
-                "onComplete": function () {
-                    //if (firstTime) {
-                        var chartInstance = this.chart,
-                            ctx = chartInstance.ctx;
-
-                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontFamily);
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var data = dataset.data[index];
-                                //SI EL TAMA;O DE ALGUN RUBRO ES MAS GRANDE QUE LOS ACTUALES, RECALCULAR AQUI.
-                                ctx.fillText(data + '%', 200 + ((bar._model.x - 200) / 2), bar._model.y);
-                            })
-                        });
-
-                        firstTime = false;
-                    //}
+                }]*/
+                x: {
+                    min: 0,
+                    max: 100
                 }
-            }
-        }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                datalabels: {
+                    formatter: (value, context) => {
+                        return value + "%";
+                    }
+                }
+            },
+            responsive: true
+        },
+        plugins: [ChartDataLabels]
     }
 
     $(document).ready(function () {

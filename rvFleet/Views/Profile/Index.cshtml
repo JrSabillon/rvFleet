@@ -125,13 +125,13 @@
                     </tr>
                     <tr>
                         <td>Matricula vigente hasta</td>
-                        @if (DateTime.Now.Month > vehiculo.VehFechaMatricula.Month)
+                        @if (DateTime.Now.Month > vehiculo.VehFechaMatricula.Value.Month)
                         {
-                            <td>@string.Format("{0} {1}, {2}", vehiculo.VehFechaMatricula.Day, vehiculo.VehFechaMatricula.ToString("MMMM"), DateTime.Now.AddYears(1).Year)</td>
+                            <td>@string.Format("{0} {1}, {2}", vehiculo.VehFechaMatricula.Value.Day, vehiculo.VehFechaMatricula.Value.ToString("MMMM"), DateTime.Now.AddYears(1).Year)</td>
                         }
                         else
                         {
-                            <td>@string.Format("{0} {1}, {2}", vehiculo.VehFechaMatricula.Day, vehiculo.VehFechaMatricula.ToString("MMMM"), DateTime.Now.Year)</td>
+                            <td>@string.Format("{0} {1}, {2}", vehiculo.VehFechaMatricula.Value.Day, vehiculo.VehFechaMatricula.Value.ToString("MMMM"), DateTime.Now.Year)</td>
                         }
                     </tr>
                 </tbody>

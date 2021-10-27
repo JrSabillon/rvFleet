@@ -6,23 +6,25 @@ using System.Web;
 using MySql.Data.MySqlClient;
 using rvFleet.App_Code;
 using rvFleet.POCO;
+using System.Data.Entity;
 
 namespace rvFleet.ViewModels
 {
     public class VehiclesViewModel
     {
-        public List<vehiculos> GetVehiculos()
+        public List<vehiclefulldata> GetVehiculos()
         {
             try
             {
-                List<vehiculos> vehiculos = new List<vehiculos>();
+                //List<vehiculos> vehiculos = new List<vehiculos>();
+                var userId = BaseViewModel.GetUserData().IdUsuario;
 
                 using (var context = new rvfleetEntities())
                 {
-                    vehiculos = context.vehiculos.ToList();
+                    var vehiculos = context.spGetVehiculosVisibles(userId).ToList();
+                    //vehiculos = context.vehiculos.ToList();
+                    return vehiculos;
                 }
-
-                return vehiculos;
             }
             catch(MySqlException dbExc)
             {
@@ -43,6 +45,20 @@ namespace rvFleet.ViewModels
                     var vehicle = context.vehiculos.Where(x => x.VehPlaca.Equals(VehPlaca))
                         .FirstOrDefault();
 
+                    using (var securityContext = new rvseguridadEntities1())
+                    {
+                        var usuario = securityContext.usuario.Where(x => x.IdUsuario == vehicle.VehCodigoUsuario).FirstOrDefault();
+
+                        if(usuario != null)
+                        {
+                            vehicle.UbicacionActual = securityContext.ubicacion.Where(x => x.IdUbicacion == usuario.IdUbicacion).Select(x => x.NombreUbicacion).FirstOrDefault();
+                        }
+                        else
+                        {
+                            vehicle.UbicacionActual = "NO DEFINIDO";
+                        }
+                    }
+
                     return vehicle;
                 }
             }
@@ -56,14 +72,22 @@ namespace rvFleet.ViewModels
             }
         }
 
-        public vehiclefulldata GetVehiclefulldata(string VehPlaca)
+        /// <summary>
+        /// Obtener los datos completos del vehiculo por su codigo
+        /// </summary>
+        /// <param name="VehCodigo">Codigo del vehiculo</param>
+        /// <returns></returns>
+        public vehiculos GetVehiculoById(int VehCodigo)
         {
             try
             {
-                var vehicleData = this.GetVehiclesCompleteData().Where(x => x.VehPlaca.Equals(VehPlaca))
-                    .FirstOrDefault();
+                using (var context = new rvfleetEntities())
+                {
+                    var vehicle = context.vehiculos.Where(x => x.VehCodigoVehiculo.Equals(VehCodigo))
+                        .FirstOrDefault();
 
-                return vehicleData;
+                    return vehicle;
+                }
             }
             catch (MySqlException dbExc)
             {
@@ -75,34 +99,90 @@ namespace rvFleet.ViewModels
             }
         }
 
-        public List<vehiclefulldata> GetVehiclesCompleteData()
+        //public vehiclefulldata GetVehiclefulldata(string VehPlaca)
+        //{
+        //    try
+        //    {
+        //        var vehicleData = this.GetVehiclesCompleteData().Where(x => x.VehPlaca.Equals(VehPlaca))
+        //            .FirstOrDefault();
+
+        //        return vehicleData;
+        //    }
+        //    catch (MySqlException dbExc)
+        //    {
+        //        throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+        //    }
+        //}
+
+        //public List<vehiculos> GetVehiclesCompleteData()
+        //{
+        //    try
+        //    {
+        //        using (var context = new rvfleetEntities())
+        //        {
+        //            var data = context.vehiclefulldata.ToList();
+        //            return data;
+        //        }
+        //    }
+        //    catch (MySqlException dbExc)
+        //    {
+        //        throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+        //    }
+        //}
+
+        //public List<vehiclefulldata> GetVehiclesCompleteData()
+        //{
+        //    try
+        //    {
+        //        using (var context = new rvfleetEntities())
+        //        {
+        //            var data = context.vehiclefulldata.ToList();
+
+        //            var data = from vehicle in context.vehiculos
+        //                       join user in context.usuarios on vehicle equals user.IdUsuario into gj
+        //                       from vehuser in gj.DefaultIfEmpty()
+        //                       select new VehicleModel { 
+        //                           VehPlaca = vehicle.VehPlaca, 
+        //                           VehColor = vehicle.VehColor, 
+        //                           VehAno = vehicle.VehAno, 
+        //                           NombreEncargado = vehuser?.NombreUsuario ?? string.Empty 
+        //                       }
+
+        //            return data;
+        //        }
+        //    }
+        //    catch (MySqlException dbExc)
+        //    {
+        //        throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+        //    }
+        //}
+
+        public List<spGetVehiculosCheckList_Result> GetVehiculosAsignados(string IdUsuario)
         {
             try
             {
                 using (var context = new rvfleetEntities())
                 {
-                    var data = context.vehiclefulldata.ToList();
-
-                    //var data = from vehicle in context.vehiculos
-                    //           join user in context.usuarios on vehicle equals user.IdUsuario into gj
-                    //           from vehuser in gj.DefaultIfEmpty()
-                    //           select new VehicleModel { 
-                    //               VehPlaca = vehicle.VehPlaca, 
-                    //               VehColor = vehicle.VehColor, 
-                    //               VehAno = vehicle.VehAno, 
-                    //               NombreEncargado = vehuser?.NombreUsuario ?? string.Empty 
-                    //           }
+                    var data = context.spGetVehiculosCheckList(DateTime.Now, IdUsuario).ToList();
 
                     return data;
                 }
             }
-            catch (MySqlException dbExc)
-            {
-                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
-            }
             catch (Exception exc)
             {
-                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+                throw exc;
             }
         }
 
@@ -201,6 +281,9 @@ namespace rvFleet.ViewModels
                     CurrentVehicle.VehFotoTrasera = vehicle.VehFotoTrasera ?? CurrentVehicle.VehFotoTrasera;
                     CurrentVehicle.VehFotoMotor = vehicle.VehFotoMotor ?? CurrentVehicle.VehFotoMotor;
                     CurrentVehicle.VehFotoInterior = vehicle.VehFotoInterior ?? CurrentVehicle.VehFotoInterior;
+                    CurrentVehicle.VehKilometrajeActualizado = CurrentVehicle.VehKilometraje != vehicle.VehKilometraje ? DateTime.Now : CurrentVehicle.VehKilometrajeActualizado;
+                    CurrentVehicle.VehKilometraje = vehicle.VehKilometraje;
+
                     context.SaveChanges();
 
                     return CurrentVehicle;
@@ -252,6 +335,196 @@ namespace rvFleet.ViewModels
             catch (Exception exc)
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public List<controlvehiculospregunta> GetPreguntas()
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var preguntas = context.controlvehiculospregunta.Where(x => x.Estado.Value).OrderBy(x => x.Orden).ToList();
+
+                    return preguntas;
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public void SaveInspectionAnswer(controlvehiculosrespuesta respuesta, DateTime Fecha)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    respuesta.Fecha = Fecha;
+                    respuesta.CodigoUsuario = BaseViewModel.GetUserData().IdUsuario;
+
+                    context.controlvehiculosrespuesta.Add(respuesta);
+                    context.SaveChanges();
+                }
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} / SaveInspectionAnswer - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} / SaveInspectionAnswer - {exc.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Guardar datos detallados de la inspeccion, por los momentos el kilometraje y una observacion general.
+        /// </summary>
+        /// <param name="detalle">Objeto de tipo detalle que contiene los datos a registrar</param>
+        public void SaveInspectionDetails(controlvehiculosrespuestadetalle detalle)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    context.controlvehiculosrespuestadetalle.Add(detalle);
+                    context.SaveChanges();
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public List<controlvehiculosrespuesta> GetRespuestasInspeccion(int CodigoVehiculo, DateTime Fecha)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var data = context.controlvehiculosrespuesta.Include(x => x.controlvehiculospregunta)
+                        .Where(x => x.CodigoVehiculo == CodigoVehiculo && x.Fecha == Fecha).ToList();
+
+                    return data;
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public List<InspectionsTable> GetRespuestasGrouped(string VehPlaca)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var data = new List<InspectionsTable>();
+
+                    if (!string.IsNullOrEmpty(VehPlaca))
+                    {
+                        data = context.controlvehiculosrespuesta
+                            .Join(context.vehiculos, 
+                                c => c.CodigoVehiculo, 
+                                v => v.VehCodigoVehiculo, 
+                                (c, v) => new { c, v })
+                            .Join(context.controlvehiculosrespuestadetalle, 
+                                a => new { a.c.Id, a.c.CodigoVehiculo },
+                                cvrd => new { Id = cvrd.IdControl, cvrd.CodigoVehiculo },
+                                (a, cvrd) => new { a, cvrd })
+                            .Where(x => x.a.v.VehPlaca == VehPlaca)
+                            .GroupBy(x => new { x.a.v.VehCodigoVehiculo, x.a.c.Fecha, x.a.v.VehPlaca, x.a.c.CodigoUsuario, x.cvrd.Kilometraje, x.cvrd.Observacion })
+                            .Select(x => new InspectionsTable { 
+                                VehPlaca = x.Key.VehPlaca, 
+                                Fecha = x.Key.Fecha, 
+                                VehCodigoVehiculo = x.Key.VehCodigoVehiculo, 
+                                CodigoUsuario = x.Key.CodigoUsuario, 
+                                Kilometraje = x.Key.Kilometraje, 
+                                Observacion = x.Key.Observacion
+                            })
+                            .ToList();
+                    }
+                    else
+                    {
+                        data = context.controlvehiculosrespuesta
+                            .Join(context.vehiculos,
+                                c => c.CodigoVehiculo,
+                                v => v.VehCodigoVehiculo,
+                                (c, v) => new { c, v })
+                            .Join(context.controlvehiculosrespuestadetalle, 
+                                a => new { a.c.Id, a.c.CodigoVehiculo }, 
+                                cvrd => new { Id = cvrd.IdControl, cvrd.CodigoVehiculo },
+                                (a, cvrd) => new { a, cvrd })
+                            .GroupBy(x => new { x.a.v.VehCodigoVehiculo, x.a.c.Fecha, x.a.v.VehPlaca, x.a.c.CodigoUsuario, x.cvrd.Kilometraje, x.cvrd.Observacion })
+                            .Select(x => new InspectionsTable { 
+                                VehPlaca = x.Key.VehPlaca, 
+                                Fecha = x.Key.Fecha, 
+                                VehCodigoVehiculo = x.Key.VehCodigoVehiculo, 
+                                CodigoUsuario = x.Key.CodigoUsuario,
+                                Kilometraje = x.Key.Kilometraje,
+                                Observacion = x.Key.Observacion
+                            })
+                            .ToList();
+                    }
+
+                    return data;
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public int getInspectionAnswersId(int CodigoVehiculo)
+        {
+            try
+            {
+                int IdControl = 1;
+
+                using (var context = new rvfleetEntities())
+                {
+                    if(context.controlvehiculosrespuesta.Where(x => x.CodigoVehiculo == CodigoVehiculo).FirstOrDefault() != null)
+                    {
+                        IdControl = context.controlvehiculosrespuesta.Where(x => x.CodigoVehiculo == CodigoVehiculo).Max(x => x.Id) + 1;
+                    }
+                }
+
+                return IdControl;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public void UpdateKilometraje(int VehCodigoVehiculo, int VehKilometraje)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var vehicle = context.vehiculos.Where(x => x.VehCodigoVehiculo == VehCodigoVehiculo).FirstOrDefault();
+
+                    if(vehicle != null)
+                    {
+                        vehicle.VehKilometraje = VehKilometraje;
+                        vehicle.VehKilometrajeActualizado = DateTime.Now;
+
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
             }
         }
     }

@@ -34,7 +34,26 @@ namespace rvFleet.Controllers
 
                 if(IsValidated)
                 {
+
+                    ///Funcionalidad NUEVA: un usuario puede tener varios vehiculos, con esto se verificara el checklist ahora.
+                    var vehicles = new VehiclesViewModel().GetVehiculosAsignados(user.IdUsuario);
+                    ///mas que 1 quiere decir que son multiples vehiculos bajo su control.
+                    user.MultipleVehicles = vehicles.Count > 1;
                     CreateCookie(user);
+
+                    if(vehicles.Count > 0)
+                    {
+                        //el usuario tiene uno o mas vehiculos asignados, verificar que ya ingreso el kilometraje de hoy.
+                        //var DailyCheckCompleted = kilometrajeHistoricoViewModel.KilometrajeUploaded(vehicle.VehCodigoVehiculo);
+                        var DailyCheckCompleted = vehicles.Where(x => x.VehPlaca.Contains("PENDIENTE")).Count();
+
+                        if (DailyCheckCompleted > 0)
+                        {
+                            //return RedirectToAction("Inspection", "Vehicles", new { VehCodigo = vehicle.VehCodigoVehiculo });
+                            return RedirectToAction("Inspection", "Vehicles");
+                        }
+                    }
+
                     return RedirectToAction("Index", "Home");
                 }
 

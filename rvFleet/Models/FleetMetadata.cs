@@ -27,7 +27,7 @@ namespace rvFleet.Models
     {
         [Required]
         [Display(Name = "Número de placa")]
-        [StringLength(15)]
+        [StringLength(50)]
         public string VehPlaca;
         [Required]
         [Display(Name = "Vin")]
@@ -79,5 +79,11 @@ namespace rvFleet.Models
         [Display(Name = "Encargado")]
         [StringLength(50)]
         public string VehCodigoUsuario;
+        [Required]
+        [Display(Name = "Kilometraje actual")]
+        public int? VehKilometraje;
+        [Display(Name = "Fecha de act. KMs")]
+        [DisplayFormat(ApplyFormatInEditMode = true)]
+        public DateTime? VehKilometrajeActualizado;
     }
 }

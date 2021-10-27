@@ -1,0 +1,136 @@
+﻿@using System.Globalization;
+@model List<rvFleet.Models.bitacoravehiculo>
+@{
+    string FormatedDateToText(DateTime date)
+    {
+        return date.ToString("dd") + " de " + date.ToString("MMMM", new System.Globalization.CultureInfo("es")) + ", " + date.ToString("yyyy");
+    }
+}
+
+@if (Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <div class="card form-group shadow">
+            <div class="card-header" data-toggle="collapse" data-target="#collapse-@item.bitacoraId" aria-expanded="true">
+                <table class="w-100">
+                    <tr>
+                        <td colspan="3" width="100%">
+                            <label><span class="badge badge-info">@item.bitacoracomentario1.Count</span> Tipo de comentario <b>@item.bitacoraTipoDescripcion</b></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="33%">
+                            <label>@item.bitacoraPlaca</label>
+                        </td>
+                        <td width="33%">
+                            <label><i class="fa fa-user"></i> @item.bitacoraUsuario</label>
+                        </td>
+                        <td width="34%">
+                            <label class="text-muted float-right">@FormatedDateToText(item.bitacoraFecha.Value)</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100%" colspan="3">
+                            <label>&bull; @item.bitacoraComentario</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-body collapse" id="collapse-@item.bitacoraId">
+                @if (item.bitacoracomentario1.Count > 0)
+                {
+                    <div class="p-2">
+                        <b><i class="fa fa-comments-o"></i> Comentarios</b>
+                        <hr class="mt-2" />
+                        <ul class="list-group list-group-flush">
+                            @foreach (var comment in item.bitacoracomentario1)
+                            {
+                                <li class="list-group-item">
+                                    <div class="pl-4">
+                                        <label><i class="fa fa-user"></i> @comment.bitacoraComUsuario</label>
+                                        <label class="text-muted float-right">@FormatedDateToText(comment.bitacoraComFecha.Value)</label>
+                                        <br />
+                                        <label>&mdash; @comment.bitacoraComRespuesta</label>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <label>Sin comentarios adicionales</label>
+                }
+
+                @using (Html.BeginForm("AddLogComment", "Vehicles", FormMethod.Post, new { onsubmit = "isLoading(true);" }))
+                {
+                    @Html.Hidden("VehPlaca", item.bitacoraPlaca)
+                    @Html.Hidden("bitacoraId", item.bitacoraId)
+                    <div class="form-group mt-4">
+                        <textarea name="bitacoraComRespuesta" placeholder="Ingrese un comentario aqui..." required class="form-control col-12" rows="2"></textarea>
+                        <br />
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i> Agregar comentario
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="text-center h-50 d-flex">
+        <h4 class="text-muted m-auto">No hay registros por mostrar.</h4>
+    </div>
+}
+
+@using (Html.BeginForm("AddLog", "Vehicles", FormMethod.Post, new { onsubmit = "$('#bitacoraPlaca').val($('#new-comment-vehplaca').val()); $('#button-nueva-entrada').attr('disabled', 'disabled');" }))
+{
+    @Html.Hidden("bitacoraPlaca", (string)ViewBag.SelectedPlaca)
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal-nueva-entrada">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nueva entrada</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        @if (ViewBag.CanChange)
+                        {
+                            @Html.DropDownList("VehPlaca", null, new { @class = "form-control col-12", id = "new-comment-vehplaca" })
+                        }
+                        else
+                        {
+                            @Html.DropDownList("VehPlaca", null, new { @class = "form-control col-12", disabled = "disabled", id = "new-comment-vehplaca" })
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="select-log-type" class="col-form-label">Tipo:</label>
+                        @Html.DropDownList("bitacoraTipo", null, new { @class = "form-control col-12", id = "select-log-type" })
+                    </div>
+                    <div class="form-group">
+                        <label for="input-comentario" class="col-form-label">Comentario:</label>
+                        <textarea name="bitacoraComentario" required class="form-control col-12" id="input-comentario"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" id="button-nueva-entrada">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $('#new-comment-vehplaca').select2({
+            theme: 'bootstrap4'
+        });
+    });
+</script>

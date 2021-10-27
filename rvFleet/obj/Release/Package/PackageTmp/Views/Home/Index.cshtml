@@ -21,9 +21,34 @@
     }
 }
 
-<h4 class="alert-heading">Bienvenido(a) @ViewBag.UserName - <a href="#">PDZ3311</a> <span class="badge badge-info">4</span></h4>
+@if (ViewBag.HasVehicle) 
+{
+    <h4 class="alert-heading">Bienvenido(a) @ViewBag.UserName - 
+        <a href="@Url.Action("Logs", "Vehicles", new { VehPlaca = ViewBag.VehPlaca })">@ViewBag.VehPlaca</a> <span class="badge badge-info">@ViewBag.LogsCount</span>
+    </h4>
+}
+else
+{
+    <h4 class="alert-heading">Bienvenido(a) @ViewBag.UserName</h4>
+}
 <hr />
 <div class="row">
+    @if (ViewBag.HasVehicle)
+    {
+        <div class="col-12" style="cursor: pointer;">
+            <div class="form-group mt-3" data-toggle="collapse" data-target="#div-rubros-principales">
+                <label class="h5 w-100" style="cursor: pointer;">
+                    <i class="fa fa-bar-chart-o"></i> Ver rubros principales <span class="float-right"><i class="fa fa-chevron-down"></i></span>
+                </label>
+                <hr />
+            </div>
+            <div class="collapse" id="div-rubros-principales">
+                @{
+                    Html.RenderPartial("_RubrosPrincipales", ViewBag.RubrosPrincipalesModel as List<rvFleet.Models.GetVehicleGraphData_Result>);
+                }
+            </div>
+        </div>
+    }
     @foreach (var item in Model)
     {
 
@@ -33,7 +58,7 @@
             var controller = item.URL.Split('/')[0];
             var action = item.URL.Split('/')[1];
             <div class="form-group col-12 col-md-6 col-lg-4">
-                <div class="card m-auto m-lg-0 shadow" style="width: 100%;">
+                <div class="card m-auto m-lg-0 shadow h-100" style="width: 100%;">
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(item.PadrePrivilegio))
                         {
@@ -45,7 +70,7 @@
                         }
                         <hr />
                         <p class="card-text">@item.DescripcionPrivilegio</p>
-                        <a href="@Url.Action(action, controller)" class="btn btn-primary m-auto">
+                        <a href="@Html.Raw(Url.Action(action, controller).Replace("%3f", "?").Replace("%3d", "="))" class="btn btn-primary m-auto">
                             Ir
                             <i class="fa fa-sign-in"></i>
                         </a>

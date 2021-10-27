@@ -46,6 +46,41 @@
     <Property Name="ConKilometrajeAsignacion" Type="int" Nullable="false" />
     <Property Name="ConCodigoConductor" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="controlvehiculospregunta">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tipo" Type="varchar" MaxLength="50" />
+    <Property Name="Pregunta" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="Estado" Type="bit" />
+    <Property Name="Requerido" Type="bit" />
+    <Property Name="Orden" Type="int" />
+  </EntityType>
+  <EntityType Name="controlvehiculosrespuesta">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="CodigoVehiculo" />
+      <PropertyRef Name="CodigoPregunta" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CodigoVehiculo" Type="int" Nullable="false" />
+    <Property Name="CodigoPregunta" Type="int" Nullable="false" />
+    <Property Name="Fecha" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="CodigoUsuario" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Respuesta" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="Observacion" Type="varchar" MaxLength="250" />
+  </EntityType>
+  <EntityType Name="controlvehiculosrespuestadetalle">
+    <Key>
+      <PropertyRef Name="IdControl" />
+      <PropertyRef Name="CodigoVehiculo" />
+    </Key>
+    <Property Name="IdControl" Type="int" Nullable="false" />
+    <Property Name="CodigoVehiculo" Type="int" Nullable="false" />
+    <Property Name="Kilometraje" Type="int" Nullable="false" />
+    <Property Name="Observacion" Type="varchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="detallefactura">
     <Key>
       <PropertyRef Name="DetCodigoDetalle" />
@@ -105,6 +140,15 @@
     <Property Name="ProNombreBanco" Type="varchar" MaxLength="250" Nullable="false" />
     <Property Name="ProTipo" Type="varchar" MaxLength="50" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'def.rvfleet.resumencostosvehiculos' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="resumencostosvehiculos">
+    <Key>
+      <PropertyRef Name="Fecha" />
+    </Key>
+    <Property Name="Fecha" Type="date" Nullable="false" />
+    <Property Name="Costo" Type="double" />
+  </EntityType>
   <EntityType Name="rubrodetalle">
     <Key>
       <PropertyRef Name="CodigoDetalle" />
@@ -147,7 +191,7 @@
       <PropertyRef Name="VehCodigoAresSun" />
     </Key>
     <Property Name="VehCodigoVehiculo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="VehPlaca" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VehPlaca" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehVIN" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
@@ -157,9 +201,9 @@
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
-    <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehFechaMatricula" Type="date" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
     <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
     <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
     <Property Name="VehFotoFrontal" Type="varchar" MaxLength="500" />
@@ -170,6 +214,7 @@
     <Property Name="VehFotoInterior" Type="varchar" MaxLength="500" />
     <Property Name="VehKilometraje" Type="int" />
     <Property Name="VehColorIdentificador" Type="varchar" MaxLength="50" />
+    <Property Name="VehKilometrajeActualizado" Type="datetime" Precision="0" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'def.rvfleet.kilometrajeporvehiculoanoactual' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -183,7 +228,7 @@ warning 6002: The table/view 'def.rvfleet.kilometrajeporvehiculoanoactual' does 
     <Property Name="KilFechaIngreso" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="KilFechaIngreso_Mes" Type="int" />
     <Property Name="KilKilometraje" Type="int" />
-    <Property Name="VehPlaca" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VehPlaca" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehColorIdentificador" Type="varchar" MaxLength="50" />
   </EntityType>
   <!--Errors Found During Generation:
@@ -217,7 +262,6 @@ warning 6002: The table/view 'def.rvfleet.vehiclecosts' does not have a primary 
     <Property Name="Total" Type="double" />
     <Property Name="DetPlacaVehiculo" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="PromedioMensual" Type="double" />
-    <Property Name="PromedioAnual" Type="double" />
   </EntityType>
   <!--Errors Found During Generation:
 warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -233,14 +277,12 @@ warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a prima
       <PropertyRef Name="VehMarca" />
       <PropertyRef Name="VehModelo" />
       <PropertyRef Name="VehCodigoAresSun" />
-      <PropertyRef Name="VehCodigoEmpresa" />
-      <PropertyRef Name="VehFechaMatricula" />
-      <PropertyRef Name="VehNumeroPoliza" />
       <PropertyRef Name="NombreUsuario" />
       <PropertyRef Name="NombreEmpresa" />
+      <PropertyRef Name="ProNombre" />
     </Key>
     <Property Name="VehCodigoVehiculo" Type="int" Nullable="false" />
-    <Property Name="VehPlaca" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="VehPlaca" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehVIN" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehMotor" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="VehCilindraje" Type="varchar" MaxLength="15" Nullable="false" />
@@ -250,13 +292,15 @@ warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a prima
     <Property Name="VehModelo" Type="varchar" MaxLength="25" Nullable="false" />
     <Property Name="VehCodigoAresSun" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="VehCodigoProveedor" Type="int" />
-    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" Nullable="false" />
-    <Property Name="VehFechaMatricula" Type="date" Nullable="false" />
-    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="VehCodigoEmpresa" Type="varchar" MaxLength="250" />
+    <Property Name="VehFechaMatricula" Type="date" />
+    <Property Name="VehNumeroPoliza" Type="varchar" MaxLength="50" />
     <Property Name="VehUrlFotoRevision" Type="varchar" MaxLength="500" />
     <Property Name="VehCodigoUsuario" Type="varchar" MaxLength="50" />
     <Property Name="NombreUsuario" Type="varchar" MaxLength="250" Nullable="false" />
     <Property Name="NombreEmpresa" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="VehKilometraje" Type="int" />
+    <Property Name="ProNombre" Type="varchar" MaxLength="250" Nullable="false" />
   </EntityType>
   <Association Name="FK__bitacoravehiculo">
     <End Role="bitacoravehiculo" Type="Self.bitacoravehiculo" Multiplicity="1" />
@@ -294,6 +338,27 @@ warning 6002: The table/view 'def.rvfleet.vehiclefulldata' does not have a prima
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_controlvehiculosrespuesta_controlvehiculospregunta">
+    <End Role="controlvehiculospregunta" Type="Self.controlvehiculospregunta" Multiplicity="1" />
+    <End Role="controlvehiculosrespuesta" Type="Self.controlvehiculosrespuesta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="controlvehiculospregunta">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="controlvehiculosrespuesta">
+        <PropertyRef Name="CodigoPregunta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_controlvehiculosrespuesta_vehiculos' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_controlvehiculosrespuesta_vehiculos" />-->
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_controlvehiculosrespuestadetalle_controlvehiculosrespuesta' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_controlvehiculosrespuestadetalle_controlvehiculosrespuesta" />-->
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_controlvehiculosrespuestadetalle_vehiculos' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_controlvehiculosrespuestadetalle_vehiculos" />-->
   <Association Name="FK_detallefactura_facturas">
     <End Role="facturas" Type="Self.facturas" Multiplicity="1" />
     <End Role="detallefactura" Type="Self.detallefactura" Multiplicity="*" />
@@ -347,12 +412,30 @@ warning 6035: The relationship 'FK_kilometrajehistorico_vehiculos' has columns t
   <Function Name="GetVehicleGraphData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
     <Parameter Name="VehPlaca_IN" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="spGetProveedoresTableCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="startDate_IN" Type="date" Mode="In" />
+    <Parameter Name="endDate_IN" Type="date" Mode="In" />
+  </Function>
   <Function Name="spGetRubrosNoFacturadosVehiculo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="" />
+  <Function Name="spGetRubrosTableCost" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="startDate_IN" Type="date" Mode="In" />
+    <Parameter Name="endDate_IN" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spGetVehicleCostsFiltered" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="StartDate_IN" Type="date" Mode="In" />
+    <Parameter Name="EndDate_IN" Type="date" Mode="In" />
+  </Function>
+  <Function Name="spGetVehiculosVisibles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="">
+    <Parameter Name="IdUsuario_IN" Type="varchar" Mode="In" />
+  </Function>
   <EntityContainer Name="rvfleetModelStoreContainer">
     <EntitySet Name="archivofactura" EntityType="Self.archivofactura" Schema="" store:Type="Tables" />
     <EntitySet Name="bitacoracomentario" EntityType="Self.bitacoracomentario" Schema="" store:Type="Tables" />
     <EntitySet Name="bitacoravehiculo" EntityType="Self.bitacoravehiculo" Schema="" store:Type="Tables" />
     <EntitySet Name="conductorhistorico" EntityType="Self.conductorhistorico" Schema="" store:Type="Tables" />
+    <EntitySet Name="controlvehiculospregunta" EntityType="Self.controlvehiculospregunta" Schema="" store:Type="Tables" />
+    <EntitySet Name="controlvehiculosrespuesta" EntityType="Self.controlvehiculosrespuesta" Schema="" store:Type="Tables" />
+    <EntitySet Name="controlvehiculosrespuestadetalle" EntityType="Self.controlvehiculosrespuestadetalle" Schema="" store:Type="Tables" />
     <EntitySet Name="detallefactura" EntityType="Self.detallefactura" Schema="" store:Type="Tables" />
     <EntitySet Name="facturas" EntityType="Self.facturas" Schema="" store:Type="Tables" />
     <EntitySet Name="kilometrajehistorico" EntityType="Self.kilometrajehistorico" Schema="" store:Type="Tables" />
@@ -362,6 +445,12 @@ warning 6035: The relationship 'FK_kilometrajehistorico_vehiculos' has columns t
     <EntitySet Name="sucursales" EntityType="Self.sucursales" Schema="" store:Type="Tables" />
     <EntitySet Name="ubicacionhistorica" EntityType="Self.ubicacionhistorica" Schema="" store:Type="Tables" />
     <EntitySet Name="vehiculos" EntityType="Self.vehiculos" Schema="" store:Type="Tables" />
+    <EntitySet Name="resumencostosvehiculos" EntityType="Self.resumencostosvehiculos" store:Type="Tables" store:Schema="">
+      <DefiningQuery>SELECT
+`resumencostosvehiculos`.`Fecha`, 
+`resumencostosvehiculos`.`Costo`
+FROM `rvfleet.resumencostosvehiculos` AS `resumencostosvehiculos`</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="kilometrajeporvehiculoanoactual" EntityType="Self.kilometrajeporvehiculoanoactual" store:Type="Views" store:Schema="">
       <DefiningQuery>SELECT
 `kilometrajeporvehiculoanoactual`.`KilCodigoVehiculo`, 
@@ -392,8 +481,7 @@ FROM `rvfleet.recommendedmaintenance` AS `recommendedmaintenance`</DefiningQuery
       <DefiningQuery>SELECT
 `vehiclecosts`.`Total`, 
 `vehiclecosts`.`DetPlacaVehiculo`, 
-`vehiclecosts`.`PromedioMensual`, 
-`vehiclecosts`.`PromedioAnual`
+`vehiclecosts`.`PromedioMensual`
 FROM `rvfleet.vehiclecosts` AS `vehiclecosts`</DefiningQuery>
     </EntitySet>
     <EntitySet Name="vehiclefulldata" EntityType="Self.vehiclefulldata" store:Type="Views" store:Schema="">
@@ -415,7 +503,9 @@ FROM `rvfleet.vehiclecosts` AS `vehiclecosts`</DefiningQuery>
 `vehiclefulldata`.`VehUrlFotoRevision`, 
 `vehiclefulldata`.`VehCodigoUsuario`, 
 `vehiclefulldata`.`NombreUsuario`, 
-`vehiclefulldata`.`NombreEmpresa`
+`vehiclefulldata`.`NombreEmpresa`, 
+`vehiclefulldata`.`VehKilometraje`, 
+`vehiclefulldata`.`ProNombre`
 FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK__bitacoravehiculo" Association="Self.FK__bitacoravehiculo">
@@ -429,6 +519,10 @@ FROM `rvfleet.vehiclefulldata` AS `vehiclefulldata`</DefiningQuery>
     <AssociationSet Name="FK__rubros" Association="Self.FK__rubros">
       <End Role="rubros" EntitySet="rubros" />
       <End Role="rubrodetalle" EntitySet="rubrodetalle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_controlvehiculosrespuesta_controlvehiculospregunta" Association="Self.FK_controlvehiculosrespuesta_controlvehiculospregunta">
+      <End Role="controlvehiculospregunta" EntitySet="controlvehiculospregunta" />
+      <End Role="controlvehiculosrespuesta" EntitySet="controlvehiculosrespuesta" />
     </AssociationSet>
     <AssociationSet Name="FK_detallefactura_facturas" Association="Self.FK_detallefactura_facturas">
       <End Role="facturas" EntitySet="facturas" />

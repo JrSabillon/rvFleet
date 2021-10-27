@@ -124,6 +124,29 @@ namespace rvFleet.ViewModels
             }
         }
 
+        public List<facturas> GetFacturasNoEntregadas()
+        {
+            try
+            {
+                List<facturas> ordenes = new List<facturas>();
+
+                using (var context = new rvfleetEntities())
+                {
+                    ordenes = context.facturas.Include(x => x.detallefactura).Where(x => !x.FacFechaEntregaAdmin.HasValue).Include(x => x.detallefactura).Include(x => x.proveedor).ToList();
+                }
+
+                return ordenes;
+            }
+            catch (MySqlException dbExc)
+            {
+                throw new ApplicationException($"{Constants.DB_Error} - {dbExc.Message}");
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
         /// <summary>
         /// Obtener todas las ordenes y facturas.
         /// </summary>
@@ -288,6 +311,27 @@ namespace rvFleet.ViewModels
             catch (Exception exc)
             {
                 throw new ApplicationException($"{Constants.App_Error} - {exc.Message}");
+            }
+        }
+
+        public void updateFechaAdmon(facturas factura)
+        {
+            try
+            {
+                using (var context = new rvfleetEntities())
+                {
+                    var facturaActual = context.facturas.Where(x => x.FacCodigoOrden == factura.FacCodigoOrden).FirstOrDefault();
+
+                    if(facturaActual != null)
+                    {
+                        facturaActual.FacFechaEntregaAdmin = DateTime.Now;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch(Exception exc)
+            {
+                throw exc;
             }
         }
 

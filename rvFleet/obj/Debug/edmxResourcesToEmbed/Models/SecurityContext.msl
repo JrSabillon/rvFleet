@@ -1,87 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="rvseguridadModelStoreContainer" CdmEntityContainer="rvseguridadEntities1">
-    <EntitySetMapping Name="empresa">
-      <EntityTypeMapping TypeName="rvseguridadModel.empresa">
-        <MappingFragment StoreEntitySet="empresa">
-          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-          <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
-          <ScalarProperty Name="ImagenEmpresa" ColumnName="ImagenEmpresa" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="posicion">
-      <EntityTypeMapping TypeName="rvseguridadModel.posicion">
-        <MappingFragment StoreEntitySet="posicion">
-          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
-          <ScalarProperty Name="NombrePosicion" ColumnName="NombrePosicion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="privilegio">
-      <EntityTypeMapping TypeName="rvseguridadModel.privilegio">
-        <MappingFragment StoreEntitySet="privilegio">
-          <ScalarProperty Name="Icono" ColumnName="Icono" />
-          <ScalarProperty Name="Parametros" ColumnName="Parametros" />
-          <ScalarProperty Name="URL" ColumnName="URL" />
-          <ScalarProperty Name="DescripcionPrivilegio" ColumnName="DescripcionPrivilegio" />
-          <ScalarProperty Name="IdPrivilegio" ColumnName="IdPrivilegio" />
-          <ScalarProperty Name="NombrePrivilegio" ColumnName="NombrePrivilegio" />
-          <ScalarProperty Name="EstadoPrivilegio" ColumnName="EstadoPrivilegio" />
-          <ScalarProperty Name="NivelPrivilegio" ColumnName="NivelPrivilegio" />
-          <ScalarProperty Name="PadrePrivilegio" ColumnName="PadrePrivilegio" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="rol">
-      <EntityTypeMapping TypeName="rvseguridadModel.rol">
-        <MappingFragment StoreEntitySet="rol">
-          <ScalarProperty Name="IdRol" ColumnName="IdRol" />
-          <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
-          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="usuario">
-      <EntityTypeMapping TypeName="rvseguridadModel.usuario">
-        <MappingFragment StoreEntitySet="usuario">
-          <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
-          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-          <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
-          <ScalarProperty Name="Estado" ColumnName="Estado" />
-          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
-          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
-          <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
-          <ScalarProperty Name="Jefe" ColumnName="Jefe" />
-          <ScalarProperty Name="Correo" ColumnName="Correo" />
-          <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
-          <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
-          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <AssociationSetMapping Name="rolprivilegio" TypeName="rvseguridadModel.rolprivilegio" StoreEntitySet="rolprivilegio">
-      <EndProperty Name="rol">
-        <ScalarProperty Name="IdRol" ColumnName="IdRol" />
-      </EndProperty>
-      <EndProperty Name="privilegio">
-        <ScalarProperty Name="IdPrivilegio" ColumnName="IdPrivilegio" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="rolusuario" TypeName="rvseguridadModel.rolusuario" StoreEntitySet="rolusuario">
-      <EndProperty Name="rol">
-        <ScalarProperty Name="IdRol" ColumnName="IdRol" />
-      </EndProperty>
-      <EndProperty Name="usuario">
-        <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-      </EndProperty>
-    </AssociationSetMapping>
     <EntitySetMapping Name="departamento">
       <EntityTypeMapping TypeName="rvseguridadModel.departamento">
         <MappingFragment StoreEntitySet="departamento">
           <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
           <ScalarProperty Name="NombreDepartamento" ColumnName="NombreDepartamento" />
           <ScalarProperty Name="IdDepartamento" ColumnName="IdDepartamento" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="empresa">
+      <EntityTypeMapping TypeName="rvseguridadModel.empresa">
+        <MappingFragment StoreEntitySet="empresa">
+          <ScalarProperty Name="ImagenEmpresa" ColumnName="ImagenEmpresa" />
+          <ScalarProperty Name="NombreEmpresa" ColumnName="NombreEmpresa" />
+          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -106,11 +40,70 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="posicion">
+      <EntityTypeMapping TypeName="rvseguridadModel.posicion">
+        <MappingFragment StoreEntitySet="posicion">
+          <ScalarProperty Name="NombrePosicion" ColumnName="NombrePosicion" />
+          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="privilegio">
+      <EntityTypeMapping TypeName="rvseguridadModel.privilegio">
+        <MappingFragment StoreEntitySet="privilegio">
+          <ScalarProperty Name="Icono" ColumnName="Icono" />
+          <ScalarProperty Name="Parametros" ColumnName="Parametros" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="PadrePrivilegio" ColumnName="PadrePrivilegio" />
+          <ScalarProperty Name="NivelPrivilegio" ColumnName="NivelPrivilegio" />
+          <ScalarProperty Name="EstadoPrivilegio" ColumnName="EstadoPrivilegio" />
+          <ScalarProperty Name="DescripcionPrivilegio" ColumnName="DescripcionPrivilegio" />
+          <ScalarProperty Name="NombrePrivilegio" ColumnName="NombrePrivilegio" />
+          <ScalarProperty Name="IdPrivilegio" ColumnName="IdPrivilegio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="privilegiopermiso">
+      <EntityTypeMapping TypeName="rvseguridadModel.privilegiopermiso">
+        <MappingFragment StoreEntitySet="privilegiopermiso">
+          <ScalarProperty Name="Permiso" ColumnName="Permiso" />
+          <ScalarProperty Name="IdPrivilegio" ColumnName="IdPrivilegio" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="rol">
+      <EntityTypeMapping TypeName="rvseguridadModel.rol">
+        <MappingFragment StoreEntitySet="rol">
+          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+          <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+          <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ubicacion">
       <EntityTypeMapping TypeName="rvseguridadModel.ubicacion">
         <MappingFragment StoreEntitySet="ubicacion">
           <ScalarProperty Name="NombreUbicacion" ColumnName="NombreUbicacion" />
           <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="rvseguridadModel.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+          <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+          <ScalarProperty Name="IdentidadUsuario" ColumnName="IdentidadUsuario" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Jefe" ColumnName="Jefe" />
+          <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
+          <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+          <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+          <ScalarProperty Name="CodigoRRHH" ColumnName="CodigoRRHH" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -122,22 +115,29 @@
         <ScalarProperty Name="IdDepartamento" ColumnName="IdDepartamento" />
       </EndProperty>
     </AssociationSetMapping>
-    <EntitySetMapping Name="privilegiopermiso">
-      <EntityTypeMapping TypeName="rvseguridadModel.privilegiopermiso">
-        <MappingFragment StoreEntitySet="privilegiopermiso">
-          <ScalarProperty Name="Permiso" ColumnName="Permiso" />
-          <ScalarProperty Name="IdPrivilegio" ColumnName="IdPrivilegio" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="usuariodepartamentoposicion">
-      <EntityTypeMapping TypeName="rvseguridadModel.usuariodepartamentoposicion">
-        <MappingFragment StoreEntitySet="usuariodepartamentoposicion">
-          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
-          <ScalarProperty Name="IdDepartamento" ColumnName="IdDepartamento" />
-          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
+    <AssociationSetMapping Name="rolprivilegio" TypeName="rvseguridadModel.rolprivilegio" StoreEntitySet="rolprivilegio">
+      <EndProperty Name="privilegio">
+        <ScalarProperty Name="IdPrivilegio" ColumnName="IdPrivilegio" />
+      </EndProperty>
+      <EndProperty Name="rol">
+        <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="rolusuario" TypeName="rvseguridadModel.rolusuario" StoreEntitySet="rolusuario">
+      <EndProperty Name="usuario">
+        <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+      </EndProperty>
+      <EndProperty Name="rol">
+        <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="usuarioubicacion" TypeName="rvseguridadModel.usuarioubicacion" StoreEntitySet="usuarioubicacion">
+      <EndProperty Name="usuario">
+        <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+      </EndProperty>
+      <EndProperty Name="ubicacion">
+        <ScalarProperty Name="IdUbicacion" ColumnName="IdUbicacion" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

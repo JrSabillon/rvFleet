@@ -132,3 +132,5 @@ D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Microsoft.IO.RecyclableMemoryStream
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\System.ComponentModel.Annotations.dll
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\EPPlus.xml
 D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\Microsoft.IO.RecyclableMemoryStream.xml
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\itextsharp.dll
+D:\RecargaVeloz\Projects\rvFleet\rvFleet\bin\itextsharp.xml

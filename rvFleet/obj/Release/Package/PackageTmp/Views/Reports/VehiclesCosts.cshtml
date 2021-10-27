@@ -1,15 +1,9 @@
-﻿@model List<rvFleet.Models.GetVehicleCosts_Result>
+﻿@*@model List<rvFleet.Models.GetVehicleCosts_Result>*@
+@model List<rvFleet.Models.spGetVehicleCostsFiltered_Result>
+
 @{
     ViewBag.Title = "CostosVehiculares";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var startDate = Convert.ToDateTime(ViewBag.startDate);
-    var endDate = Convert.ToDateTime(ViewBag.endDate);
-
-    string FormatedDateToText(DateTime date)
-    {
-        return date.ToString("dd") + " de " + date.ToString("MMMM", new System.Globalization.CultureInfo("es")) + ", " + date.ToString("yyyy");
-    }
 }
 
 <style>
@@ -18,6 +12,7 @@
         position: sticky;
         top: 0; /* Don't forget this, required for the stickiness */
         box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+        white-space: nowrap;
     }
 </style>
 
@@ -37,93 +32,66 @@
 
 <h5><i class="fa fa-filter"></i> Filtros</h5>
 <label class="text-muted">Seleccionar las fechas para buscar los costos vehiculares.</label>
-@using (Html.BeginForm("VehiclesCosts", "Reports", FormMethod.Get, new { @class = "form-row align-items-end" }))
-{
+
+<div class="form-row align-items-end">
     <div class="form-group col-12 col-md-4">
         <label class="col-form-label">Inicio</label>
-        <input type="date" class="form-control col-12" value="@ViewBag.startDate" name="startDate" />
+        <input type="date" class="form-control col-12" value="@ViewBag.startDate" name="startDate" id="startDate" />
     </div>
     <div class="form-group col-12 col-md-4">
         <label class="col-form-label">Fin</label>
-        <input type="date" class="form-control col-12" value="@ViewBag.endDate" name="endDate" />
+        <input type="date" class="form-control col-12" value="@ViewBag.endDate" name="endDate" id="endDate" />
     </div>
     <div class="form-group col-12 col-md-4">
-        <button class="btn btn-info"><i class="fa fa-search"></i> Buscar</button>
+        <button class="btn btn-info" onclick="LoadCostContent();"><i class="fa fa-search"></i> Buscar</button>
     </div>
-}
+</div>
 
 <div class="row">
     <div class="col-12 form-group">
         <div class="card shadow-sm">
             <div class="card-header">
-                <b>Gastos vehiculares</b>
+                <select class="form-control col-12" id="select-cost-option" onchange="LoadCostContent();">
+                    <option value="1">Gastos por vehículo</option>
+                    <option value="2">Gastos por rubro</option>
+                    <option value="3">Gastos por proveedor</option>
+                </select>
             </div>
             <div class="card-body">
-                <ul class="nav nav-tabs" role="tablist" id="nav-tab-vehicles-cost">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#div-tab-vehicles-cost-table" role="tab" aria-selected="true">
-                            Tabla de costos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#div-tab-vehicles-cost-graph" role="tab" aria-selected="true">
-                            Gráfico
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content mt-4">
-                    <div id="div-tab-vehicles-cost-table" class="tab-pane fade show active">
-                        <label>A continuación se presentan los costos vehiculares comprendidos entre las fechas "@FormatedDateToText(startDate)" y "@FormatedDateToText(endDate)".</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Buscar placa..." id="input-filter">
-                            <div class="input-group-append">
-                                <span class="input-group-text"><i class="fa fa-search"></i></span>
-                            </div>
-                        </div>
-                        <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                            <table class="table table-hover table-bordered tablesorter" id="table-vehicleCosts">
-                                <thead>
-                                    <tr>
-                                        <th>Vehículo</th>
-                                        <th>Costo</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model.Count > 0)
-                                    {
-                                        foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>@item.DETPLACAVEHICULO</td>
-                                                <td>@item.VALOR.ToString("N")</td>
-                                                <td>
-                                                    <a href="@Url.Action("OrdersDetails", new { VehPlaca = item.DETPLACAVEHICULO, startDate = startDate, endDate = endDate })"
-                                                       title="Ver facturas" class="btn btn-sm btn-info">
-                                                        <i class="fa fa-book"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <tr>
-                                            <td colspan="3">No hay datos que coincidan con el criterio de búsqueda.</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div id="div-tab-vehicles-cost-graph" class="tab-pane fade">
-                        <div>
-                            @{
-                                Html.RenderPartial("_VehiclesCostGraph", Model);
-                            }
-                        </div>
-                    </div>
+                <div id="div-cost-content">
+                    @{
+                        Html.RenderPartial("_VehiclesTableCost", Model);
+                    }
                 </div>
+                @*<ul class="nav nav-tabs" role="tablist" id="nav-tab-vehicles-cost">
+            <li class="nav-item">
+                <a class="nav-link active tbs" data-toggle="tab" href="#div-tab-vehicles" role="tab" aria-selected="true" data-info="vehic">
+                    Vehículos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tbs" data-toggle="tab" href="#div-tab-rubros" role="tab" aria-selected="true" data-info="rub">
+                    Rubros
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tbs" data-toggle="tab" href="#div-tab-proveedores" role="tab" aria-selected="true" data-info="prov">
+                    Proveedores
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content mt-4">
+            <div id="div-tab-vehicles" class="tab-pane fade show active">
+
+            </div>
+            <div id="div-tab-rubros" class="tab-pane fade">
+
+            </div>
+            <div id="div-tab-proveedores" class="tab-pane fade">
+
+            </div> 
+        </div>*@
+                <hr />
             </div>
         </div>
     </div>
@@ -140,4 +108,27 @@
 
         $('#table-vehicleCosts').tablesorter();
     });
+
+    function LoadCostContent() {
+        isLoading(true);
+        var option = $('#select-cost-option').val();
+
+        switch (option) {
+            case "1":
+                $('#div-cost-content').load(`@Url.Action("_VehiclesTableCost")?startDate=${$('#startDate').val()}&endDate=${$('#endDate').val()}`, function () {
+                    isLoading(false);
+                });
+                break;
+            case "2":
+                $('#div-cost-content').load(`@Url.Action("_RubrosTableCost")?startDate=${$('#startDate').val()}&endDate=${$('#endDate').val()}`, function () {
+                    isLoading(false);
+                });
+                break;
+            case "3":
+                $('#div-cost-content').load(`@Url.Action("_ProveedoresTableCost")?startDate=${$('#startDate').val()}&endDate=${$('#endDate').val()}`, function () {
+                    isLoading(false);
+                });
+                break;
+        }
+    }
 </script>

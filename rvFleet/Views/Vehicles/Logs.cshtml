@@ -1,110 +1,81 @@
-﻿@using System.Globalization;
-@model List<rvFleet.Models.bitacoravehiculo>
-@{
+﻿@{
     ViewBag.Title = "Logs";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    string FormatedDateToText(DateTime date)
-    {
-        return date.ToString("dd") + " de " + date.ToString("MMMM", new System.Globalization.CultureInfo("es")) + ", " + date.ToString("yyyy");
-    }
+    string selectedPlaca = ViewBag.SelectedPlaca;
 }
 
-<h4>Bitacora vehiculo @ViewBag.VehPlaca</h4>
-<hr class="m-0" />
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-transparent pl-0">
-        <li class="breadcrumb-item">
-            <a href="@Url.Action("Index", "Home")">Inicio</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">Bitacora</li>
-    </ol>
-</nav>
-
-<div class="w-100 mb-2 text-right">
-    <button class="btn btn-sm btn-info">
-        <i class="fa fa-plus"></i>
-        Nueva entrada
-    </button>
-</div>
-
-@foreach (var item in Model)
+@using (Html.BeginForm("Logs", "Vehicles", FormMethod.Get, new { id = "form-search-placa" }))
 {
-    <div class="card border-danger">
-        <div class="card-header">
-            <label>Tipo de comentario <b>@item.bitacoraTipoDescripcion</b></label>
-            <label class="text-muted float-right">@FormatedDateToText(item.bitacoraFecha.Value)</label>
-        </div>
-        <div class="card-body">
-            <label><i class="fa fa-user"></i> @item.bitacoraUsuario</label>
-            <p>&mdash; @item.bitacoraComentario</p>
-
-            @if (item.bitacoracomentario1.Count > 0)
-            {
-                <div class="p-2">
-                    <b><i class="fa fa-comments-o"></i> Comentarios</b>
-                    <hr class="mt-2" />
-                    <ul class="list-group list-group-flush">
-                        @foreach (var comment in item.bitacoracomentario1)
-                        {
-                            <li class="list-group-item">
-                                <div class="">
-                                    <label><i class="fa fa-user"></i> @comment.bitacoraComUsuario</label>
-                                    <br />
-                                    <label>@comment.bitacoraComRespuesta</label>
-                                    <br />
-                                    <label class="text-muted">@FormatedDateToText(comment.bitacoraComFecha.Value)</label>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            }
-            else
-            {
-                <label>Sin comentarios adicionales</label>
-            }
-
-            <div class="form-group mt-4">
-                <textarea placeholder="Ingrese un comentario aqui..." class="form-control col-12" rows="2"></textarea>
-                <br />
-                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Agregar comentario</button>
+    if (ViewBag.CanChange)
+    {
+        <div class="form-group row">
+            <h4 class="col-auto">Bitacora vehiculo</h4>
+            <div class="col-auto">
+                @Html.DropDownList("VehPlaca", null, "TODOS", new { @class = "form-control", onchange = "isLoading(true); $('#form-search-placa').submit();", id = "select-vehplaca", style = "width: 250px !important;" })
             </div>
-
         </div>
+    }
+    else
+    {
+        <div class="form-group row">
+            @Html.Hidden("VehPlaca", selectedPlaca)
+            <h4 class="col-auto">Bitacora vehiculo</h4>
+            <div class="col-auto">
+                @Html.DropDownList("VehPlaca", null, new { @class = "form-control d-inline", disabled = "disabled", id = "select-vehplaca", style = "width: 250px !important;" })
+            </div>
+        </div>
+    }
+
+    <hr class="m-0" />
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent pl-0">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")">Inicio</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Bitacora</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-6">
+            @Html.DropDownList("Option", null, new { @class = "form-control", onchange = "isLoading(true); $('#form-search-placa').submit();" })
+            @*<select class="form-control" name="Option">
+                <option value="1">Comentarios</option>
+                <option value="2">Inspecciones</option>
+            </select>*@
+        </div>
+        @if(ViewBag.SelectedOption == "Comentarios")
+        {
+            <div class="col-6 text-right">
+                <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-nueva-entrada">
+                    <i class="fa fa-plus"></i>
+                    Nueva entrada
+                </button>
+            </div>
+        }
     </div>
 }
+<hr />
 
-@*<div class="table-responsive">
-    <table class="table table-hover">
-        <thead class="thead-light">
-            <tr>
-                <th>#</th>
-                <th>Placa</th>
-                <th>Comentario</th>
-                <th>Usuario</th>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.bitacoraId</td>
-                    <td>@item.bitacoraPlaca</td>
-                    <td>@item.bitacoraComentario</td>
-                    <td>@item.bitacoraUsuario</td>
-                    <td>@item.bitacoraFecha.Value.ToString("yyyy-MM-dd")</td>
-                    <td>@item.bitacoraTipo</td>
-                    <td>
-                        <button class="btn btn-sm btn-info">
-                            <i class="fa fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>*@
+@if (ViewBag.SelectedOption == "Comentarios")
+{
+
+    List<rvFleet.Models.bitacoravehiculo> ComentariosModel = ViewBag.ComentariosModel;
+
+    Html.RenderPartial("_Comments", ComentariosModel);
+}
+else
+{
+    List<rvFleet.POCO.InspectionsTable> InspectionModel = ViewBag.InspectionModel;
+
+    Html.RenderPartial("_Inspections", InspectionModel);
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#select-vehplaca').select2({
+            theme: 'bootstrap4'
+        });
+    });
+</script>

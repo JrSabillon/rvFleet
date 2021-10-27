@@ -26,7 +26,7 @@ namespace rvFleet.Models
         public string VehCodigoAresSun { get; set; }
         public Nullable<int> VehCodigoProveedor { get; set; }
         public string VehCodigoEmpresa { get; set; }
-        public System.DateTime VehFechaMatricula { get; set; }
+        public Nullable<System.DateTime> VehFechaMatricula { get; set; }
         public string VehNumeroPoliza { get; set; }
         public string VehUrlFotoRevision { get; set; }
         public string VehCodigoUsuario { get; set; }
@@ -38,6 +38,7 @@ namespace rvFleet.Models
         public string VehFotoInterior { get; set; }
         public Nullable<int> VehKilometraje { get; set; }
         public string VehColorIdentificador { get; set; }
+        public Nullable<System.DateTime> VehKilometrajeActualizado { get; set; }
     
         public virtual proveedor proveedor { get; set; }
     }

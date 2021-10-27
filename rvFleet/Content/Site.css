@@ -120,13 +120,13 @@ textarea {
     }
 }
 
-.card .fa {
+/*.card .fa {
     transition: .3s transform ease-in-out;
 }
 
 .card .collapsed .fa {
     transform: rotate(90deg);
-}
+}*/
 
 #form-factura .card-header{
     cursor: pointer;

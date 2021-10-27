@@ -18,7 +18,7 @@
         @foreach (var item in Model)
         {
             string action = string.Empty, controller = string.Empty;
-            if (item.EstadoPrivilegio)
+            if (item.EstadoPrivilegio.Value)
             {
                 //Mostraremos el elemento solo si se encuentra activo
                 if (!HasChilds(item.IdPrivilegio) && item.NivelPrivilegio.Equals(1))
@@ -69,6 +69,15 @@
                     </li>
                 }
             }
+        }
+        @if (rvFleet.ViewModels.BaseViewModel.GetUserData().MultipleVehicles)
+        {
+            <li class="nav-item">
+                <a class="bg-dark list-group-item list-group-item-action flex-column align-items-start text-white" href="@Url.Action("MyVehicles", "Vehicles")">
+                    <i class="fa fa-tachometer"></i>
+                    <span class="ml-2">Mis vehiculos</span>
+                </a>
+            </li>
         }
         <li class="nav-item d-block d-sm-none">
             <a data-toggle="collapse" data-target="#submenu_profile" role="button" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start text-white">

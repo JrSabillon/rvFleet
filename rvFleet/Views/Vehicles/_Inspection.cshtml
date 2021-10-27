@@ -1,0 +1,122 @@
+﻿@model IList<rvFleet.Models.controlvehiculospregunta>
+@{
+    string CodigoVehiculo = ViewBag.CodigoVehiculo;
+    int KilometrajeActual = Convert.ToInt32(ViewBag.KilometrajeActual);
+}
+<style>
+    input[type=radio] {
+        transform: scale(1.5);
+    }
+</style>
+
+@using (Html.BeginForm("Upload", "Kilometraje", FormMethod.Post, new { enctype = "multipart/form-data", id = "form-uploadKilometraje" }))
+{
+    @Html.Hidden("VehPlaca", ViewBag.VehPlaca as string)
+    @Html.Hidden("VehCodigoVehiculo", (int)ViewBag.VehCodigoVehiculo)
+    <div class="card">
+        <div class="card-header">
+            <label class="h5"><i class="fa fa-tachometer"></i> Adjuntar kilometraje diario.</label>
+        </div>
+        <div class="card-body">
+            <label class="h6 text-muted">Kilometraje actual: @(KilometrajeActual.ToString("N0"))</label><br />
+            <hr />
+            @Html.TextBox("KilometrajeImg", null, new { @class = "form-control-file d-md-inline", type = "file" })
+            @Html.TextBox("KilKilometraje", null, new { @class = "form-control d-md-inline ml-md-3 mt-3 mt-md-0", placeholder = "Kilometraje...", onchange = "formatThousands(this);", required = "required" })
+        </div>
+    </div>
+    <br />
+
+    <div class="card">
+        <div class="card-header">
+            <label class="h5"><i class="fa fa-tasks"></i> Revisión del vehículo</label>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    @Html.Hidden($"[{i}].CodigoVehiculo", CodigoVehiculo)
+                    @Html.HiddenFor(m => Model[i].Id, new { Name = $"[{i}].CodigoPregunta" })
+                    <div class="col-12 form-group">
+                        <div class="form-group row">
+                            <div class="col-12 col-sm-6 align-self-center">
+                                <label>@Model[i].Pregunta @(Model[i].Requerido.Value ? "*" : "")</label>
+                            </div>
+                            <div class="col-12 col-sm-6 align-self-center text-left text-sm-right">
+                                <div class="form-check form-check-inline">
+                                    @if (Model[i].Requerido.Value)
+                                    {
+                                        <input class="form-check-input" id="chk-bueno-[@i]" type="radio" name="[@i].Respuesta" value="Bueno" required />
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" id="chk-bueno-[@i]" type="radio" name="[@i].Respuesta" value="Bueno" />
+                                    }
+                                    <label class="form-check-label" for="chk-bueno-[@i]">Bueno</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="chk-malo-[@i]" name="[@i].Respuesta" value="Malo" />
+                                    <label class="form-check-label" for="chk-malo-[@i]">Malo</label>
+                                </div>
+                            </div>
+                            @*<div class="col-12 col-sm-4 mt-sm-0 mt-3">
+                                    <textarea class="form-control col-12" rows="2" name="[@i].Observacion" placeholder="Observaciones..."></textarea>
+                                </div>*@
+                        </div>
+                        <hr />
+                    </div>
+                }
+
+                <div class="col-12">
+                    <textarea name="Observacion" class="form-control col-12" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <button class="btn btn-success btn-block" type="submit" onclick="return ValidateForm();"><i class="fa fa-save"></i> Guardar</button>
+}
+
+<script>
+    function ValidateForm() {
+        if ($('#KilKilometraje').val().replace(',', '') < @KilometrajeActual) {
+            alert("El kilometraje ingresado no puede ser menor que el actual.");
+            $('#KilKilometraje').addClass('is-invalid');
+            return false;
+        }
+
+        isLoading(true);
+        return true;
+    }
+</script>
+
+@*@foreach (var item in Model)
+    {
+        <div class="col-12">
+            <div class="form-group row">
+                <div class="col-6 col-sm-4 align-self-center">
+                    <label>@item.Pregunta @(item.Requerido.Value ? "*" : "")</label>
+                </div>
+                <div class="col-6 col-sm-4 align-self-center">
+                    <div class="form-check form-check-inline">
+                        @if (item.Requerido.Value)
+                        {
+                            <input class="form-check-input" type="radio" name="@item.Id" required />
+                        }
+                        else
+                        {
+                            <input class="form-check-input" type="radio" name="@item.Id" />
+                        }
+                        <label class="form-check-label">Bueno</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="@item.Id" />
+                        <label class="form-check-label">Malo</label>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 mt-sm-0 mt-3">
+                    <textarea class="form-control col-12" rows="2" placeholder="Observaciones..."></textarea>
+                </div>
+            </div>
+        </div>
+    }*@

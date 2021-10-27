@@ -1,0 +1,66 @@
+﻿@model rvFleet.Models.vehiculos
+@{
+    ViewBag.Title = "MyVehicles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Mis vehiculos</h4>
+<hr class="m-0" />
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent pl-0">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Home")">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Mis vehículos</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-12 form-group">
+        @using (Html.BeginForm("MyVehicles", "Vehicles", FormMethod.Post, new { id = "form-myvehicles" }))
+        {
+            @Html.DropDownList("VehPlaca", null, new { @class = "form-control", onchange = "$('#form-myvehicles').submit();" })
+        }
+    </div>
+    <div class="col-12 col-md-4">
+        @using (Html.BeginForm("UpdateVehicleKM", "Vehicles", FormMethod.Post))
+        {
+            @Html.HiddenFor(x => x.VehCodigoVehiculo);
+            <label class="col-form-label">Kilometraje actual</label>
+            <div class="input-group form-group">
+                @Html.TextBox("VehKilometraje", "", new { placeholder = $"{Model.VehKilometraje:N0}", @class = "form-control col-12" })
+                <div class="input-group-append">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-save"></i> <span class="d-none d-lg-inline">Guardar</span>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <!--Boton para llenar nuevo checklist-->
+    <div class="col-12 col-md-4 align-self-end form-group">
+        <a href="@Url.Action("QuickInspection", "Vehicles", new { Model.VehCodigoVehiculo })" class="btn btn-primary btn-block">
+            <i class="fa fa-search"></i> Revisión rápida
+        </a>
+    </div>
+    <!--Boton para ir a mantenimientos-->
+    <div class="col-12 col-md-4 align-self-end form-group">
+        <a href="@Url.Action("NextMaintenance", "Reports", new { Model.VehPlaca })" class="btn btn-primary btn-block">
+            <i class="fa fa-cogs"></i> Mantenimientos
+        </a>
+    </div>
+</div>
+
+<hr />
+
+<div style="cursor: pointer;" class="form-group mt-3" data-toggle="collapse" data-target="#div-rubros-principales">
+    <label class="h5 w-100" style="cursor: pointer;">
+        <i class="fa fa-bar-chart-o"></i> Ver rubros principales <span class="float-right"><i class="fa fa-chevron-down"></i></span>
+    </label>
+    <hr />
+</div>
+<div class="collapse show" id="div-rubros-principales">
+    @{
+        Html.RenderPartial("~/Views/Home/_RubrosPrincipales.cshtml", (List<rvFleet.Models.GetVehicleGraphData_Result>)ViewBag.GraphData);
+    }
+</div>

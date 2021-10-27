@@ -10,6 +10,7 @@ using rvFleet.ViewModels;
 
 namespace rvFleet.Controllers
 {
+    [Authorize]
     public class KilometrajeController : Controller
     {
         KilometrajeHistoricoViewModel KilometrajeViewModel;
@@ -21,22 +22,46 @@ namespace rvFleet.Controllers
         }
 
         // GET: Kilometraje
-        public ActionResult Upload(string KilKilometraje, HttpPostedFileBase KilometrajeImg)
+        public ActionResult Upload(string KilKilometraje, HttpPostedFileBase KilometrajeImg, List<controlvehiculosrespuesta> respuestas, string VehPlaca, string Observacion, int VehCodigoVehiculo)
         {
             try
             {
                 kilometrajehistorico Kilometraje = new kilometrajehistorico();
                 var user = BaseViewModel.GetUserData();
-                var vehicle = VehiclesViewModel.GetVehiculoUsuario(user.IdUsuario);
+                //var vehicle = VehiclesViewModel.GetVehiculoUsuario(user.IdUsuario);
                 Kilometraje.KilUsuarioIngreso = user.IdUsuario;
-                Kilometraje.KilFechaIngreso = DateTime.Today;
-                Kilometraje.KilCodigoVehiculo = vehicle.VehCodigoVehiculo;
+                Kilometraje.KilFechaIngreso = DateTime.Now;
+                Kilometraje.KilCodigoVehiculo = VehCodigoVehiculo;
                 Kilometraje.KilKilometraje = Convert.ToInt32(KilKilometraje.Replace(",", ""));
-                Kilometraje.KilFotografia = this.SaveImageKilometraje(Kilometraje.KilCodigoVehiculo, KilometrajeImg);
+
+                //Datos del detalle
+                controlvehiculosrespuestadetalle detalle = new controlvehiculosrespuestadetalle
+                {
+                    IdControl = VehiclesViewModel.getInspectionAnswersId(Kilometraje.KilCodigoVehiculo),
+                    CodigoVehiculo = Kilometraje.KilCodigoVehiculo,
+                    Kilometraje = Kilometraje.KilKilometraje,
+                    Observacion = Observacion
+                };
+                //fin: datos del detalle
+
+                if(KilometrajeImg != null)
+                    Kilometraje.KilFotografia = this.SaveImageKilometraje(Kilometraje.KilCodigoVehiculo, KilometrajeImg);
 
                 KilometrajeViewModel.UploadKilometraje(Kilometraje);
+                var fecha = DateTime.Now;
 
-                return RedirectToAction("Index", "Home");
+                foreach (var respuesta in respuestas)
+                {
+                    respuesta.Id = detalle.IdControl;
+                    if(!string.IsNullOrEmpty(respuesta.Respuesta))
+                        VehiclesViewModel.SaveInspectionAnswer(respuesta, fecha);
+                }
+
+                //Guardar detalles de la inspeccion.
+                VehiclesViewModel.SaveInspectionDetails(detalle);
+
+                //Redireccionar a pantalla con graficos para mostrar resultados
+                return RedirectToAction("InspectionResults", "Home", new { VehPlaca });
             } 
             catch(Exception exc)
             {

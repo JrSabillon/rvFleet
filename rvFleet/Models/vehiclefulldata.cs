@@ -26,11 +26,13 @@ namespace rvFleet.Models
         public string VehCodigoAresSun { get; set; }
         public Nullable<int> VehCodigoProveedor { get; set; }
         public string VehCodigoEmpresa { get; set; }
-        public System.DateTime VehFechaMatricula { get; set; }
+        public Nullable<System.DateTime> VehFechaMatricula { get; set; }
         public string VehNumeroPoliza { get; set; }
         public string VehUrlFotoRevision { get; set; }
         public string VehCodigoUsuario { get; set; }
         public string NombreUsuario { get; set; }
         public string NombreEmpresa { get; set; }
+        public Nullable<int> VehKilometraje { get; set; }
+        public string ProNombre { get; set; }
     }
 }

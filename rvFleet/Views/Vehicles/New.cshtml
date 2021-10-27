@@ -1,4 +1,4 @@
-﻿@model rvFleet.Models.vehiclefulldata
+﻿@model rvFleet.Models.vehiculos
 @{
     ViewBag.Title = "Nuevo";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -30,51 +30,56 @@
     <div class="tab-content p-4 bg-white shadow">
         <div id="div-tab-data">
             <div class="row">
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehPlaca)
-                @Html.TextBoxFor(x => x.VehPlaca, null, new { @class = "form-control col-12", placeholder = "Placa" })
-                @Html.ValidationMessageFor(x => x.VehPlaca, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehVIN)
-                @Html.TextBoxFor(x => x.VehVIN, null, new { @class = "form-control col-12", placeholder = "VIN" })
-                @Html.ValidationMessageFor(x => x.VehVIN, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehMotor)
-                @Html.TextBoxFor(x => x.VehMotor, null, new { @class = "form-control col-12", placeholder = "Motor" })
-                @Html.ValidationMessageFor(x => x.VehMotor, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehCilindraje)
-                @Html.TextBoxFor(x => x.VehCilindraje, null, new { @class = "form-control col-12", placeholder = "Cilindraje" })
-                @Html.ValidationMessageFor(x => x.VehCilindraje, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehAno)
-                @Html.TextBoxFor(x => x.VehAno, null, new { @class = "form-control col-12", placeholder = "Año" })
-                @Html.ValidationMessageFor(x => x.VehAno, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehColor)
-                @Html.TextBoxFor(x => x.VehColor, null, new { @class = "form-control col-12", placeholder = "Color" })
-                @Html.ValidationMessageFor(x => x.VehColor, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehMarca)
-                @Html.TextBoxFor(x => x.VehMarca, null, new { @class = "form-control col-12", placeholder = "Marca" })
-                @Html.ValidationMessageFor(x => x.VehMarca, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehModelo)
-                @Html.TextBoxFor(x => x.VehModelo, null, new { @class = "form-control col-12", placeholder = "Modelo" })
-                @Html.ValidationMessageFor(x => x.VehModelo, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
-                @Html.LabelFor(x => x.VehFechaMatricula)
-                @Html.TextBoxFor(x => x.VehFechaMatricula, null, new { @class = "form-control col-12", type = "date" })
-                @Html.ValidationMessageFor(x => x.VehFechaMatricula, "", new { @class = "text-danger" })
-            </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehPlaca)
+                    @Html.TextBoxFor(x => x.VehPlaca, null, new { @class = "form-control col-12", placeholder = "Placa" })
+                    @Html.ValidationMessageFor(x => x.VehPlaca, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehVIN)
+                    @Html.TextBoxFor(x => x.VehVIN, null, new { @class = "form-control col-12", placeholder = "VIN" })
+                    @Html.ValidationMessageFor(x => x.VehVIN, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehMotor)
+                    @Html.TextBoxFor(x => x.VehMotor, null, new { @class = "form-control col-12", placeholder = "Motor" })
+                    @Html.ValidationMessageFor(x => x.VehMotor, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehCilindraje)
+                    @Html.TextBoxFor(x => x.VehCilindraje, null, new { @class = "form-control col-12", placeholder = "Cilindraje" })
+                    @Html.ValidationMessageFor(x => x.VehCilindraje, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehAno)
+                    @Html.TextBoxFor(x => x.VehAno, null, new { @class = "form-control col-12", placeholder = "Año" })
+                    @Html.ValidationMessageFor(x => x.VehAno, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehColor)
+                    @Html.TextBoxFor(x => x.VehColor, null, new { @class = "form-control col-12", placeholder = "Color" })
+                    @Html.ValidationMessageFor(x => x.VehColor, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehMarca)
+                    @Html.TextBoxFor(x => x.VehMarca, null, new { @class = "form-control col-12", placeholder = "Marca" })
+                    @Html.ValidationMessageFor(x => x.VehMarca, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehModelo)
+                    @Html.TextBoxFor(x => x.VehModelo, null, new { @class = "form-control col-12", placeholder = "Modelo" })
+                    @Html.ValidationMessageFor(x => x.VehModelo, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehFechaMatricula)
+                    @Html.TextBoxFor(x => x.VehFechaMatricula, null, new { @class = "form-control col-12", type = "date" })
+                    @Html.ValidationMessageFor(x => x.VehFechaMatricula, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 form-group">
+                    @Html.LabelFor(x => x.VehKilometraje)
+                    @Html.TextBoxFor(x => x.VehKilometraje, null, new { @class = "form-control col-12" })
+                    @Html.ValidationMessageFor(x => x.VehKilometraje, "", new { @class = "text-danger" })
+                </div>
             </div>
             <hr />
             <fieldset>

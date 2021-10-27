@@ -14,6 +14,12 @@ using rvFleet.App_Code;
 using System.Data;
 using ClosedXML.Excel;
 using OfficeOpenXml;
+using System.Configuration;
+using iTextSharp.text.pdf;
+using System.Drawing;
+using iTextSharp.text;
+using System.Text;
+using Image = iTextSharp.text.Image;
 
 namespace rvFleet.Controllers
 {
@@ -106,11 +112,11 @@ namespace rvFleet.Controllers
         }
 
         // GET: Orders
-        public ActionResult Index(string searchString, int? page, string VehPlaca, string sortOrder = "orden_desc", string type = "1", int pageSize = 5)
+        public ActionResult Index(string searchString, int? page, string VehPlaca, int? pageSize, string sortOrder = "orden_desc", string type = "1")
         {
             try
             {
-                //int pageSize = 5;
+                pageSize = pageSize.HasValue ? pageSize : Convert.ToInt32(ConfigurationManager.AppSettings["PaginationSize"].ToString());
                 int pageNumber = (page ?? 1);
 
                 List<facturas> model = new List<facturas>();
@@ -126,6 +132,10 @@ namespace rvFleet.Controllers
                         break;
                     case "3":
                         model = viewModel.GetOrdenes();
+                        break;
+                    case "4":
+                        model = viewModel.GetFacturasNoEntregadas();
+                        pageSize = model.Count;
                         break;
                 }
 
@@ -188,7 +198,7 @@ namespace rvFleet.Controllers
 
                 ViewBag.Type = new SelectList(GetTypes(), "Value", "Text", type);
                 ViewBag.PageSize = pageSize;
-                return View(model.ToPagedList(pageNumber, pageSize));
+                return View(model.ToPagedList(pageNumber, pageSize.Value));
             }
             catch (Exception exc)
             {
@@ -204,6 +214,7 @@ namespace rvFleet.Controllers
                 new ItemModel { Text = "Todas", Value = "1" },
                 new ItemModel { Text = "Facturas", Value = "2" },
                 new ItemModel { Text = "Órdenes", Value = "3" },
+                new ItemModel { Text = "Pendiente entrega", Value = "4" }
             };
 
             return Types.ToList();
@@ -611,6 +622,122 @@ namespace rvFleet.Controllers
             {
                 return Json(new { status = HttpStatusCode.Conflict, message = exc.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public FileResult GenerateOrdersPDF(List<facturas> facturas, string Source)
+        {
+            var data = facturas.Where(x => x.IsChecked).ToList();
+            MemoryStream workStream = new MemoryStream();
+            StringBuilder status = new StringBuilder("");
+            DateTime dTime = DateTime.Now;
+
+            string FileName = string.Format("ReporteFacturas_{0}.pdf", dTime.ToString("yyyyMMddHHmmss"));
+            Document doc = new Document(PageSize.A4.Rotate());
+            doc.SetMargins(25f, 75f, 25f, 0f);
+            string LogoPath = Server.MapPath("~");
+            Image logo = Image.GetInstance(LogoPath + "/Content/images/logos/rv_mini.jpg");
+            Image logoDMS = Image.GetInstance(LogoPath + "/Content/images/logos/dms.jpg");
+            logo.Alignment = Element.ALIGN_LEFT;
+            //logo.Width = 100f;
+            PdfPTable tableLayout = new PdfPTable(7);
+
+            PdfWriter.GetInstance(doc, workStream).CloseStream = false;
+            doc.Open();
+            PdfPTable table = AddTableContent(data, tableLayout);
+            Paragraph logos = AddLogos(new Image[] { logo, logoDMS });
+            doc.Add(logos);
+            doc.Add(table);
+            Paragraph numFacturas = new Paragraph($"Número de facturas: {data.Count}", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10f));
+            numFacturas.Alignment = Element.ALIGN_RIGHT;
+            Paragraph total = new Paragraph($"Gastos totales: {data.Sum(x => x.FacValorFactura):N2}", new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10f));
+            total.Alignment = Element.ALIGN_RIGHT;
+            doc.Add(numFacturas);
+            doc.Add(total);
+            
+            doc.Close();
+
+            byte[] byteInfo = workStream.ToArray();
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            if (Source.ToLower().Equals("admon"))
+            {
+                //ACTUALIZAR FECHA DE ENTREGA A ADMINISTRACION.
+                foreach (var factura in data)
+                {
+                    viewModel.updateFechaAdmon(factura);
+                }
+            }
+
+            return File(workStream, "application/pdf", FileName);
+        }
+
+        protected Paragraph AddLogos(Image[] images)
+        {
+            Paragraph p = new Paragraph();
+            
+            p.Add(new Chunk(images[0], 0, 0, true));
+            p.Add(new Chunk(images[1], 600, 0, true));
+            
+            return p;
+        }
+
+        protected PdfPTable AddTableContent(List<facturas> facturas, PdfPTable tableLayout)
+        {
+            float[] headers = { 13, 40, 25, 40, 100, 50, 25 };
+            tableLayout.SetWidths(headers);
+            tableLayout.WidthPercentage = 100;
+            tableLayout.HeaderRows = 1;
+
+            tableLayout.AddCell(new PdfPCell(new Phrase("Reporte de facturas"))
+            {
+                Colspan = 12,
+                Border = 0,
+                PaddingBottom = 5, 
+                HorizontalAlignment = Element.ALIGN_CENTER
+            });
+
+            AddCellToHeader(tableLayout, "#");
+            AddCellToHeader(tableLayout, "Factura");
+            AddCellToHeader(tableLayout, "Fecha");
+            AddCellToHeader(tableLayout, "Proveedor");
+            AddCellToHeader(tableLayout, "Detalle");
+            AddCellToHeader(tableLayout, "Vehículos");
+            AddCellToHeader(tableLayout, "Total");
+
+            foreach (var factura in facturas)
+            {
+                double subtotal = Array.ConvertAll(factura.ValorDetalle.Split('|'), double.Parse).ToList().Sum();
+                double total = factura.FacAplicaImpuesto.Value ? subtotal * 0.15 + subtotal : subtotal;
+                AddCellToBody(tableLayout, factura.FacCodigoOrden.ToString());
+                AddCellToBody(tableLayout, factura.FacNumeroFactura);
+                AddCellToBody(tableLayout, factura.FacFechaOrden.Value.ToString("yyyy-MM-dd"));
+                AddCellToBody(tableLayout, factura.proveedor.ProNombre);
+                AddCellToBody(tableLayout, factura.Detalles);
+                AddCellToBody(tableLayout, factura.Placas);
+                AddCellToBody(tableLayout, total.ToString("N2"));
+            }
+
+            return tableLayout;
+        }
+
+        private static void AddCellToHeader(PdfPTable tableLayout, string cellText)
+        {
+            tableLayout.AddCell(new PdfPCell(new Phrase(cellText)){
+                HorizontalAlignment = Element.ALIGN_LEFT, 
+                Padding = 5,
+                BackgroundColor = new BaseColor(171, 204, 217)
+            });
+        }
+
+        private static void AddCellToBody(PdfPTable tableLayout, string cellText)
+        {
+            tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8f)))
+            {
+                HorizontalAlignment = Element.ALIGN_LEFT, 
+                Padding = 5, 
+                BackgroundColor = new BaseColor(255, 255, 255)
+            });
         }
     }
 }

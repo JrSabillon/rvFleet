@@ -19,5 +19,6 @@ namespace rvFleet.Models
         public int KilometrajeActual { get; set; }
         public int Diferencia { get; set; }
         public double Porcentaje { get; set; }
+        public int DistanciaCambio { get; set; }
     }
 }
